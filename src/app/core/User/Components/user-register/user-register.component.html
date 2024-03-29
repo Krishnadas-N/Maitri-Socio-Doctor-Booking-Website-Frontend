@@ -1,0 +1,83 @@
+   
+   <div class="min-h-screen sm:flex sm:flex-row  justify-center p-5 sm:p-20 border-y-2 border-slate-950">
+    <div class="flex-col flex  self-center lg:p-10 sm:max-w-5xl xl:max-w-lg  z-10">
+      <div class="self-start hidden lg:flex flex-col  text-black">
+       <div class="flex items-center mb-5"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Eo_circle_blue_letter-a.svg/2048px-Eo_circle_blue_letter-a.svg.png" alt="Image" class="w-10">
+  <h3 class="text-3xl font-semibold ml-2">Aji</h3>
+</div>
+        <h1 class="my-3 font-semibold text-4xl">Welcome back to Aji </h1>
+        <p class="pr-3 text-sm opacity-75">Lorem ipsum is placeholder text commonly used in the graphic, print,
+          and publishing industries for previewing layouts and visual mockups</p>
+      </div>
+    </div>
+    <div class="flex justify-center self-center  z-10">
+      <div class="p-12 bg-gray-800 mx-auto rounded-3xl w-96 ">
+          <div class="mb-7">
+            <h3 class="font-semibold text-2xl text-gray-100">Sign Up</h3>
+            <p class="text-gray-500">Already have an account?  <a [routerLink]="'/login'"  class="text-sm text-blue-700 hover:text-blue-600">Sign In</a></p>
+          </div>
+          <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+            <div class="space-y-6">
+              <div>
+                <input formControlName="firstname" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400" type="" placeholder="First Name">
+                <div *ngIf="registrationForm.get('firstname')?.invalid && (registrationForm.get('firstname')?.dirty || registrationForm.get('firstname')?.touched)">
+                  <p class="text-red-500">First name is required (between 3 and 25 characters).</p>
+                </div>
+              </div>
+              <div>
+                <input formControlName="lastname" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400" type="" placeholder="Last Name">
+                <div *ngIf="registrationForm.get('lastname')?.invalid && (registrationForm.get('lastname')?.dirty || registrationForm.get('lastname')?.touched)">
+                  <p class="text-red-500">Last name is required (between 1 and 25 characters).</p>
+                </div>
+              </div>
+              <div>
+                <input formControlName="username" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400" type="" placeholder="Username">
+                <div *ngIf="registrationForm.get('username')?.invalid && (registrationForm.get('username')?.dirty || registrationForm.get('username')?.touched)">
+                  <p class="text-red-500">Username is required (up to 25 characters, letters, numbers, and underscores only).</p>
+                </div>
+              </div>
+              <div>
+                <input formControlName="email" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400" type="" placeholder="Email">
+                <div *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
+                  <p class="text-red-500">Please enter a valid email address.</p>
+                </div>
+              </div>
+              <div>
+                <input formControlName="password" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400" type="password" placeholder="Password">
+                <div *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
+                  <p class="text-red-500">Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>
+                </div>
+              </div>
+              <div>
+                <select formControlName="gender" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400">
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+                <div *ngIf="registrationForm.get('gender')?.invalid && (registrationForm.get('gender')?.dirty || registrationForm.get('gender')?.touched)">
+                  <p class="text-red-500">Gender is required.</p>
+                </div>
+              </div>
+              <div>
+                <input formControlName="dateOfBirth" class="w-full text-sm px-4 py-3 bg-white-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-400" type="date" placeholder="Date of Birth">
+                <div *ngIf="registrationForm.get('dateOfBirth')?.invalid && (registrationForm.get('dateOfBirth')?.dirty || registrationForm.get('dateOfBirth')?.touched)">
+                  <p class="text-red-500">Please enter a valid date of birth (must be less than 4 years ago).</p>
+                </div>
+              </div>
+              <button type="submit" class="w-full flex justify-center bg-blue-800 hover:bg-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500">
+                Sign in
+              </button>
+            </div>
+          </form>
+          
+          <div class="mt-7 text-center text-gray-400 text-xs">
+            <span>
+                Are You a Doctor? Sign Up Here
+                <a [routerLink]="'/doctor/register'" rel="" target="_blank" title="MAITRI" class="text-violet-500 hover:text-violet-600 animate-bounce inline-block ">Doctor Signup</a>
+            </span>
+        </div>
+        
+      </div>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+<div class="relative font-inter antialiased">
+    <main class="relative min-h-screen flex flex-col justify-center bg-slate-50 overflow-hidden">
+        
+        <div class="font-[sans-serif] text-[#333]">
+            <div class="mx-4 mb-4 mt-1">
+                <form [formGroup]="consultationForm"  class="max-w-4xl mx-auto bg-white shadow-[0_2px_18px_-3px_rgba(6,81,237,0.4)] sm:p-8 p-4 rounded-md">
+                   
+                    <div class="grid md:grid-cols-1 gap-y-7 gap-x-12 mb-2" >
+                    <div class="mb-5 text-center">
+                        <div class="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 mb-4 shadow-inset">
+                            <img id="image" class="object-cover w-full h-32 rounded-full" :src="image" />
+                        </div>
+                        
+                        <label 
+                            for="fileInput"
+                            type="button"
+                            class="cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                                <circle cx="12" cy="13" r="3" />
+                            </svg>						
+                            Browse Photo
+                        </label>
+                    
+                        <div class="mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add profile picture</div>
+                    
+                        <input name="photo" id="fileInput" accept="image/*" class="hidden" type="file">
+                    </div>
+                    </div>
+                   
+                    <div class="grid md:grid-cols-2 gap-y-7 gap-x-12">
+                       
+                        <div>
+                            <label for="maxPatientsPerDay" class="text-sm mb-2 block">Max Patients Per Day</label>
+                            <input formControlName="maxPatientsPerDay" id="maxPatientsPerDay" name="maxPatientsPerDay" type="number" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" min="1" max="13" />
+                            <mat-error *ngIf="consultationForm.get('maxPatientsPerDay')?.invalid && consultationForm.get('maxPatientsPerDay')?.touched">
+                              <span class="text-red-600 font-thin text-xs">Max patients per day must be a number greater than or equal to 0.</span>
+                            </mat-error>
+                          </div>
+                          
+
+                          <div>
+                            <label for="consultationFee" class="text-sm mb-2 block">Consultation Fee</label>
+                            <input formControlName="consultationFee" id="consultationFee" name="consultationFee" type="number" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter consultation fee" />
+                            <mat-error *ngIf="consultationForm.get('consultationFee')?.invalid && consultationForm.get('consultationFee')?.touched">
+                              <span class="text-red-600 font-thin text-xs">Consultation fee is required and must be greater than or equal to 0.</span>
+                            </mat-error>
+                          </div>
+
+                          
+                          
+                          
+                          
+
+                          <div>
+                            <label for="bio" class="text-sm mb-2 block">Bio</label>
+                            <textarea formControlName="bio" id="bio" name="bio" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter bio"></textarea>
+                            <mat-error *ngIf="consultationForm.get('bio')?.invalid && consultationForm.get('bio')?.touched">
+                              <span class="text-red-600 font-thin text-xs">Bio is required and must be at least 20 characters long.</span>
+                            </mat-error>
+                          </div>
+
+                          <div>
+                            <label class="text-sm mb-2 block">Types of Consultation</label>
+                            <div formArrayName="typesOfConsultation">
+                              <div class="flex flex-row gap-4 mt-3">
+                                <ng-container *ngFor="let type of typesOfConsultation.controls; let i = index">
+                                  <label class="flex items-center gap-2">
+                                    <input type="checkbox" [formControlName]="i" class="form-checkbox text-blue-500 h-5 w-5" />
+                                    <span class="text-gray-700">{{ i === 0 ? 'Video' : i === 1 ? 'Chat' : 'Clinic' }}</span>
+                                  </label>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <mat-error  *ngIf="consultationForm.get('typesOfConsultation')?.errors?.['required']"  class="text-red-600 font-thin text-xs">At least one type of consultation is required.</mat-error>
+                          </div>
+
+                          <div formArrayName="availability" class="col-span-2">
+                            <div class="flex justify-end"> <!-- Align button to the right -->
+                                <button type="button" (click)="addAvailability()" class="text-white bg-blue-500 hover:bg-blue-600 font-semibold px-4 py-2 rounded-md shadow-md">Add Availability</button>
+                            </div>
+                              <div *ngFor="let avail of availabilityControls.controls; let i = index" [formGroupName]="i">
+                              <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                  <label for="dayOfWeek" class="block text-sm font-medium text-gray-700">Day of Week</label>
+                                  <select formControlName="dayOfWeek" id="dayOfWeek" name="dayOfWeek" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    <option value="" disabled selected>Select Day</option>
+                                    <option value="Sunday">Sunday</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                  </select>
+                                  <mat-error *ngIf="availabilityControls.at(i).get('dayOfWeek')?.invalid && availabilityControls.at(i).get('dayOfWeek')?.touched">
+                                    <span class="text-red-600 font-thin text-xs">Day of week is required.</span>
+                                  </mat-error>
+                                </div>
+                                <div>
+                                  <label for="startTime" class="block text-sm font-medium text-gray-700">Start Time</label>
+                                  <input formControlName="startTime" id="startTime" name="startTime" type="time" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" placeholder="Enter start time" />
+                                  <mat-error *ngIf="availabilityControls.at(i).get('startTime')?.invalid && availabilityControls.at(i).get('startTime')?.touched">
+                                    <span class="text-red-600 font-thin text-xs">Start time is required.</span>
+                                  </mat-error>
+                                </div>
+                                <div>
+                                  <label for="endTime" class="block text-sm font-medium text-gray-700">End Time</label>
+                                  <input formControlName="endTime" id="endTime" name="endTime" type="time" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" placeholder="Enter end time" />
+                                  <mat-error *ngIf="availabilityControls.at(i).get('endTime')?.invalid && availabilityControls.at(i).get('endTime')?.touched">
+                                    <span class="text-red-600 font-thin text-xs">End time is required.</span>
+                                  </mat-error>
+                                </div>
+                              </div>
+                              <button type="button" (click)="removeAvailability(i)" class="text-red-500 font-semibold mt-2 px-4 py-2 border border-transparent rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Remove Availability</button>
+                            </div>
+                          </div>
+                          
+
+                    </div>
+
+                </form>
+
+      
+
+
+        </div>
+        </div>
+    </main>
+
+
+</div>
+ 

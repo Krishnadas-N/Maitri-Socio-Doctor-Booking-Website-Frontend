@@ -1,0 +1,168 @@
+<div class="relative font-inter antialiased">
+    <main class="relative min-h-screen flex flex-col justify-center bg-slate-50 overflow-hidden">
+        
+
+        <div class="font-[sans-serif] text-[#333]">
+            <div class="mx-4 mb-4 mt-1">
+              <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="max-w-4xl mx-auto bg-white shadow-[0_2px_18px_-3px_rgba(6,81,237,0.4)] sm:p-8 p-4 rounded-md">
+                <div formGroupName="address" class="grid md:grid-cols-2 gap-y-7 gap-x-12 mb-2">
+                    <div class="flex flex-col">
+                      <label for="street" class="text-sm mb-2 block">Street</label>
+                      <input formControlName="street" id="street" name="street" type="text" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter street" />
+                      <mat-error *ngIf=" registrationForm.get('address.street')?.touched">
+                        <!-- Display error message for street validation -->
+                        <span *ngIf="registrationForm.get('address.street')?.errors?.['required']" class="text-red-600 font-thin text-xs">Street is required.</span>
+                    </mat-error>
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="city" class="text-sm mb-2 block">City</label>
+                      <input formControlName="city" id="city" name="city" type="text" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter city" />
+                      <mat-error *ngIf="registrationForm.get('address.city')?.invalid && registrationForm.get('address.city')?.touched">
+                        <!-- Display error message for city validation -->
+                        <span *ngIf="registrationForm.get('address.city')?.errors?.['required']" class="text-red-600 font-thin text-xs">City is required.</span>
+                    </mat-error>
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="zipcode" class="text-sm mb-2 block">Zipcode</label>
+                      <input formControlName="zipcode" id="zipcode" name="zipcode" type="text" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter zipcode" />
+                      <mat-error *ngIf="registrationForm.get('address.zipcode')?.invalid && registrationForm.get('address.zipcode')?.touched">
+                        <!-- Display error message for zipcode validation -->
+                        <span *ngIf="registrationForm.get('address.zipcode')?.errors?.['required']" class="text-red-600 font-thin text-xs">Zipcode is must be 6 numbers.</span>
+                    </mat-error>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="country" class="text-sm mb-2 block">Country</label>
+                        <select formControlName="country" id="country" name="country" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter country">
+                          <option value="" disabled selected>Select Country</option>
+                          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                        </select>
+                        <mat-error *ngIf="registrationForm.get('address.country')?.invalid && registrationForm.get('address.country')?.touched">
+                            <!-- Display error message for country validation -->
+                            <span *ngIf="registrationForm.get('address.country')?.errors?.['required']" class="text-red-600 font-thin text-xs">Country is required.</span>
+                        </mat-error>
+                    
+                      </div>
+                      
+                  </div>
+                <div class="grid md:grid-cols-2 gap-y-7 gap-x-12">
+                      <div>
+                        <label for="specialization" class="text-sm mb-2 block">Specialization</label>
+                        <select formControlName="specialization" id="specialization" name="specialization" placeholder ="Select Your Speciality" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
+                          <option value="" disabled selected>Select specialization</option>
+                          <option value="Option 1">Option 1</option>
+                          <option value="Option 2">Option 2</option>
+                          <!-- Add other options as needed -->
+                        </select>
+                        <mat-error *ngIf="registrationForm.get('specialization')?.invalid && registrationForm.get('specialization')?.touched">
+                            <!-- Display error message for country validation -->
+                            <span *ngIf="registrationForm.get('specialization')?.errors?.['required']" class="text-red-600 font-thin text-xs">specialization is required.</span>
+                        </mat-error>
+                      </div>
+                    
+                    
+                      
+                  <div>
+                    <label for="experience" class="text-sm mb-2 block">Experience</label>
+                    <select formControlName="experience" id="experience" name="experience" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
+                        <option value="" disabled selected>Select experience</option>
+                        <option value="1 year">1 year</option>
+                        <option value="2 years">2 years</option>
+                        <option value="3 years">3 years</option>
+                        <option value="4 years">4 years</option>
+                        <option value="5 years">5 years</option>
+                        <option value="6 years">6 years</option>
+                        <option value="7 years">7 years</option>
+                        <option value="8 years">8 years</option>
+                        <option value="9 years">9 years</option>
+                        <option value="10 years">10+ years</option>
+                    </select>
+                    <mat-error *ngIf="registrationForm.get('experience')?.invalid && registrationForm.get('experience')?.touched">
+                        <!-- Display error message for country validation -->
+                        <span *ngIf="registrationForm.get('experience')?.errors?.['required']" class="text-red-600 font-thin text-xs">experience is required.</span>
+                    </mat-error>
+                </div>
+                
+                <div>
+                    <label class="text-sm mb-2 block">Certifications (PDF)</label>
+                    <div class="flex items-center">
+                      <label for="certifications-upload" class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
+                        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                          <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                        </svg>
+                        <span class="mt-2 text-base leading-normal">Select a file</span>
+                        <input type='file' id="certifications-upload" (change)="onCertificationFileChange($event)" multiple accept=".pdf" class="hidden" />
+                      </label>
+                      <mat-error *ngIf="registrationForm.get('certifications')?.invalid && registrationForm.get('certifications')?.touched">
+                        <span class="text-red-600 font-thin text-xs">At least one PDF file is required.</span>
+                    </mat-error>
+                      <div *ngIf="certificationFiles().length > 0" class="ml-4">
+                        <div *ngFor="let file of certificationFiles().controls; let i = index" class="flex items-center mt-2">
+                          <span class="text-sm">{{ file.value.name }}</span>
+                          <button type="button" class="ml-2 text-red-500" (click)="removeCertificationFile(i)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  
+
+                  <div class="col-span-2">
+                    <label class="text-sm mb-2 block">Languages</label>
+                    <div formArrayName="languages">
+                      <div class="flex flex-wrap">
+                        <div *ngFor="let lang of languageControls().controls; let i = index" class="flex items-center mb-2 mr-2">
+                          <input formControlName="{{ i }}" type="text" class="bg-gray-100 w-32 text-sm px-4 py-3 rounded-md outline-blue-500 mr-2" placeholder="Enter language" />
+                          <button type="button" (click)="removeLanguage(i)" class="text-red-500 font-semibold px-2 py-1">
+                            <i class="fas fa-times"></i>
+                          </button>
+                          <mat-error *ngIf="languageControls().at(i).invalid && languageControls().at(i).touched">
+                            <span class="text-red-600 font-thin text-xs">Language is required.</span>
+                        </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                    <mat-error *ngIf="languageControls().length === 0 && languageControls().touched">
+                        <span class="text-red-600 font-thin text-xs">At least one language is required.</span>
+                    </mat-error>
+                    <button type="button" (click)="addLanguage()" class="text-blue-500 font-semibold px-2 py-1">Add Language</button>
+                  </div>
+                  <div class="col-span-2">
+                    <label class="text-sm mb-2 block">Education</label>
+                    <div formArrayName="education" >
+                      <div *ngFor="let edu of educationControls; let i = index">
+                        <div [formGroupName]="i" class="flex items-center mb-2">
+                          <input formControlName="degree" type="text" class="bg-gray-100 w-1/3 text-sm px-4 py-3 rounded-md outline-blue-500 mr-4" placeholder="Degree" />
+                          <input formControlName="institution" type="text" class="bg-gray-100 w-1/3 text-sm px-4 py-3 rounded-md outline-blue-500 mr-4" placeholder="Institution" />
+                          <input formControlName="year" type="text" class="bg-gray-100 w-1/3 text-sm px-4 py-3 rounded-md outline-blue-500 mr-4" placeholder="Year" />
+                          <button type="button" (click)="removeEducation(i)" class="text-red-500 font-semibold px-2 py-1">Remove</button>
+                        </div>
+                        <div  class="flex items-center mb-2">
+                        <mat-error *ngIf="educationControls.at(i)?.get('degree')?.invalid && educationControls.at(i)?.get('degree')?.touched">
+                            <span class="text-red-600 font-thin text-xs me-11">Degree is required.</span>
+                        </mat-error>
+                        <!-- Validation for institution -->
+                        <mat-error *ngIf="educationControls.at(i)?.get('institution')?.invalid && educationControls.at(i)?.get('institution')?.touched">
+                            <span class="text-red-600 font-thin text-xs me-5">Institution is required.</span>
+                        </mat-error>
+                        <!-- Validation for year -->
+                        <mat-error *ngIf="educationControls.at(i)?.get('year')?.invalid && educationControls.at(i)?.get('year')?.touched">
+                            <span class="text-red-600 font-thin text-xs">Year is required.</span>
+                        </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" (click)="addEducation()" class="text-blue-500 font-semibold px-2 py-1">Add Education</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+    </main>
+
+
+</div>
