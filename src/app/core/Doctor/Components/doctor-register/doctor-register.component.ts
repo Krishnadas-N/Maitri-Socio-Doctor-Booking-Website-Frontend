@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../Services/Auth/auth.service';
+import { AppState } from '../../../../store/GlobalStore/app.state';
+import { Store } from '@ngrx/store';
+import { registerBasicRequest } from '../../../../store/Doctor/doctor.action';
+import { selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
+import { FormValidator } from '../../../../shared/validators/FromValidators';
 @Component({
   selector: 'app-doctor-register',
   standalone: true,
@@ -10,8 +16,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './doctor-register.component.css'
 })
 export class DoctorRegisterComponent implements OnInit {
+  isLoading:boolean= true;
   registrationForm!: FormGroup;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+    private store:Store<AppState>,
+    private router:Router) { }
   ngOnInit(): void {
     this.registrationForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -19,9 +28,12 @@ export class DoctorRegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/)]],
       gender: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
-      phone: ['', Validators.required]
+      dateOfBirth: ['', Validators.required,FormValidator.checkSixYaersBefore],
+      phone: ['', [Validators.required, FormValidator.phoneNumberValidator]]
     });
+    this.store.select(selectdoctorLoading).subscribe((isLoading)=>{
+      this.isLoading = isLoading
+  })
   }
   get f() { return this.registrationForm.controls; }
  
@@ -33,6 +45,7 @@ export class DoctorRegisterComponent implements OnInit {
     }
     console.log('Form submitted successfully!');
     console.log('Form data:', this.registrationForm.value);
+    this.store.dispatch(registerBasicRequest({doctorData:this.registrationForm.value}))
   }
 
 }

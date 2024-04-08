@@ -2,6 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit } from '@angular/core';
 import {  FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store/GlobalStore/app.state';
+import { loginDoctorRequest } from '../../../../store/Doctor/doctor.action';
+import { selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
 @Component({
   selector: 'app-doctor-login',
   standalone: true,
@@ -12,14 +16,18 @@ import { RouterLink } from '@angular/router';
 export class DoctorLoginComponent implements OnInit{
   loginForm!: FormGroup;
   submitted = false;
-
-  constructor(private fb: FormBuilder) {}
+  isLoading:boolean= true
+  constructor(private fb: FormBuilder,private store:Store<AppState>) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/)]]
     });
+
+    this.store.select(selectdoctorLoading).subscribe((isLoading)=>{
+        this.isLoading = isLoading
+    })
   }
 
   get f() { return this.loginForm.controls; }
@@ -33,6 +41,6 @@ export class DoctorLoginComponent implements OnInit{
 
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
-
+    this.store.dispatch(loginDoctorRequest({email,password}))
   }
 }

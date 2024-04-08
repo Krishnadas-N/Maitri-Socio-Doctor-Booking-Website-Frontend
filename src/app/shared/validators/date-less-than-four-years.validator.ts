@@ -8,7 +8,7 @@ export function dateLessThanFourYearsValidator(control: AbstractControl): Promis
 
     const differenceInMilliseconds = currentDate.getTime() - selectedDate.getTime();
     const differenceInYears = differenceInMilliseconds / (1000 * 3600 * 24 * 365);
-
+    console.log(differenceInMilliseconds,differenceInYears);
     if (differenceInYears >= 4) {
       resolve({ dateTooOld: true }); 
     } else {

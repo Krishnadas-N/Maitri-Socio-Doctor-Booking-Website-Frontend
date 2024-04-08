@@ -3,6 +3,10 @@ import { Component, NgModule, OnInit } from '@angular/core';
 import {  FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpinnerComponent } from '../../../../shared/Components/spinner/spinner.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { AppState } from '../../../../store/GlobalStore/app.state';
+import { Store } from '@ngrx/store';
+import { loginUser } from '../../../../store/User/user.action';
+import { selectUserLoading } from '../../../../store/User/user.selector';
 @Component({
   selector: 'app-user-login',
   standalone: true,
@@ -15,9 +19,13 @@ export class UserLoginComponent implements OnInit{
   show:boolean=false;
   passwordError:boolean=false;
   emailError:boolean = false;
-  constructor(private fb: FormBuilder) {}
+  isLoading:boolean=false;
+  constructor(private fb: FormBuilder,private store:Store<AppState>) {}
 
   ngOnInit() {
+    this.store.select(selectUserLoading).subscribe((isLoading) =>{
+      this.isLoading = isLoading
+    })
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/)]] ,
@@ -35,6 +43,6 @@ export class UserLoginComponent implements OnInit{
       password:this.loginForm.get('password')?.value
     }
     console.log("User Data : ",UserData);
-    
+    this.store.dispatch(loginUser(UserData));
   }
 }

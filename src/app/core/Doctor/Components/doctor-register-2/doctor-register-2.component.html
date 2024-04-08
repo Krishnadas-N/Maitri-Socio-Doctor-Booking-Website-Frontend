@@ -49,8 +49,7 @@
                         <label for="specialization" class="text-sm mb-2 block">Specialization</label>
                         <select formControlName="specialization" id="specialization" name="specialization" placeholder ="Select Your Speciality" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
                           <option value="" disabled selected>Select specialization</option>
-                          <option value="Option 1">Option 1</option>
-                          <option value="Option 2">Option 2</option>
+                          <option *ngFor="let option of doctorCategories" [value]="option._id">{{ option.name }}</option>
                           <!-- Add other options as needed -->
                         </select>
                         <mat-error *ngIf="registrationForm.get('specialization')?.invalid && registrationForm.get('specialization')?.touched">
@@ -65,16 +64,16 @@
                     <label for="experience" class="text-sm mb-2 block">Experience</label>
                     <select formControlName="experience" id="experience" name="experience" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
                         <option value="" disabled selected>Select experience</option>
-                        <option value="1 year">1 year</option>
-                        <option value="2 years">2 years</option>
-                        <option value="3 years">3 years</option>
-                        <option value="4 years">4 years</option>
-                        <option value="5 years">5 years</option>
-                        <option value="6 years">6 years</option>
-                        <option value="7 years">7 years</option>
-                        <option value="8 years">8 years</option>
-                        <option value="9 years">9 years</option>
-                        <option value="10 years">10+ years</option>
+                        <option value="1">1 year</option>
+                        <option value="2">2 years</option>
+                        <option value="3">3 years</option>
+                        <option value="4">4 years</option>
+                        <option value="5">5 years</option>
+                        <option value="6">6 years</option>
+                        <option value="7">7 years</option>
+                        <option value="8">8 years</option>
+                        <option value="9">9 years</option>
+                        <option value="10">10+ years</option>
                     </select>
                     <mat-error *ngIf="registrationForm.get('experience')?.invalid && registrationForm.get('experience')?.touched">
                         <!-- Display error message for country validation -->

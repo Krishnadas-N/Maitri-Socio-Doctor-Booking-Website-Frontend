@@ -5,35 +5,102 @@
 
                 <div class="max-w-md mx-auto text-center bg-white px-4 sm:px-8 py-10 rounded-xl shadow">
                     <header class="mb-8">
-                        <h1 class="text-2xl font-bold mb-1">Mobile Phone Verification</h1>
-                        <p class="text-[15px] text-slate-500">Enter the 4-digit verification code that was sent to your phone number.</p>
+                        <h1 class="text-2xl font-bold mb-1">Email Verification</h1>
+                        <p class="text-[15px] text-slate-500">Enter the 6-digit verification code that was sent to your phone number.</p>
                     </header>
-                    <form id="otp-form">
+                    <form id="otp-form" (ngSubmit)="onSubmit()">
                         <div class="flex items-center justify-center gap-3">
                             <input
-                                type="text"
+                            #input1
+                            type="text"
+                            name="digit1"
+                            [(ngModel)]="digits[0]"
+                            (input)="moveToNext(input2)"
+                            maxlength="1"
                                 class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                                 pattern="\d*" maxlength="1" />
                             <input
-                                type="text"
+                            #input2
+                            type="text"
+                            name="digit2"
+                            [(ngModel)]="digits[1]"
+                            (input)="moveToNext(input3)"
+                                class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                                maxlength="1" />
+
+                            <input
+                            #input3
+                            type="text"
+                            name="digit3"
+                            [(ngModel)]="digits[2]"
+                            (input)="moveToNext(input4)"
+                                class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                                maxlength="1" />
+
+                            <input
+                            #input4
+                            type="text"
+                            name="digit4"
+                            [(ngModel)]="digits[3]"
+                            (input)="moveToNext(input5)"
+                                class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                                maxlength="1" />
+
+                            <input
+                            #input5
+                            type="text"
+                            name="digit5"
+                            [(ngModel)]="digits[4]"
+                            (input)="moveToNext(input6)"
                                 class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                                 maxlength="1" />
                             <input
-                                type="text"
-                                class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-                                maxlength="1" />
-                            <input
-                                type="text"
+                            #input6
+                            type="text" 
+                            name="digit6"
+                            [(ngModel)]="digits[5]"
                                 class="w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                                 maxlength="1" />
                         </div>
                         <div class="max-w-[260px] mx-auto mt-4">
-                            <button type="submit"
-                                class="w-full inline-flex justify-center whitespace-nowrap rounded-lg bg-indigo-500 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm shadow-indigo-950/10 hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-300 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 transition-colors duration-150">Verify
-                                Account</button>
+                            <button 
+                            type="submit" 
+                            class="w-full inline-flex justify-center whitespace-nowrap rounded-lg bg-blue-500 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm shadow-indigo-950/10 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-indigo-300 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 transition-colors duration-150"
+                            [disabled]="isLoading">
+                        
+                            <svg *ngIf="isLoading && !resendLoading" class="spinner animate-spin w-6 h-6 -ml-2" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8 8 0 0012 20v-4a7.946 7.946 0 01-4-1.073V17z">
+                                </path>
+                            </svg>
+                            
+                            <svg *ngIf="!isLoading" class="w-6 h-6 -ml-2" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                <circle cx="8.5" cy="7" r="4" />
+                                <path d="M20 8v6M23 11h-6" />
+                            </svg>
+                            <span class="ml-3">{{ isLoading && !resendLoading ? 'Loading...' : 'Verify Account' }}</span>
+                        </button>
+                        
                         </div>
                     </form>
-                    <div class="text-sm text-slate-500 mt-4">Didn't receive code? <a class="font-medium text-indigo-500 hover:text-indigo-600" href="#0">Resend</a></div>
+                    <div class="text-sm text-slate-500 mt-4">
+                        <ng-container *ngIf="!resendLoading; else loadingSpinner">
+                          Didn't receive code? <button class="font-medium text-indigo-500 hover:text-indigo-600" (click)="resend()">Resend</button>
+                        </ng-container>
+                        <ng-template #loadingSpinner>
+                          <span>Resending...</span>
+                          <div class="inline-block animate-spin text-indigo-500 h-5 w-5">
+                          </div>
+                        </ng-template>
+                      </div>
+                      
+                    <div class="text-sm text-slate-500 mt-4" *ngIf="showResendButton===false">
+                        Resend code in {{ secondsRemaining }} seconds
+                    </div>
+                    
                 </div>
 
             </div>

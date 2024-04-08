@@ -1,0 +1,27 @@
+<div class="flex h-screen w-full bg-blue-50 " x-data="{openMenu:1}">
+  
+  <app-sidebar class="w-20 relative z-20 flex-shrink-0  px-2 overflow-y-auto bg-black sm:block"
+      [backgroundColor]="backgroundColor"
+      [profileImage]="profileImage"
+      [navItems]="navItems"
+      (itemClick)="handleSidebarItemClick($event)"
+      (itemHover)="handleItemHover($event)"
+   ></app-sidebar>
+
+   <div class="flex flex-col flex-1 w-full overflow-y-auto">
+    <app-header-component class="p-2 bg-fixed text-gray-900 bg-white mb-3 shadow-lg font-medium capitalize border-b border-gray-200 flex justify-between items-center"></app-header-component>
+     
+    <router-outlet></router-outlet>
+  
+  </div>
+
+
+  
+  <div *ngIf="showTooltip" class="absolute z-50 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none"
+      [style.top]="tooltipTop + 'px'"
+      [style.left]="tooltipLeft + 'px'"
+  >
+      {{ tooltipText }}
+  </div>
+
+</div>

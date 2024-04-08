@@ -4,12 +4,12 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-header-component',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,RouterLink],
   templateUrl: './header-component.component.html',
   styleUrl: './header-component.component.css'
 })
 export class HeaderComponentComponent implements AfterViewInit {
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef,) { }
 
   ngAfterViewInit() {
       const burger = this.elementRef.nativeElement.querySelectorAll('.navbar-burger')

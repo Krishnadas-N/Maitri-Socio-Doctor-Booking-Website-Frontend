@@ -1,0 +1,70 @@
+<table class="w-full mt-4 text-left table-auto min-w-max">
+  <thead>
+    <tr>
+      <th  *ngFor="let column of header"
+          class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+        <p class="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+          {{ headerMapping[column] }}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            aria-hidden="true" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+          </svg>
+        </p>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of rows">
+      <td class="items-center p-2 border-b border-blue-gray-50" *ngFor="let column of header">
+        <ng-container *ngIf="column === 'profilePic'">
+          <img [src]="row[column]" alt="Image" class="w-10 h-10 rounded-full">
+        </ng-container>
+        <ng-container  *ngIf="column !== 'profilePic' && column !== 'Actions' && column !== 'specialization'">
+          <span [ngClass]="getStatusClass(column, row[column])">
+            {{ row[column] }}
+          </span>
+        </ng-container>
+
+        <ng-container *ngIf="column === 'specialization'">
+          <span [ngClass]="getStatusClass(column, row[column])">
+            {{ row[column]?.name }}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="column === 'Actions'">
+          <button *ngIf="!row['isBlocked']" (click)="toggleBlock(row)"
+                  class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 transition-colors text-sm">
+            Block
+          </button>
+          <button *ngIf="row['isBlocked']" (click)="toggleBlock(row)"
+                  class="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 transition-colors text-sm">
+            Unblock
+          </button>
+          <button (click)="viewUser(row)"
+                  class="ms-4 relative px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition-colors text-sm">
+            <i class="far fa-eye"></i>
+            <span class="hidden md:inline">View</span>
+            <span class="absolute top-0 right-full bg-blue-500 text-white px-2 py-1 rounded-md text-xs opacity-0 transition-opacity group-hover:opacity-100">View User Details</span>
+          </button>
+        </ng-container>
+        
+      </td>
+    </tr>
+   
+
+    
+  </tbody>
+</table>
+<p-toast></p-toast>
+<p-confirmDialog #cd icon="pi pi-check"  [styleClass]="'bg-white shadow-md rounded-lg'" key="positionDialog" [position]="position">
+  <p-footer>
+    <button type="button" (click)="cd.reject()"
+    pButton icon="pi pi-times" label="Cancel" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"></button>
+    <button type="button" pButton icon="pi pi-check" label="Confirm" 
+            (click)="cd.accept()" class= " ms-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"></button>
+</p-footer>
+
+</p-confirmDialog>
+
+<!-- <p-button  [styleClass]="'bg-white shadow-md rounded-lg'" icon="pi pi-check" label="Confirm"></p-button> -->
+<!-- <p-confirmDialog key="positionDialog" [position]="position" [styleClass]="'bg-white shadow-md rounded-lg'"  rejectButtonStyleClass="p-button-outlined"></p-confirmDialog> -->

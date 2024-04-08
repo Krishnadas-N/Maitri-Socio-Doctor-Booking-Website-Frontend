@@ -1,0 +1,8 @@
+/* Add this style to your component's CSS file */
+.current {
+    background-color: #000; /* Example background color for the current page */
+    color: #fff; /* Example text color for the current page */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Example box shadow for the current page */
+    /* Add any additional styles you want for the current page button */
+  }
+  

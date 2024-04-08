@@ -2,6 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit ,EventEmitter, Output} from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store/GlobalStore/app.state';
+import { registerProfessionalRequest } from '../../../../store/Doctor/doctor.action';
+import { SpecializationService } from '../../Services/specialization.service';
+import { DoctorSpecialization } from '../../models/doctor-specialization';
 @Component({
   selector: 'app-doctor-register-2',
   standalone: true,
@@ -11,7 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class DoctorRegister2Component implements OnInit{
   @Output() formValidityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  doctorCategories: DoctorSpecialization[] = [];
   countries: string[] = [
     'Afghanistan',
     'Albania',
@@ -46,13 +51,13 @@ export class DoctorRegister2Component implements OnInit{
     'United Kingdom',
     'United States',
   ];
-  
   registrationForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private store:Store<AppState>,private doctorSpecializationService :SpecializationService) { }
 
   
   ngOnInit(): void {
+    this.loadDoctorCategories();
     this.registrationForm = this.fb.group({
       address: this.fb.group({
         street: ['', Validators.required],
@@ -72,6 +77,12 @@ export class DoctorRegister2Component implements OnInit{
     this.registrationForm.valueChanges.subscribe(()=>{
       this.formValidityChange.emit(this.registrationForm.valid);
     })
+  }
+  loadDoctorCategories(): void {
+    this.doctorSpecializationService.getAllDoctorCategories().subscribe((categories:any) => {
+      console.log(categories);
+      this.doctorCategories = categories.data;
+    });
   }
   createEducationFormGroup(): FormGroup {
     return this.fb.group({
@@ -132,10 +143,16 @@ certificationFiles():FormArray{
   return this.registrationForm.get('certifications') as FormArray;
 }
   
-  onSubmit(): void {
-    if (this.registrationForm.valid) {
-      console.log(this.registrationForm.value);
-    } else {
-    }
+  onSubmit(){
+      if (this.registrationForm.valid) {
+        console.log(this.registrationForm.value);
+          this.store.dispatch(registerProfessionalRequest({ formData: this.registrationForm.value }));
+      } else {
+        console.error('Form is invalid');
+      }
   }
+
+
+
+
 }

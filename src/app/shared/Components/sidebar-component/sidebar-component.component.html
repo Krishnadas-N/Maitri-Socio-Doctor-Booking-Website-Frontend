@@ -1,0 +1,40 @@
+<aside >
+  <div class="mb-6">
+      <!--Start logo -->
+      <div class="flex justify-center">
+        <div class="w-14 h-14 rounded-full bg-gray-300 border-2 border-white mt-2">
+          <img 
+          [src]="profileImage"
+           class="rounded-full w-auto"
+          />
+        </div>
+      </div>
+      <!--End logo -->
+      <!--Start NavItem -->
+      <div>
+        <ul class="mt-6 leading-15 px-4">
+          <li *ngFor="let item of navItems;let i=index" 
+          data-ripple-light="true" class="mb-4 p-3 rounded-md flex items-center justify-center bg-blue-400 cursor-pointer relative"
+          (click)="handleItemClick(item)"
+          (mouseenter)="showTooltip(item,i)"
+          (mouseleave)="hideTooltip()"
+          [routerLink]="item?.link"
+      >
+     
+          <i class="{{ item.iconClasses }} text-sm"></i>
+      </li>
+      <li class="absolute bottom-0 mb-3 p-2 rounded-full flex items-center mx-auto bg-white cursor-pointer">
+        <i class="fas fa-sign-out-alt fa-sm text-red-500  text-sm"></i>
+      </li>
+        </ul>
+      </div>
+      <!--End NavItem -->
+  </div>
+
+
+
+</aside>
+      
+
+       
+        

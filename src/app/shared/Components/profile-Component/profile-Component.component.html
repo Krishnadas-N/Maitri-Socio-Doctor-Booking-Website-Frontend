@@ -1,0 +1,115 @@
+<section class="bg-white m-2 text-black min-h-screen">
+    <!-- User Profile Section -->
+    <div class="container m-2 py-2 mb-4">
+        <div class="flex flex-col  border-2 border-dashed border-gray-400  lg:flex-row items-center justify-center gap-2 lg:justify-between me-3">
+            <!-- User Profile -->
+            <div class="p-5 border rounded text-center text-gray-500 max-w-sm">
+                <img class="w-32 h-32 rounded-full mx-auto" [src]="(userDetails?.profilePic || DoctorDetails?.profilePic) || 'fallback-image-url'" alt="">
+                <div class="text-sm mt-5">
+                    <a *ngIf="userDetails || DoctorDetails" 
+                    class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out">
+                    {{ (userDetails?.firstName || DoctorDetails?.firstName || '') + (userDetails?.lastName?.slice(1) || DoctorDetails?.lastName?.slice(1) || '') }}
+                 </a>
+                    <!-- <p>Blogger &amp; Youtuber</p> -->
+                   
+                </div>
+            
+                <p class="mt-2 text-sm text-gray-900">Lorem ipsum dolor sit amet, consecte adipisicing elit. Voluptatibus quia
+                    Maiores et perferendis eaque.</p>
+            
+                
+                    <div *ngIf="userDetails"  class="ms-5 flex  justify-center gap-2">
+                    <button *ngIf="userDetails && userDetails?.isBlocked===false" class="bg-red-600 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4" (click)="toggleBlock()">Block User</button>
+                    <button *ngIf="userDetails && userDetails?.isBlocked === true" class="bg-green-500 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4" (click)="toggleBlock()">Unblock User</button>
+                    </div>         
+                    <div *ngIf="DoctorDetails" class="ms-5  flex  justify-center gap-2">  <!-- For Doctors -->
+                    <button *ngIf="DoctorDetails && !DoctorDetails?.isBlocked" class="bg-red-600 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4" (click)="toggleBlock()">Block Doctor</button>
+                    <button *ngIf="DoctorDetails && DoctorDetails?.isBlocked" class="bg-green-500 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4" (click)="toggleBlock()">Unblock Doctor</button>
+                    </div>
+            </div>
+    
+            <!-- User Actions -->
+            <div class="w-full border-dashed border-gray-400 md:w-9/12 mx-2 h-64">
+             
+                <div class="bg-white shadow-sm rounded-sm">
+                 
+                    <div class="text-gray-700">
+                        <div *ngIf="userDetails || DoctorDetails" class="grid md:grid-cols-2 text-sm">
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">First Name</div>
+                                <div class="px-4 py-2">{{ (userDetails?.firstName || DoctorDetails?.firstName || '').charAt(0).toUpperCase() + (userDetails?.firstName || DoctorDetails?.firstName || '').slice(1) }}</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Last Name</div>
+                                <div class="px-4 py-2">{{ (userDetails?.lastName || DoctorDetails?.lastName || '').charAt(0).toUpperCase() + (userDetails?.lastName || DoctorDetails?.lastName || '').slice(1) }}</div>
+                            </div>
+                            <div *ngIf="userDetails" class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">User Name</div>
+                                <div class="px-4 py-2">{{ userDetails.username }}</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Gender</div>
+                                <div class="px-4 py-2">{{ (userDetails?.gender || DoctorDetails?.gender) || '' }}</div>
+                            </div>
+                            <div *ngIf="DoctorDetails" class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Contact No.</div>
+                                <div class="px-4 py-2">{{ DoctorDetails.phone || '' }}</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Current Address</div>
+                                <div class="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Permanant Address</div>
+                                <div class="px-4 py-2">Arlington Heights, IL, Illinois</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Email.</div>
+                                <div class="px-4 py-2">
+                                    <a class="text-blue-800" href="mailto:jane@example.com">{{(userDetails?.email || DoctorDetails?.email) || ''}}</a>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Date of Birth</div>
+                                <div class="px-4 py-2">
+                                    {{ (userDetails?.dateOfBirth || DoctorDetails?.dateOfBirth)
+                                        ? ((userDetails?.dateOfBirth || DoctorDetails?.dateOfBirth) | date: 'dd/MM/yyyy' || 'No date of birth available')
+                                        : 'No date of birth available' }}
+                                  </div>
+                                  
+                                  
+                                  
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
+                        Full Information</button>
+                </div>
+                </div>
+                
+          
+        </div>
+    </div>
+    
+   
+    <div class="container border-2 border-dashed border-gray-400">
+        <h3 class="font-bold text-xl mb-5 px-5 pt-5 bg-white rounded-t ">Educational Details</h3>
+    </div>
+
+</section>
+
+
+
+
+
+<p-toast></p-toast>
+<p-confirmDialog #cd icon="pi pi-check"  [styleClass]="'bg-white shadow-md rounded-lg'" key="positionDialog" [position]="position">
+  <p-footer>
+    <button type="button" (click)="cd.reject()"
+    pButton icon="pi pi-times" label="Cancel" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"></button>
+    <button type="button" pButton icon="pi pi-check" label="Confirm" 
+            (click)="cd.accept()" class= " ms-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"></button>
+</p-footer>
+
+</p-confirmDialog>
