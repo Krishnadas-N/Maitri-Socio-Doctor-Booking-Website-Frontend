@@ -19,39 +19,27 @@ export class DoctorService {
         url += `&search=${searchQuery}`;
       }
     }
-    return this.http.get<any>(url).pipe(catchError(this.handleError));
+    return this.http.get<any>(url);
   }
 
   getDoctorById(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get<any>(url).pipe(catchError(this.handleError));
+    const url = `${this.apiUrl}/get-doctor/${id}`;
+    return this.http.get<any>(url);
   }
 
   blockDoctor(id: string): Observable<any> {
     const url = `${this.apiUrl}/change-status/${id}`;
-    return this.http.put<any>(url, null).pipe(catchError(this.handleError));
+    return this.http.put<any>(url, null);
   }
 
   verifyProfileDoctor(id: string): Observable<any> {
     const url = `${this.apiUrl}/verify-profile/${id}`;
-    return this.http.put<any>(url, null).pipe(catchError(this.handleError));
+    return this.http.patch<any>(url, null);
   }
 
   getDoctor(): Observable<any> {
-    const url = `${this.apiUrl}/`;
-    return this.http.get<any>(url).pipe(catchError(this.handleError));
+    const url = `${this.apiUrl}/get-currentDocotor`;
+    return this.http.get<any>(url);
   }
-  private handleError(error: any): Observable<never> {
-    console.log(error);
-    let errorMessage = '';
-  
-    if (error.error && error.error.error && error.error.error.message) {
-      errorMessage = `Error: ${error.status}\t ${error.error.error.message}`;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    
-    return throwError(errorMessage);
-  }
+ 
 }

@@ -14,7 +14,7 @@
 
 <div class="flex h-screen w-full bg-blue-50 " x-data="{openMenu:1}">
   
-    <app-sidebar class="w-20 relative z-20 flex-shrink-0  px-2 overflow-y-auto bg-blue-700 sm:block"
+    <app-sidebar *ngIf="isAuthenticated()" class="w-20 relative z-20 flex-shrink-0  px-2 overflow-y-auto bg-blue-700 sm:block"
         [backgroundColor]="backgroundColor"
         [profileImage]="profileImage"
         [navItems]="navItems"

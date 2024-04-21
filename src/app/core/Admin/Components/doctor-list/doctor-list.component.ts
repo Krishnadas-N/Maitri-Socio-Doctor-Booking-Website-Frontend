@@ -83,16 +83,17 @@ export class DoctorListComponent implements OnInit {
         case 'blocked':
           this.fetchdoctors(tab);
           break;
-        case 'verified':
+        case 'verified-profiles':
           this.fetchdoctors(tab);
           break;
-        case 'not-verified':
+        case 'not-verified-profiles':
           this.fetchdoctors(tab);
           break;
         default:
           break;
       }
     }
+    
     ViewUser(doctorId:string){
       this.route.navigate(['/admin/doctors/',doctorId])
     }

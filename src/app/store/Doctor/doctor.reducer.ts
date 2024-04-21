@@ -73,6 +73,9 @@ on(DoctorActions.AdminloadDoctors, (state) => ({
   on(DoctorActions.blockDoctorSuccess, (state, { doctor }) => ({
     ...state,
     doctor,
+    doctors:state.doctors.map(u =>{
+      console.log(u,u._id,doctor,doctor._id);
+         return u._id?.toString() === doctor._id?.toString() ? doctor : u }),
     loading: false,
     error: null
   })),
@@ -89,6 +92,9 @@ on(DoctorActions.AdminloadDoctors, (state) => ({
   on(DoctorActions.VerifyProfileDoctorSuccess, (state, { doctor }) => ({
     ...state,
     doctor,
+    doctors:state.doctors.map(u =>{
+      console.log(u,u._id,doctor,doctor._id);
+         return u._id?.toString() === doctor._id?.toString() ? doctor : u }),
     loading: false,
     error: null
   })),

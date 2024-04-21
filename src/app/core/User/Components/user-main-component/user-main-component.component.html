@@ -1,4 +1,38 @@
-<app-header-component></app-header-component>
-<router-outlet></router-outlet>
+<ng-container *ngIf="isAuthenticated(); else notAuthenticated">
+  <div class="flex gap-2">
+    <!-- Sidebar -->
+    <div class="h-screen fixed left-0 top-0 w-1/4">
+      <app-user-sidebar></app-user-sidebar>
+    </div>
+    
+    <!-- Main container -->
+    <div class="flex-grow ml-35 lg:ml-64"> <!-- Adjust margin left to accommodate sidebar -->
+      <!-- Header -->
+      <!-- <div>
+        <app-header-component class="mb-4"></app-header-component>
+      </div> -->
+      
+      <!-- Main content -->
+      <div class="p-4">
+        <div >
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-<app-footer-component></app-footer-component>
+
+
+
+
+    <ng-template #notAuthenticated>
+      <app-header-component class="mb-4"></app-header-component>
+        <router-outlet></router-outlet>
+    </ng-template>
+ 
+  
+
+  
+<!-- <app-footer-component></app-footer-component> -->
+

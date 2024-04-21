@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { VerifyProfileDoctor, blockDoctor, loadDoctorById } from '../../../store/Doctor/doctor.action';
+import { GetCurrentdoctor } from '../../../store/Doctor/doctor.selectors';
 @Component({
   selector: 'app-profile-Component',
   standalone:true,
@@ -24,6 +26,9 @@ export class ProfileComponent implements OnInit {
   constructor(private route:ActivatedRoute,private store:Store<AppState>,private confirmationService: ConfirmationService, private messageService: MessageService) { }
   userDetails: User | null=null;
   DoctorDetails: Doctor | null = null;
+  showFullDetailsToggle:boolean =false;
+  doctorSpecialization!:any;
+  showCertifications: boolean = false;
   ngOnInit() {
     this.route.url.subscribe(urlSegments => {
       if(urlSegments.length > 1){
@@ -33,6 +38,7 @@ export class ProfileComponent implements OnInit {
         if (segment === 'doctors') {
           this.userType = 'doctor';
           this.loadDoctorDetails(paramId);
+          this.loadDoctor();
         } else if (segment === 'users') {
           this.userType = 'user';
           // Call a function to fetch user details
@@ -49,12 +55,21 @@ export class ProfileComponent implements OnInit {
       console.log(this.userDetails,"log from user details in profile");
     });
   }
+
+  loadDoctor(){
+    this.store.select(GetCurrentdoctor).subscribe((doctorData)=>{
+      this.DoctorDetails = doctorData;
+      this.doctorSpecialization = doctorData?.specialization;
+    })
+  }
+
   loadUserDetails(userId: string) {
     this.store.dispatch(loadUserById({ id: userId }));
    
   }
 
   loadDoctorDetails(doctorId: string) {
+    this.store.dispatch(loadDoctorById({ id: doctorId }));
     // this.store.dispatch(loadDoctorById({ id: doctorId }));
     // this.store.select('doctor').subscribe((doctor: Doctor) => {
     //   this.DoctorDetails = doctor;
@@ -69,6 +84,8 @@ export class ProfileComponent implements OnInit {
       this.loadUser()
     }
     else if(this.userType === 'doctor' && this.DoctorDetails && this.DoctorDetails._id ){
+      this.store.dispatch(blockDoctor({ id: this.DoctorDetails._id }));
+      this.loadDoctor()
       // let doctor= this.DoctorDetails as Doctor;
       // doctor.isAvailable = !doctor.isAvailable;
       // this.store.dispatch(addDoctor({data: doctor})); 
@@ -95,5 +112,31 @@ export class ProfileComponent implements OnInit {
       },
       key: 'positionDialog'
   });
+  }
+
+  verifyProfile(){
+    this.confirmationService.confirm({
+      message: `Are you sure you want to To Verify the Doctor?`,
+      header: 'Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptIcon:"none",
+      rejectIcon:"none",
+      rejectButtonStyleClass:"p-button-text",
+      accept: () => {
+          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Request submitted' });
+          this.verifyDoctorProfile();
+
+      },
+      reject: () => {
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Process incomplete', life: 3000 });
+      },
+      key: 'positionDialog'
+  });
+  }
+
+  verifyDoctorProfile(){
+    if(this.DoctorDetails?._id){
+    this.store.dispatch(VerifyProfileDoctor({id:this.DoctorDetails?._id}));
+    }
   }
 }

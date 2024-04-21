@@ -68,8 +68,25 @@ const _userReducerHelper = createReducer(
       error
     })),
 
+    on(userActions.editUserProfile, state => ({
+      ...state,
+      loading: true,
+      error: undefined
+    })),
+    on(userActions.editUserProfileSuccess, (state, { user }) => ({
+      ...state,
+      user,
+      loading: false,
+    })),
+    on(userActions.editUserProfileFailure, (state, { error }) => ({
+      ...state,
+      loading: false,
+      error: error
+    })),
+
     on(userActions.logout, (state) => initialState)
   );
+
 
 export const userReducer = (state: any, action: any) => {
     return _userReducerHelper(state, action);

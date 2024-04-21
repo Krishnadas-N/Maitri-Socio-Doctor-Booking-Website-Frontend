@@ -5,12 +5,12 @@
     <div class="mx-auto max-w-7xl  pb-10">
         <div class="mt-2 mb-7"  *ngIf="currentStep === 1">
             <!-- Step 1: Registration Info -->
-            <app-doctor-register-2  (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-2>
+            <app-doctor-register-2   (isLoading)="isLoading = $event" (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-2>
         </div>
 
         <div class="mt-2 mb-7" *ngIf="currentStep === 2">
             <!-- Step 2: Additional Info -->
-            <app-doctor-register-3 (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-3>
+            <app-doctor-register-3  (isLoading)="isLoading = $event" (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-3>
         </div>
 
         <div class="fixed bottom-0 left-0 right-0 py-5 bg-white shadow-md"  *ngIf="currentStep <4">
@@ -18,10 +18,10 @@
 				<div class="flex justify-between">
 					<div class="w-1/2">
             <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-            [disabled]="currentStep === 1" (click)="prevStep()">Previous</button>
+            [disabled]="currentStep === 1 || currentStep === 3" (click)="prevStep()">Previous</button>
             </div>
             <div class="w-1/2 text-right">
-                <button *ngIf="!isLoading"
+                <button *ngIf="!isLoading  && currentStep !== 2"
                         class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
                         (click)="nextStep()">Next</button>
                 <button *ngIf="isLoading"
@@ -45,7 +45,7 @@
 						<h2 class="text-2xl mb-4 text-gray-800 text-center font-bold">Registration Success</h2>
 
 						<div class="text-gray-600 mb-8">
-							Thank you. We have sent you an email to deo.test. Please click the link in the message to activate your account.
+							Thank you. We have sent you an email to Your Provided Email . Please click the link in the message to join back to  your account.
 						</div>
 
 						<button

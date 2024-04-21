@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AddPost, Post } from '../../store/sharedStore/Feed-Store/post.model';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -10,36 +10,50 @@ export class FeedService {
   private apiUrl = 'http://localhost:3000/api/posts';
   constructor(private http: HttpClient) {}
   getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.apiUrl).pipe(catchError(this.handleError));
+    return this.http.get<Post[]>(this.apiUrl);
   }
 
-  addPost(postData: AddPost): Observable<Post> {
-    console.log("post data from service",postData);
-    return this.http.post<Post>(this.apiUrl, postData).pipe(catchError(this.handleError));
-  }
+  
+    addPost(postData: AddPost): Observable<Post> {
+      const formData = new FormData();
+      formData.append('title', postData.title);
+      formData.append('content', postData.content);
+      if( postData.tags && postData.media){
+        postData.tags?.forEach(tag => formData.append('tags', tag));
+        postData.media.forEach(file => formData.append('media', file));
+      }
+      
+      console.log("post data from service", postData);
+      return this.http.post<Post>(this.apiUrl, formData);
+    }
 
-  updatePost(postId: string, postData: FormData): Observable<Post> {
-    const url = `${this.apiUrl}/${postId}`;
-    return this.http.put<Post>(url, postData).pipe(catchError(this.handleError));
-  }
+    editPost(postId: string, updatedPost: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/edit/${postId}`, updatedPost);
+    }
+  
 
   deletePost(postId: string): Observable<void> {
     const url = `${this.apiUrl}/${postId}`;
-    return this.http.delete<void>(url).pipe(catchError(this.handleError));
+    return this.http.delete<void>(url);
+  }
+  likePost(postId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${postId}/like`, {});
   }
 
-  private handleError(error: any): Observable<never> {
-    console.log(error);
-    let errorMessage = '';
   
-    if (error.error && error.error.error && error.error.error.message) {
-      errorMessage = `Error: ${error.status}\t ${error.error.error.message}`;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    
-    return throwError(errorMessage);
+  commentOnPost(postId: string, comment: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${postId}/comment`, { comment });
   }
 
+  deleteComment(postId: string, commentId: string): Observable<void> {
+    return this.http.delete<void>(`your_api_url/posts`);
+  }
+
+  loadCurrentDoctorPosts():Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-doctor-posts`)
+  }
+
+  replyToComment(postId:string,commentId:string,content:string): Observable<any>{
+     return this.http.post<any>(`${this.apiUrl}/${postId}/comment/reply`,{commentId,content})
+  }
 }

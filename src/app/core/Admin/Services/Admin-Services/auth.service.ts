@@ -12,21 +12,14 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  private handleError(error: any): Observable<never> {
-    console.error('API Error:', error);
-    return throwError('Something went wrong, please try again later.');
-  }
+
 
   getAdmins(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/admins`).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.get<any>(`${this.apiUrl}/admins`)
   }
 
   addAdmin(admin: AdminModel): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/admins`, admin).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<any>(`${this.apiUrl}/admins`, admin)
   }
 
   login(email: string, password: string): Observable<any> {

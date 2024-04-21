@@ -33,7 +33,7 @@ export const registerBasicRequest = createAction(
 
   export const registerProfessionalRequest = createAction(
     '[Doctor] Register Professional Info Request',
-    props<{ formData: ProfessionalRegistrationFormModel }>()
+    props<{ formData: any }>()
   );
   export const registerProfessionalSuccess = createAction(
     '[Doctor] Register Professional Info Success',
@@ -61,7 +61,7 @@ export const registerBasicRequest = createAction(
     '[Doctor] Register Doctor Success' 
   );
 
-export const loadDoctor = createAction('[Doctor] Load User');
+export const loadDoctor = createAction('[Doctor] Load Doctor');
 export const loadDoctorSuccess = createAction('[Doctor] Load Doctor Success', props<{ doctor: Doctor }>());
 export const loadDoctorFailure = createAction('[Doctor] Load Doctor Failure', props<{ error: Error }>());
   

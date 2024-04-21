@@ -41,13 +41,13 @@
                           </div>
                           
 
-                          <div>
+                          <!-- <div>
                             <label for="consultationFee" class="text-sm mb-2 block">Consultation Fee</label>
                             <input formControlName="consultationFee" id="consultationFee" name="consultationFee" type="number" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter consultation fee" />
                             <mat-error *ngIf="consultationForm.get('consultationFee')?.invalid && consultationForm.get('consultationFee')?.touched">
                               <span class="text-red-600 font-thin text-xs">Consultation fee is required and must be greater than or equal to 0.</span>
                             </mat-error>
-                          </div>
+                          </div> -->
 
                           
                           
@@ -62,20 +62,31 @@
                             </mat-error>
                           </div>
 
-                          <div>
-                            <label class="text-sm mb-2 block">Types of Consultation</label>
-                            <div formArrayName="typesOfConsultation">
-                              <div class="flex flex-row gap-4 mt-3">
-                                <ng-container *ngFor="let type of typesOfConsultation.controls; let i = index">
-                                  <label class="flex items-center gap-2">
-                                    <input type="checkbox" [formControlName]="i" class="form-checkbox text-blue-500 h-5 w-5" />
-                                    <span class="text-gray-700">{{ i === 0 ? 'Video' : i === 1 ? 'Chat' : 'Clinic' }}</span>
-                                  </label>
-                                </ng-container>
+                          <div formArrayName="typesOfConsultation">
+                            <div *ngFor="let control of typesOfConsultation.controls; let i = index">
+                              <label class="text-sm mb-2 block">
+                                <input type="checkbox" [formControlName]="i" (change)="updateConsultationFees(typesOfConsultation.value)" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" />
+                                {{ control.value.type }}
+                              </label>
+                            </div>
+                          </div>
+                          <div formArrayName="consultationFee">
+                            <div *ngFor="let control of consultationFeeControl.controls; let i = index">
+                              <div *ngIf="typesOfConsultation.controls[i]?.value">
+                                <label class="fee-label">
+                                  {{ control.value.type }} Fee:
+                                  <input type="number" [formControlName]="i" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" />
+                                  <mat-error *ngIf="consultationFeeControl.at(i)?.invalid && consultationFeeControl.at(i)?.touched">
+                                    Fee is required and must be greater than or equal to 0.
+                                  </mat-error>
+                                </label>
                               </div>
                             </div>
-                            <mat-error  *ngIf="consultationForm.get('typesOfConsultation')?.errors?.['required']"  class="text-red-600 font-thin text-xs">At least one type of consultation is required.</mat-error>
                           </div>
+                          
+                          
+                          
+                          
 
                           <div formArrayName="availability" class="col-span-2">
                             <div class="flex justify-end"> <!-- Align button to the right -->

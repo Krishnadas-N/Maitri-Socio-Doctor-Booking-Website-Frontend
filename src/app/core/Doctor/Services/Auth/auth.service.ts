@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { ConsultationRegistrationFormModel, Education, ProfessionalRegistrationFormModel, RegistrationFormModel } from '../../models/registration.model';
 import { catchError } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -13,52 +14,62 @@ export class AuthService {
   constructor(private http:HttpClient) { }
 
   registerBasic(doctorData:RegistrationFormModel):Observable<any>{
-    return this.http.post<any>(`${this.doctorUrl}/register/basic-info`,doctorData).pipe(catchError(this.handleError));
+    return this.http.post<any>(`${this.doctorUrl}/register/basic-info`,doctorData);
   }
 
   registerVerify(otp:string,id:number):Observable<any> {
-  	return this.http.post<any>(`${this.otpUrl}/verify?otp=${otp}&id=${id}`,{otp}).pipe(catchError(this.handleError));
+  	return this.http.post<any>(`${this.otpUrl}/verify?otp=${otp}&id=${id}`,{otp});
   }
 
   registerProfessional(doctorData: ProfessionalRegistrationFormModel): Observable<any> {
     console.log("Logging from registerProfessional Service", doctorData);
     const formData = new FormData();
-    formData.append('address.street', doctorData.address.street);
-    formData.append('address.city', doctorData.address.city);
-    formData.append('address.zipcode', doctorData.address.zipcode);
-    formData.append('address.country', doctorData.address.country);
-  
+    formData.append('address[state]', doctorData.address.state);
+    formData.append('address[city]', doctorData.address.city);
+    formData.append('address[country]', doctorData.address.country);
+    formData.append('address[zipcode]', doctorData.address.zipcode);
     formData.append('specialization', doctorData.specialization);
     formData.append('experience', doctorData.experience);
-  
-    doctorData.education.forEach((education, index) => {
-      formData.append(`education[${index}].degree`, education.degree);
-      formData.append(`education[${index}].institution`, education.institution);
-      formData.append(`education[${index}].year`, education.year);
-    });
-  
-    doctorData.certifications.forEach((certification, index) => {
-      console.log(certification);
-      
-      formData.append(`certifications`, certification);
-    });
-  
-    doctorData.languages.forEach((language, index) => {
-      formData.append(`languages[${index}]`, language);
-    });
-  
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    doctorData.education.forEach((education: any, index: number) => {
+      formData.append(`education[${index}][degree]`, education.degree);
+      formData.append(`education[${index}][institution]`, education.institution);
+      formData.append(`education[${index}][year]`, education.year);
+  }); 
+  if (doctorData.languages) {
+    doctorData.languages.forEach((language: string) => formData.append('languages[]', language));
+  }
+
+    if( doctorData.certifications){ 
+      doctorData.certifications.forEach((file:any) => formData.append('certifications', file));
+    }
     
-    console.log(formData.get('certifications'));
-    return this.http.post<any>(`${this.doctorUrl}/complete-professional-info`, formData).pipe(catchError(this.handleError));
+   console.log("From Data iss",formData);
+    
+    return this.http.post<any>(`${this.doctorUrl}/complete-professional-info`, formData);
   }
   
   
 
   registerAdditional(doctorData:ConsultationRegistrationFormModel):Observable<any>{
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
-    return this.http.post<any>(`${this.doctorUrl}/complete-additional-info`,doctorData,{headers:headers}).pipe(catchError(this.handleError));
+    const formData = new FormData();
+    
+    formData.append('consultationFee[0]', doctorData.consultationFee.toString()); // Convert to string
+    formData.append('bio', doctorData.bio);
+    formData.append('profilePic', doctorData.profilePic);
+  
+    doctorData.availability.forEach((availabilityGroup, index) => {
+      formData.append(`availability[${index}].dayOfWeek`, availabilityGroup.dayOfWeek);
+      formData.append(`availability[${index}].startTime`, availabilityGroup.startTime);
+      formData.append(`availability[${index}].endTime`, availabilityGroup.endTime);
+    });
+
+    doctorData.typesOfConsultation.forEach((value, index) => {
+      const type = value ? ['video', 'chat', 'clinic'][index] : '';
+      formData.append(`typesOfConsultation[${index}]`, type);
+    });
+  
+    formData.append('maxPatientsPerDay', doctorData.maxPatientsPerDay.toString())
+    return this.http.post<any>(`${this.doctorUrl}/complete-additional-info`,formData);
   }
 
   resendOtp():Observable<any>{
@@ -66,7 +77,7 @@ export class AuthService {
   }
 
   login(email:string,password:string):Observable<any>{
-    return this.http.post<any>(`${this.doctorUrl}/login`,{email,password}).pipe(catchError(this.handleError));
+    return this.http.post<any>(`${this.doctorUrl}/login`,{email,password});
   }
     
 
@@ -82,17 +93,5 @@ export class AuthService {
     localStorage.removeItem(nameOfToken); 
 }
 
-private handleError(error: any): Observable<never> {
-  console.log(error);
-  let errorMessage = '';
 
-  if (error.error && error.error.error && error.error.error.message) {
-    errorMessage = `Error: ${error.status}\t ${error.error.error.message}`;
-  } else {
-    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-  }
-  console.log(errorMessage);
-  
-  return throwError(errorMessage);
-}
 }

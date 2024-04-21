@@ -1,0 +1,15 @@
+.checkbox-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .fee-label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .fee-input {
+    width: 100px; /* Adjust width as needed */
+    margin-top: 5px;
+  }
+  

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { TokenService } from '../../Services/TokenAuthService/Token.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class SidebarComponent implements OnInit {
   @Output() itemClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() itemHover: EventEmitter<{ item: any, index: number } | null> = new EventEmitter<{ item: any, index: number } | null>();
 
-  constructor() { }
+  constructor(private TokenService:TokenService,private router:Router) { }
 
   ngOnInit() {
   }
@@ -34,5 +35,8 @@ export class SidebarComponent implements OnInit {
     hideTooltip() {
         this.itemHover.emit(null);
     }
-
+    logout(){
+      this.TokenService.logout();
+      this.router.navigate([`${this.navItems[0].link}/login`]);
+    }
 }

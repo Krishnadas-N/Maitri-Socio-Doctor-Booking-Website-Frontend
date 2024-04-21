@@ -51,7 +51,20 @@ export const blockUser = createAction('[Admin] Block User', props<{ id:string }>
 export const blockUserSuccess = createAction('[Admin] Block User Success', props<{ user: User }>());
 export const blockUserFailure = createAction('[Admin] Block User Failure', props<{ error: string }>());
 
+export const editUserProfile = createAction(
+  '[User] Edit Profile',
+  props<{ user: Partial<User> }>()
+);
 
+export const editUserProfileSuccess = createAction(
+  '[User] Edit Profile Success',
+  props<{ user: User }>()
+);
+
+export const editUserProfileFailure = createAction(
+  '[User] Edit Profile Failure',
+  props<{ error: any }>()
+);
  
 export const loadUserById = createAction(
   '[Admin] Load User',

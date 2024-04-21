@@ -1,5 +1,5 @@
 <div class="fixed inset-0 flex items-center justify-center z-50" *ngIf="showModal">
-  <div class="bg-white rounded-lg shadow-xl overflow-hidden w-1/2 max-h-screen">
+  <div class="bg-white rounded-lg shadow-xl overflow-hidden w-3/4 max-h-3/4-screen">
     <div class="p-6 relative">
       <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 rounded-full px-3 py-1" (click)="prevSlide()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -9,12 +9,12 @@
       <div class="media-carousel">
         <ng-container *ngFor="let url of imageUrls; let i = index">
           <div *ngIf="i === currentSlideIndex" class="media-item">
-            <img [src]="url" alt="" class="object-cover h-50vh rounded-lg border border-gray-300">
+            <img [src]="url" alt="" class="object-cover h-96 w-full rounded-lg border border-gray-300">
           </div>
         </ng-container>
         <ng-container *ngFor="let url of videoUrls; let i = index">
           <div *ngIf="(i + imageUrls.length) === currentSlideIndex" class="media-item">
-            <video controls [src]="url" class="object-cover h-50vh rounded-lg border border-gray-300"></video>
+            <video controls [src]="url" class="object-cover  h-96 w-full rounded-lg border border-gray-300"></video>
           </div>
         </ng-container>
       </div>
@@ -25,6 +25,8 @@
       </button>
     </div>
     <div class="bg-gray-200 p-4 text-right">
+      <!-- <button type="button" class="py-1 px-2 bg-gray-500 text-white rounded hover:bg-gray-700" (click)="removeMedia()">Remove Media</button> -->
+
       <button type="button" class="py-1 px-2 bg-gray-500 text-white rounded hover:bg-gray-700" (click)="showModal = false">Close</button>
     </div>
   </div>

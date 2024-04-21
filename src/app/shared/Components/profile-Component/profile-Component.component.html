@@ -14,8 +14,15 @@
                    
                 </div>
             
-                <p class="mt-2 text-sm text-gray-900">Lorem ipsum dolor sit amet, consecte adipisicing elit. Voluptatibus quia
-                    Maiores et perferendis eaque.</p>
+                <p class="mt-2 text-sm text-gray-900">
+                    <ng-container *ngIf="DoctorDetails && DoctorDetails.bio; else notDoctor">
+                       {{DoctorDetails.bio}}
+                    </ng-container>
+                    <ng-template #notDoctor>
+                        Not Available
+                    </ng-template>
+                </p>
+                
             
                 
                     <div *ngIf="userDetails"  class="ms-5 flex  justify-center gap-2">
@@ -25,6 +32,16 @@
                     <div *ngIf="DoctorDetails" class="ms-5  flex  justify-center gap-2">  <!-- For Doctors -->
                     <button *ngIf="DoctorDetails && !DoctorDetails?.isBlocked" class="bg-red-600 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4" (click)="toggleBlock()">Block Doctor</button>
                     <button *ngIf="DoctorDetails && DoctorDetails?.isBlocked" class="bg-green-500 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4" (click)="toggleBlock()">Unblock Doctor</button>
+
+                    <button *ngIf="DoctorDetails && DoctorDetails?.isProfileComplete; else notVerified"  class="bg-green-500 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4 " disabled>
+                        Verified Profile
+                    </button>
+                    <ng-template #notVerified>
+                        <button (click)="verifyProfile()" *ngIf="DoctorDetails && !DoctorDetails?.isProfileComplete" class="bg-red-600 text-white px-6 py-3 rounded-md shadow-md mb-4 lg:mb-0 lg:mr-4">
+                            Not Verified
+                        </button>
+                    </ng-template>
+                    
                     </div>
             </div>
     
@@ -55,14 +72,15 @@
                                 <div class="px-4 py-2 font-semibold">Contact No.</div>
                                 <div class="px-4 py-2">{{ DoctorDetails.phone || '' }}</div>
                             </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Current Address</div>
-                                <div class="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                            <div *ngIf="DoctorDetails" class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Address</div>
+                                <div class="px-4 py-2">{{DoctorDetails.address.street }} {{DoctorDetails.address.city }}</div>
                             </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Permanant Address</div>
-                                <div class="px-4 py-2">Arlington Heights, IL, Illinois</div>
+                            <div *ngIf="DoctorDetails" class="grid grid-cols-2">
+                                <div class="px-4 py-2 font-semibold">Location</div>
+                                <div class="px-4 py-2">{{DoctorDetails.address.zipcode }} {{DoctorDetails.address.country }}</div>
                             </div>
+                            
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">Email.</div>
                                 <div class="px-4 py-2">
@@ -82,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <button
+                    <button *ngIf="!userDetails"  (click)="showFullDetailsToggle = !showFullDetailsToggle"
                         class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
                         Full Information</button>
                 </div>
@@ -93,8 +111,130 @@
     </div>
     
    
-    <div class="container border-2 border-dashed border-gray-400">
-        <h3 class="font-bold text-xl mb-5 px-5 pt-5 bg-white rounded-t ">Educational Details</h3>
+    <div *ngIf="DoctorDetails && showFullDetailsToggle" class="container border-2 border-dashed border-gray-400 mt-sm-3">
+        <div class="flex justify-between">
+        <h3 class="font-bold text-xl mb-5 px-5 pt-5 bg-white rounded-t ">Full Details</h3>
+        <h4 class="font-bold text-xl mb-5 px-5 pt-5 bg-white rounded-t hover:cursor-pointer " (click)="showCertifications=!showCertifications" >Show Certifications</h4>
+    </div>
+        <div *ngIf="showCertifications" class="container mx-auto mt-10 flex gap-3">
+            <div *ngFor="let certification of DoctorDetails.certifications">
+              <div class="ms-4 ">
+                <a [href]="certification" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block mb-4">View PDF</a>
+                <iframe [src]="certification" class="w-full h-1/3"></iframe>
+              </div>
+            </div>
+          </div>
+          
+          
+            <div class="grid grid-cols-2 gap-4 px-5">
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+                    <dl class="sm:divide-y sm:divide-gray-200">
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Consultation Fee Excepted  per Patient
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <ng-container *ngIf="DoctorDetails?.consultationFee !== undefined && DoctorDetails?.consultationFee !== null">
+                                    {{ DoctorDetails.consultationFee ? DoctorDetails.consultationFee : 'Not Available' }}
+
+                                </ng-container>
+                                <ng-container *ngIf="DoctorDetails?.consultationFee === undefined || DoctorDetails?.consultationFee === null">
+                                    Not Available
+                                </ng-container>
+                            </dd>
+                        </div>
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Availablity
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <ng-container *ngIf="DoctorDetails.availability && DoctorDetails.availability.length > 0; else notAvailable">
+                                    <ng-container *ngFor="let avail of DoctorDetails.availability">
+                                        <div class="grid grid-cols-2">
+                                            <div class="px-4 py-2 font-semibold">Day of Week</div>
+                                            <div class="px-4 py-2">{{ avail.dayOfWeek }}</div>
+                                        </div>
+                                        <div class="grid grid-cols-2">
+                                            <div class="px-4 py-2 font-semibold">Start Time</div>
+                                            <div class="px-4 py-2">{{ avail.startTime }}</div>
+                                        </div>
+                                        <div class="grid grid-cols-2">
+                                            <div class="px-4 py-2 font-semibold">End Time</div>
+                                            <div class="px-4 py-2">{{ avail.endTime }}</div>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-template #notAvailable>
+                                    Not Available
+                                </ng-template>
+                            </dd>
+                        </div>
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Maximum Patients Per Day
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                               {{DoctorDetails.maxPatientsPerDay}}
+                            </dd>
+                        </div>
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Languages known
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                               {{DoctorDetails.languages || 'Not Available'}}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+                    <dl class="sm:divide-y sm:divide-gray-200">
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                specialization 
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    {{ doctorSpecialization?.name ?? 'Not Available'}}
+                                    
+                                
+                                
+                            </dd>
+                        </div>
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                               Eductation
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <ng-container *ngFor="let edu of DoctorDetails?.education || DoctorDetails?.education">
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Degree</div>
+                                        <div class="px-4 py-2">{{ edu.degree }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Institution</div>
+                                        <div class="px-4 py-2">{{ edu.institution }}</div>
+                                    </div>
+                                    <div class="grid grid-cols-2">
+                                        <div class="px-4 py-2 font-semibold">Year</div>
+                                        <div class="px-4 py-2">{{ edu.year }}</div>
+                                    </div>
+                                </ng-container>
+                            </dd>
+                        </div>
+                        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                               Experience
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {{ DoctorDetails.experience || 'Not Available' }}
+                            </dd>
+                            
+                        </div>
+                      
+                    </dl>
+                </div>
+            </div>
+        
     </div>
 
 </section>

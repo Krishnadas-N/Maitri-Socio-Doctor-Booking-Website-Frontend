@@ -7,19 +7,19 @@
               <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="max-w-4xl mx-auto bg-white shadow-[0_2px_18px_-3px_rgba(6,81,237,0.4)] sm:p-8 p-4 rounded-md">
                 <div formGroupName="address" class="grid md:grid-cols-2 gap-y-7 gap-x-12 mb-2">
                     <div class="flex flex-col">
-                      <label for="street" class="text-sm mb-2 block">Street</label>
-                      <input formControlName="street" id="street" name="street" type="text" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter street" />
-                      <mat-error *ngIf=" registrationForm.get('address.street')?.touched">
-                        <!-- Display error message for street validation -->
-                        <span *ngIf="registrationForm.get('address.street')?.errors?.['required']" class="text-red-600 font-thin text-xs">Street is required.</span>
-                    </mat-error>
-                    </div>
-                    <div class="flex flex-col">
                       <label for="city" class="text-sm mb-2 block">City</label>
                       <input formControlName="city" id="city" name="city" type="text" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter city" />
                       <mat-error *ngIf="registrationForm.get('address.city')?.invalid && registrationForm.get('address.city')?.touched">
                         <!-- Display error message for city validation -->
                         <span *ngIf="registrationForm.get('address.city')?.errors?.['required']" class="text-red-600 font-thin text-xs">City is required.</span>
+                    </mat-error>
+                    </div>
+                    <div class="flex flex-col">
+                      <label for="state" class="text-sm mb-2 block">state</label>
+                      <input formControlName="state" id="state" name="state" type="text" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter state" />
+                      <mat-error *ngIf="registrationForm.get('address.state')?.invalid && registrationForm.get('address.state')?.touched">
+                        <!-- Display error message for state validation -->
+                        <span *ngIf="registrationForm.get('address.state')?.errors?.['required']" class="text-red-600 font-thin text-xs">state is required.</span>
                     </mat-error>
                     </div>
                     <div class="flex flex-col">
@@ -89,7 +89,7 @@
                           <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                         </svg>
                         <span class="mt-2 text-base leading-normal">Select a file</span>
-                        <input type='file' id="certifications-upload" (change)="onCertificationFileChange($event)" multiple accept=".pdf" class="hidden" />
+                        <input type='file' id="certifications-upload"   (change)="onCertificationFileChange($event)"  multiple accept=".pdf" class="hidden" />
                       </label>
                       <mat-error *ngIf="registrationForm.get('certifications')?.invalid && registrationForm.get('certifications')?.touched">
                         <span class="text-red-600 font-thin text-xs">At least one PDF file is required.</span>

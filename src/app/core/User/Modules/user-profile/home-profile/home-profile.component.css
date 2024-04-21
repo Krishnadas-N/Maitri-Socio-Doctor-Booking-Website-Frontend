@@ -1,0 +1,4 @@
+.disabled-select {
+    cursor: not-allowed;
+    pointer-events: none;
+  }

@@ -120,7 +120,8 @@ export class doctorEffects {
       ofType(DoctorActions.blockDoctor),
       switchMap(({ id }) =>
         this.doctorService.blockDoctor(id).pipe(
-          map((res:any) => DoctorActions.blockDoctorSuccess({ doctor:res.data })),
+          tap(data=>console.log(data)),
+          map((res:any) => DoctorActions.blockDoctorSuccess({ doctor:res.data.doctor })),
           catchError((error) => of(DoctorActions.blockDoctorFailure({ error })))
         )
       )
@@ -144,7 +145,8 @@ export class doctorEffects {
       ofType(DoctorActions.loadDoctorById),
       switchMap(({ id }) =>
         this.doctorService.getDoctorById(id).pipe(
-          map((res:any) => DoctorActions.loadDoctorByIdSuccess({ doctor:res.data })),
+          tap(data=>console.log('Data from Get doctor',data)),
+          map((res:any) => DoctorActions.loadDoctorByIdSuccess({ doctor:res.data.doctor })),
           catchError((error) => of(DoctorActions.loadDoctorByIdFailure({ error })))
         )
       )

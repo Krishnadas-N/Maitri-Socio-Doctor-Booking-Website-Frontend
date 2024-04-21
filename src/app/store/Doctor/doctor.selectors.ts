@@ -23,16 +23,16 @@ export const GetCurrentdoctor = createSelector(
     export const selectDoctorsByTab = (tab: string) => createSelector(
       selectdoctorState,
       (doctorState: DoctorState) => {
-        console.log("selctor",doctorState.doctor);
+        console.log("selctor",'fhg',tab);
         switch (tab) {
           case 'all':
             return doctorState.doctors;
           case 'blocked':
             return doctorState.doctors.filter(u => u.isBlocked);
-          case 'verified':
-            return doctorState.doctors.filter(u => u.isVerified);
-          case 'not-verified':
-            return doctorState.doctors.filter(u => !u.isVerified);
+          case 'verified-profiles':
+            return doctorState.doctors.filter(u => u.isProfileComplete);
+          case 'not-verified-profiles':
+            return doctorState.doctors.filter(u => !u.isProfileComplete);
           default:
             return doctorState.doctors;
         }

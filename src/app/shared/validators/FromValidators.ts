@@ -1,4 +1,4 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class FormValidator {
 
@@ -26,4 +26,27 @@ export class FormValidator {
   
     return null;
   }
+
+  static pdfFileValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const file = control.value;
+      if (file) {
+        const allowedMimeTypes = ['application/pdf']; // Array of allowed MIME types
+        if (!allowedMimeTypes.includes(file.type)) {
+          return { invalidPdf: true };
+        }
+      }
+      return null;
+    };
+  }
+  static imageFileValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const file = control.value;
+      if (file && !file.type.startsWith('image')) {
+        return { invalidImage: true };
+      }
+      return null;
+    };
+  }
+  
 }

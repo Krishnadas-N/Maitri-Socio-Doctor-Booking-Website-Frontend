@@ -14,7 +14,7 @@ export interface Education {
     year: string;
 }
 export interface Address {
-  street: string;
+  state: string;
   city: string;
   zipcode: string;
   country: string;

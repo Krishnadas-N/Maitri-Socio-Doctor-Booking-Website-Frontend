@@ -1,13 +1,15 @@
 // src/app/store/posts/post.model.ts
 export interface Post {
-    doctorId: string; 
+   _id:string;
+   doctorName: string; 
+   doctorProfileImage:string;
     title: string;
     content: string;
     media: PostMedia[];
     tags: string[];
     createdAt: Date;
-    likes?: Like[];
-    comments?: Comment[];
+    likes: Like[];
+    comments: Comment[];
     reportedBy?: Report[];
     isBlocked?: boolean;
     isArchived?: boolean;
@@ -30,11 +32,18 @@ export interface Post {
   }
   
   export interface Comment {
-    userId: string;
+    _id: string;
+    userId: string | {
+      _id: string;
+      firstName: string;
+      lastName: string; // Optional if present in your data
+      profilePic: string; // Optional if present in your data
+    };
     content: string;
     timestamp: Date;
     replies: Reply[];
   }
+  
   
   export interface Report {
     userId: string;

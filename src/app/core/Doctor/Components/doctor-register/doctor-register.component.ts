@@ -8,10 +8,17 @@ import { Store } from '@ngrx/store';
 import { registerBasicRequest } from '../../../../store/Doctor/doctor.action';
 import { selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
 import { FormValidator } from '../../../../shared/validators/FromValidators';
+import { TokenService } from '../../../../shared/Services/TokenAuthService/Token.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @Component({
   selector: 'app-doctor-register',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule,RouterLink],
+  imports: [CommonModule,
+    ReactiveFormsModule,RouterLink,MatDatepickerModule,MatInputModule,
+    MatNativeDateModule],
   templateUrl: './doctor-register.component.html',
   styleUrl: './doctor-register.component.css'
 })
@@ -20,8 +27,12 @@ export class DoctorRegisterComponent implements OnInit {
   registrationForm!: FormGroup;
   constructor(private formBuilder: FormBuilder,
     private store:Store<AppState>,
+    private TokenService:TokenService,
     private router:Router) { }
   ngOnInit(): void {
+    if(this.TokenService.isAuthenticated()){
+      this.router.navigate(['/doctor'])
+    }
     this.registrationForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],

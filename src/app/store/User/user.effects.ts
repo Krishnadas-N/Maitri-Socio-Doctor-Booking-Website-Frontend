@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delay, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { UserServiceService } from '../../core/User/Services/user-service.service';
-import { blockUser, blockUserFailure, blockUserSuccess, loadUserById, loadUserByIdFailure, loadUserByIdSuccess, loadUsers, loadUsersFailure, loadUsersSuccess, loginUser, loginUserFailure, loginUserSuccess, registerUser, registerUserFailure, registerUserSuccess } from './user.action';
+import { blockUser, blockUserFailure, blockUserSuccess, editUserProfile, editUserProfileFailure, editUserProfileSuccess, loadUser, loadUserById, loadUserByIdFailure, loadUserByIdSuccess, loadUserFailure, loadUserSuccess, loadUsers, loadUsersFailure, loadUsersSuccess, loginUser, loginUserFailure, loginUserSuccess, registerUser, registerUserFailure, registerUserSuccess } from './user.action';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -22,6 +22,7 @@ export class UserEffects {
                 this.userService.login(email, password).pipe(
                     tap((data) => console.log('Login Data', data)),
                     map((response: any) => {
+                      localStorage.setItem('AuthToken', response.data.token);
                         this.router.navigate(['/'])
                         return loginUserSuccess({ user:response.data.user, token:response.data.token });
                     }),
@@ -92,5 +93,25 @@ export class UserEffects {
     )
   ));
 
+  getCurrentUser$ = createEffect(()=>this.actions$.pipe(
+    ofType(loadUser),
+    switchMap(()=>{
+     return this.userService.getCurrentUser().pipe(
+      tap((data)=>console.log("data form getting current user",data)),
+      map((res:any) => loadUserSuccess({ user:res.data })),
+        catchError(error => of(loadUserFailure({ error })))
+      )
+    })
+  ));
+
+  editUserProfile$ = createEffect(() => this.actions$.pipe(
+    ofType(editUserProfile),
+    switchMap(({ user }) =>
+      this.userService.editUserProfile(user).pipe(
+        map((res:any) => editUserProfileSuccess({ user: res.data })),
+        catchError(error => of(editUserProfileFailure({ error })))
+      )
+    )
+  ));
 
 }

@@ -17,8 +17,20 @@ export class TokenService {
     key: (index: number) => null,
   };
   
+
+  private _SetCookie(token: string) {
+    let cookieStr = encodeURIComponent('CrCookie')  + '=' + encodeURIComponent(JSON.stringify(token));
+    const dtExpires = new Date();
+    dtExpires.setTime(dtExpires.getTime() + (24 * 60 * 60 * 1000));
+    cookieStr += ';expires=' + dtExpires.toUTCString();
+    cookieStr += ';path=/';
+    cookieStr += ';samesite=lax'; // lax | strict | none
+    document.cookie = cookieStr;
+  }
+
   setToken(token: string) {
     this.storage.setItem(this.tokenKey, token);
+    this._SetCookie(token);
   }
 
   getToken() {
@@ -32,6 +44,14 @@ export class TokenService {
 
   logout() {
     this.storage.removeItem(this.tokenKey);
+    this._DeleteCookie()
+  }
+  private _DeleteCookie(): void {
+    // void accessToken but more importantly expire
+    const dtExpires = new Date();
+    dtExpires.setTime(dtExpires.getTime() - (24 * 60 * 60 * 1000)); 
+    let cookieStr = encodeURIComponent('CrCookie') + '=;expires=' + dtExpires.toUTCString() + ';path=/';
+    document.cookie = cookieStr;
   }
 
 }

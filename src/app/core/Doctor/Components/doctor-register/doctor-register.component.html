@@ -82,9 +82,15 @@ class="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-ce
               <option value="Other">Other</option>
             </select>
             <div *ngIf="f['gender'].invalid && (f['gender'].dirty || f['gender'].touched)" class="text-red-500 text-xs">Gender is required</div>
-        
-            <input formControlName="dateOfBirth" class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white" type="date" placeholder="Date of Birth" />
+            
+            
+            <mat-form-field class="w-full">
+              <input matInput class="px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white" [matDatepicker]="picker" formControlName="dateOfBirth" placeholder="Date of Birth">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
             <div *ngIf="f['dateOfBirth'].invalid && (f['dateOfBirth'].dirty || f['dateOfBirth'].touched)" class="text-red-500 text-xs">Date of Birth is required and must be less than 6 years before</div>
+            
         
             <input formControlName="phone" class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white" type="tel" placeholder="Phone Number" />
             <div *ngIf="f['phone'].invalid && (f['phone'].dirty || f['phone'].touched)" class="text-red-500 text-xs">Phone Number is required and Numbers only</div>

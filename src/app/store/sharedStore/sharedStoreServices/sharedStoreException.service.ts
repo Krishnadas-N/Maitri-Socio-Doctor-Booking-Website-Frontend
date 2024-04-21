@@ -3,6 +3,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, ofType } from '@ngrx/effects';
 import { Observable, mergeMap } from 'rxjs';
 import * as otpActions from '../otpStore/otp.action'
+import * as FeedActions from '../Feed-Store/post.action'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +20,27 @@ export class SharedStoreExceptionService {
       ofType(
         otpActions.resendOtpFailure,
         otpActions.verifyOTPFailure
+      ),
+      mergeMap(action => {
+        console.log("action",action,action.error,);
+        const errorMessage = action.error as string || 'An error occurred';
+        this.snackBar.open(errorMessage, 'Close', {
+          duration: 5000, // Adjust duration as needed
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['mat-toolbar',  'mat-warn']
+        });
+        return [];
+      })
+    );
+  }
+
+
+  handleFeedErrors(){
+    return this.actions$.pipe(
+      ofType(
+        FeedActions.loadPostsFailure,
+        FeedActions.addPostFailure,
       ),
       mergeMap(action => {
         console.log("action",action,action.error,);

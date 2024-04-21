@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import * as AdminActions from './admin.action';
 import { AdminService } from '../../core/Admin/Services/Admin-Services/auth.service';
 import { TokenService } from '../../shared/Services/TokenAuthService/Token.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AdminEffects {
@@ -35,6 +36,7 @@ export class AdminEffects {
         tap((response:any) => {
             const token = response.data.token;
             this.TokenService.setToken(token);
+            this.router.navigate(['/admin']);
           }),
         map((res:any) => AdminActions.adminLoginSuccess({ admin: res.data.admin })),
         catchError(error => of(AdminActions.adminLoginFailure({ error })))
@@ -45,6 +47,7 @@ export class AdminEffects {
   constructor(
     private TokenService: TokenService,
     private actions$: Actions,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router:Router
   ){}
 }

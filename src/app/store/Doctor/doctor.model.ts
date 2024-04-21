@@ -6,21 +6,25 @@ export interface Doctor {
     dateOfBirth: Date;
     email: string;
     phone: number;
-    address?: {
+    address: {
       street?: string;
       city?: string;
       zipcode?: number;
       country?: string;
     };
-    specialization?: string; // Assuming you have a separate model for specialization
-    education?: { degree: string; institution: string; year: string }[];
-    experience?: string;
+    specialization: string; // Assuming you have a separate model for specialization
+    education: { degree: string; institution: string; year: string }[];
+    experience: string;
     certifications?: string[];
-    languages?: string[];
-    consultationFee?: number[];
-    availability?: { dayOfWeek: string; startTime: string; endTime: string }[];
-    profilePic?: string;
-    bio?: string;
+    languages: string[];
+    availability: { dayOfWeek: string; startTime: string; endTime: string }[];
+    profilePic: string;
+    bio: string;
+    registrationStepsCompleted:number,
+    consultationFee:[{
+      type:"video"|"chat"|"clinic";
+      fee:number;
+    }],
     createdAt?: Date;
     updatedAt?: Date;
     followers?: string[];
