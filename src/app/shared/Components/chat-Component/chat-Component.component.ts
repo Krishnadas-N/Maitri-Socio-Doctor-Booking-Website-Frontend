@@ -4,6 +4,8 @@ import { MessageService } from '../../Services/webSocketService/message.service'
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { CheckPlatformService } from '../../Services/checkPlatformService/checkPlatform.service';
+import { TokenService } from '../../Services/TokenAuthService/Token.service';
 
 @Component({
   selector: 'app-chat-Component',
@@ -18,7 +20,12 @@ export class ChatComponentComponent implements OnInit ,OnDestroy {
   messageSubscription!: Subscription;
   messageInput:string=''
   newMessage: string = '';
-  constructor(private webSocketService: WebSocketService,private route: ActivatedRoute) { }
+  constructor(
+    private webSocketService: WebSocketService,private route: ActivatedRoute,
+    private platformService:CheckPlatformService,
+    private tokenService:TokenService
+
+  ) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -26,12 +33,17 @@ export class ChatComponentComponent implements OnInit ,OnDestroy {
       console.log('User Type:', this.userType);
       // Now you can use the userType variable in your component
     });
-    this.webSocketService.emtiGetchat("getChats") 
-    this.messageSubscription = this.webSocketService.getChats("chats")
+    if(this.platformService.isBrowser()){
+      const token = this.tokenService.getToken();
+        if (token) {
+      // this.webSocketService.emtiGetchat("getChats") 
+      this.messageSubscription = this.webSocketService.getChats("chats")
       .subscribe((data) => {
         console.log(data);
         this.messages.push(data);
       });
+    }
+    }
   }
   
   sendMessage(message: string): void {
@@ -39,7 +51,7 @@ export class ChatComponentComponent implements OnInit ,OnDestroy {
       return; // Don't send empty messages
     }
     // Call WebSocket service to send the message
-    this.webSocketService.sendMessage('chat message', message);
+    // this.webSocketService.sendMessage('chat message', message);
   }
   ngOnDestroy(): void {
     // Unsubscribe from messages to prevent memory leaks

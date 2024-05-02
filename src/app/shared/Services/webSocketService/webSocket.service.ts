@@ -1,19 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
   private readonly URL = 'http://localhost:3000';
-  private webSocket: Socket;
-  constructor() {
-    this.webSocket = new Socket({
-      url: `${this.URL}/chat`,
-      options: {},
-     });  
+  private webSocket!: Socket;
+  private token: string | null =null;
+
+  constructor() { }
+
+  public setToken(token: string): void {
+    this.token = token;
+    this.connect();
+  }
+
+  private connect(): void {
+    if (this.token) {
+      this.webSocket = new Socket({
+        url: `${this.URL}/chat`,
+        options: {
+          transports: ["polling", "websocket", "webtransport"], // Optional: specify transports
+          extraHeaders: {
+                   Authorization:  `Bearer ${this.token}`// Adjust based on storage method
+        },
+        }
+      });
+
+      this.webSocket.on('connect_error', (error:any) => {
+        console.error('Error connecting to Socket.IO server:', error);
+        throw new Error('Connection failed');  // Throw an error for handling
+      });  
+    } else {
+      console.error('Missing JWT token for Socket.IO connection');
+    }
   }
 
   on(eventName: string, callback: Function): void {
@@ -22,27 +45,76 @@ export class WebSocketService {
     }
   }
 
-  sendMessage(eventName: string, senderId: string, recipientId: string, conversationId: string, message: string) {
+  sendMessage(eventName: string, senderId: string, recipientId: string, conversationId: string, message: string, userType: string) {
     const messageData = {
-      senderId: senderId,
-      recipientId: recipientId,
-      conversationId: conversationId,
-      message: message
+      senderId,
+      recipientId,
+      conversationId,
+      message,
+      userType
     };
-    this.webSocket.emit(eventName, messageData);
+    console.log("messageData", eventName, messageData);
+    if (this.webSocket) {
+      this.webSocket.emit(eventName, messageData);
+    } else {
+      console.error('WebSocket not connected, cannot send message');
+    }
   }
 
-  emtiGetchat(eventName:string):Observable<any>{
-    return  this.webSocket.emit(eventName)
-        
-  }
-  getChats(eventName:string):Observable<any>{
-    return  this.webSocket.fromEvent(eventName)
-                         .pipe(tap((data)=> console.log(`Received ${eventName}: ${JSON.stringify(data)}`)));
+  emitGetMessages(convid:string): Observable<any> {
+    return this.webSocket.emit("getMessages",convid)
   }
 
+  getChats(eventName: string): Observable<any> {
+    return this.webSocket.fromEvent(eventName)
+  }
+
+  getnewMessages(){
+    return new Observable((observer) => {
+      this.webSocket.on('new message', (message: any) => {
+        observer.next(message);
+      });
+    });
+  }
+  
+  getMessages(){
+    let observable = new Observable<any[]>(observer => {
+      this.webSocket.on('get-messages', (data:any) => {
+        console.log('get-messages',data)
+        observer.next(data);
+      });
+      return () => { this.webSocket.disconnect(); };  
+    });
+    return observable;
+  }
+
+  addUser(userId: string): void {
+    console.log("Current user added to scoker",userId);
+    this.webSocket.emit('add user', userId);
+  }
+
+  getError(): Observable<any> {
+    return new Observable((observer) => {
+      this.webSocket.on('error', (error: any) => {
+        observer.next(error);
+      });
+    });
+  }
 
   disconnectSocket() {
-    this.webSocket.disconnect();
-   }
+    if (this.webSocket) {
+      this.webSocket.disconnect();
+    }
+  }
+
+
 }
+
+
+
+// return this.webSocket.fromEvent<any[]>('getMessages',convId)
+//       .pipe(
+//         tap((data) => console.log(`Received getMessages: ${JSON.stringify(data)}`)),
+//         catchError(error => throwError(error)) // Handle errors in the observable
+//       );
+//   }
