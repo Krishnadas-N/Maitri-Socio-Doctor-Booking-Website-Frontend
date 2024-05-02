@@ -19,13 +19,14 @@ export class EditPostComponent implements OnInit {
   isLoading:boolean=false;
   @Output() updatedPostData=new EventEmitter<any>();
   @Output() closeEditModal=new EventEmitter<boolean>(false);
+  
   constructor(private formBuilder: FormBuilder,private feedService:FeedService,private toastr:ToastrService) { }
 
   ngOnInit(): void {
     this.editPostForm = this.formBuilder.group({
       title: [this.post?.title || '', [Validators.required, Validators.minLength(3)]],
       content: [this.post?.content || '', [Validators.required, Validators.minLength(3)]],
-      tags: this.formBuilder.array(this.post?.tags || [])
+      tags: [this.post?.tags ? this.post.tags.join('') : '']
     });
   }
 
@@ -62,8 +63,9 @@ export class EditPostComponent implements OnInit {
   }
 
   convertTagsToArray(tagsInput:string | any[]): string[] {
+    console.log(tagsInput);
     if (typeof tagsInput === 'string') {
-      return tagsInput.split(',').map(tag => tag.trim());
+      return tagsInput.split(' ').map(tag => tag.trim());
     } else if (Array.isArray(tagsInput)) {
       return tagsInput.map(control => control && control?.value ? control?.value: "");
     } else {

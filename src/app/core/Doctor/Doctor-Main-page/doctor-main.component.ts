@@ -28,7 +28,10 @@ export class DoctorMainComponent {
   navItems: { iconClasses: string, backgroundColor: string, tooltip?: string,link?:string }[] = [
     { iconClasses: 'fas fa-tachometer-alt fa-sm  text-white', backgroundColor: 'bg-blue-400', tooltip: 'DashBoard',link:'/doctor/' },
     { iconClasses: "fab fa-instagram fa-sm text-white", backgroundColor: 'bg-pink-400', tooltip: 'Feed', link:'/doctor/feed'},
-    { iconClasses: 'fas fa-calendar-alt fa-sm text-white', backgroundColor: 'bg-yellow-400', tooltip: 'Appoinments',link:'/doctor/appoinments' }
+    { iconClasses: 'fas fa-calendar-alt fa-sm text-white', backgroundColor: 'bg-yellow-400', tooltip: 'Appoinments',link:'/doctor/appoinments' },
+    { iconClasses: 'fas fa-clock fa-sm text-white', backgroundColor: 'bg-green-400', tooltip: 'Schedule Timings', link: '/doctor/schedule-timings' },
+    { iconClasses: 'fas fa-comment fa-sm text-white', backgroundColor: 'bg-blue-600', tooltip: 'Chat Consultation', link: '/doctor/chats/inbox' },
+    { iconClasses: 'fas fa-user fa-sm text-white', backgroundColor: 'bg-purple-400', tooltip: 'Profile', link: '/doctor/profile' }
   ];
 
   handleSidebarItemClick(item: any) {

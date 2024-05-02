@@ -28,8 +28,8 @@
 
       <div class="flex flex-wrap -mx-px md:-mx-3">
 
-        <div class="w-1/3 p-px md:px-3" *ngFor="let post of doctorPosts" >
-          <a href="#">
+        <div class="w-1/3 p-px md:px-3 hover:cursor-pointer file:" *ngFor="let post of doctorPosts" >
+          <a (click)="onClickOpenModal(post)">
             <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
               <img class="w-full h-full absolute left-0 top-0 object-cover" [src]="post.media[0].url" alt="image">
               <!-- overlay-->
@@ -51,6 +51,9 @@
 
             </article>
           </a>
+
+          <!-- <app-postComment (onLike)="handleChilLike($event)" [ishidden]="isCommentBoxHidden" [post]="data.post" [isLikedByUser]="data.isLikedUser" [isEnableCrud]="data.isPermissionToCrud" ></app-postComment>  -->
+
         </div>
 
       </div>

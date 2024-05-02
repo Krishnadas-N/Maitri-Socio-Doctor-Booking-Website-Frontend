@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AddPostComponent } from '../../../../../shared/Components/add-post/add-post.component';
 import { PostComponent } from '../../../../../shared/Components/post-component/post-component.component';
-import { Post } from '../../../../../store/sharedStore/Feed-Store/post.model';
+import { Post, PostModel } from '../../../../../store/sharedStore/Feed-Store/post.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../store/GlobalStore/app.state';
 import { FeedService } from '../../../../../shared/Services/feed-Service.service';
@@ -20,12 +20,14 @@ import { Doctor } from '../../../../../store/Doctor/doctor.model';
 })
 export class DoctorFeedHomeComponent implements OnInit {
   addPostModal:boolean=false;
-  posts: Post[] = [];
+  posts: PostModel[] = [];
   doctorDetail:Doctor | null = null;
   ngOnInit(): void {
+    if(isPlatformBrowser(this.platformId)){
     this.loadAllPosts();
     this.loadCurrentDoctor();
     this.getDoctor();
+    }
   }
   getDoctor(){
     this.store.select(GetCurrentdoctor).subscribe((data)=>{
@@ -55,6 +57,7 @@ export class DoctorFeedHomeComponent implements OnInit {
 
   constructor(private store:Store<AppState>,
     private FeedService:FeedService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    @Inject(PLATFORM_ID) public platformId :Object
   ){}
 }

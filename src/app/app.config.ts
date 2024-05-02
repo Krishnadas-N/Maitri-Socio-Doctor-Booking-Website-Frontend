@@ -17,22 +17,24 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { StoreModule, provideStore } from '@ngrx/store';
+import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { EffectsModule, provideEffects } from '@ngrx/effects';
+import { provideEffects } from '@ngrx/effects';
 import { reducers } from './store/GlobalStore';
 import { authInterceptor } from './core/User/Interceptors/Auth/auth.interceptor';
 import { UserEffects } from './store/User/user.effects';
 import { doctorEffects } from './store/Doctor/doctor.effects';
 import { OtpEffects } from './store/sharedStore/otpStore/otp.effects';
 import { postEffects } from './store/sharedStore/Feed-Store/post.effects';
-import { AdminEffects } from './store/Admin/admin.effects';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { ToastrModule, provideToastr } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';
 import { responseTimerInterceptor } from './shared/Interceptors/response-timer.interceptor';
 import { errorHandlerInterceptor } from './shared/Interceptors/error-handler.interceptor';
-import { TOASTR_TOKEN, Toastr } from './shared/Models/toastr';
+import { MatNativeDateModule } from '@angular/material/core';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: authInterceptor, multi: true },
@@ -49,27 +51,28 @@ export const appConfig: ApplicationConfig = {
         authInterceptor,
         responseTimerInterceptor,
         errorHandlerInterceptor,
-      ])
+      ])  
     ),
     provideClientHydration(
       withHttpTransferCacheOptions({
         includePostRequests: true,
       })
     ),
-    provideAnimations(), // required animations providers
+    provideAnimations(),
     provideToastr({
       positionClass: 'toast-top-right',
       tapToDismiss: true,
-      progressBar: true, // Show progress bar
+      progressBar: true,
       closeButton: true,
-      timeOut: 3000, // Duration of the toast message (in milliseconds)
+      timeOut: 3000,
       enableHtml: true,
-      titleClass: 'd-none', // Hide title
-      messageClass: 'text-white', // Custom class for message
-      disableTimeOut: false, // Disable the timeout
+      titleClass: 'd-none',
+      messageClass: 'text-white',
+      disableTimeOut: false,
       extendedTimeOut: 1000,
       preventDuplicates: true,
     }),
+    importProvidersFrom(MatNativeDateModule),
     provideAnimationsAsync(),
     provideStore(reducers),
     provideStoreDevtools({
@@ -84,7 +87,6 @@ export const appConfig: ApplicationConfig = {
       doctorEffects,
       OtpEffects,
       postEffects,
-      AdminEffects,
     ]),
   ],
 };

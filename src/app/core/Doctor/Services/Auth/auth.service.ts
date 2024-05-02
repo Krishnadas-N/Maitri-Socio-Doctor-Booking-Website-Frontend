@@ -51,25 +51,15 @@ export class AuthService {
   
 
   registerAdditional(doctorData:ConsultationRegistrationFormModel):Observable<any>{
-    const formData = new FormData();
-    
-    formData.append('consultationFee[0]', doctorData.consultationFee.toString()); // Convert to string
-    formData.append('bio', doctorData.bio);
-    formData.append('profilePic', doctorData.profilePic);
-  
-    doctorData.availability.forEach((availabilityGroup, index) => {
-      formData.append(`availability[${index}].dayOfWeek`, availabilityGroup.dayOfWeek);
-      formData.append(`availability[${index}].startTime`, availabilityGroup.startTime);
-      formData.append(`availability[${index}].endTime`, availabilityGroup.endTime);
-    });
+    console.log(doctorData);
+    return this.http.post<any>(`${this.doctorUrl}/complete-additional-info`,doctorData);
+  }
 
-    doctorData.typesOfConsultation.forEach((value, index) => {
-      const type = value ? ['video', 'chat', 'clinic'][index] : '';
-      formData.append(`typesOfConsultation[${index}]`, type);
-    });
-  
-    formData.append('maxPatientsPerDay', doctorData.maxPatientsPerDay.toString())
-    return this.http.post<any>(`${this.doctorUrl}/complete-additional-info`,formData);
+  addProfilePic(imageFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('profilePic', imageFile);
+
+    return this.http.patch(`${this.doctorUrl}/change-profile-pic`, formData);
   }
 
   resendOtp():Observable<any>{

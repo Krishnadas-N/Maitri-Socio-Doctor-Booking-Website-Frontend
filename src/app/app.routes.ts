@@ -10,6 +10,8 @@ import { RoleGuardService } from './shared/Services/AuthService/role-guard.servi
 import { UserHomeComponent } from './core/User/Components/User-Home/User-Home.component';
 import { DoctorFeedMainComponent } from './core/Doctor/Components/Doctor-Feed/doctor-feed-main/doctor-feed-main.component';
 import { EditPostComponent } from './core/Doctor/Components/Doctor-Feed/edit-post/edit-post.component';
+import { VideoCallComponent } from './shared/Components/video-call/video-call.component';
+
 
 
 
@@ -59,7 +61,48 @@ export const routes: Routes = [
         path:'find-doctors',
         loadComponent: ()=>
           import('./core/User/Components/doctor-listing/doctor-listing.component').then(m=>m.DoctorListingComponent)
-      }
+      },
+      {
+        path:'get-doctor/:id',
+        loadComponent: ()=>
+          import('./core/User/Components/doctor-profile-page/doctor-profile-page.component').then(m=>m.DoctorProfilePageComponent)
+      },
+      {
+        path:'book-appoinment/:id',
+        loadComponent :()=>
+          import('./core/User/Components/appoinment-slot-booking/appoinment-slot-booking.component').then(m=>m.AppoinmentSlotBookingComponent)
+      },
+
+      {
+        path:'checkout/:appoinmentId',
+        loadComponent: ()=>
+          import('./core/User/Components/booking-checkout-page/booking-checkout-page.component').then(m=>m.BookingCheckoutPageComponent)
+
+      },
+      {
+        path:'booking-confirmation/:id',
+        loadComponent:()=>
+          import('./core/User/Components/payment-confirmation/payment-confirmation.component').then(m=>m.PaymentConfirmationComponent)
+      },
+      {
+        path:'chats',
+        loadComponent:()=>
+          import('./shared/Components/chat-Component/chat-Component.component').then(m=>m.ChatComponentComponent),
+        data: { userType: 'user' },
+        children:[
+          {
+            path:':id',
+            loadComponent:()=>import('./shared/Components/chatRoom/chatRoom.component').then(mod=>mod.ChatRoomComponent),
+            data: { userType: 'user' },
+          }
+        ]
+      },
+      
+      {
+      path:'video-consult',
+      component:VideoCallComponent
+      },
+      
     ],
   },
   {
@@ -114,9 +157,44 @@ export const routes: Routes = [
                 './core/Doctor/Components/Doctor-Feed/doctor-my-feed/doctor-my-feed.component'
               ).then((m) => m.DoctorMyFeedComponent),
           },
-        
+          {
+            path:'p/:id',
+            loadComponent: () =>
+              import(
+                './shared/Components/postComment/postComment.component'
+              ).then((m) => m.PostCommentComponent),
+          }
         ],
       },
+      {
+        path:'schedule-timings',
+        loadComponent :()=> import('./core/Doctor/Components/schedule-timings/schedule-timings.component'
+         ).then((m)=>m.ScheduleTimingsComponent)
+      },
+      {
+        path:'profile',
+        loadComponent :()=> import('./core/Doctor/Components/settingsPage/settingsPage.component'
+      ).then((m)=>m.SettingsPageComponent)
+      },
+      {
+        path:'appoinments',
+        loadComponent :()=> 
+            import('./core/Doctor/Components/AppoinmentListing/AppoinmentListing.component').then(m=>m.AppoinmentListingComponent)
+      },
+      {
+        path:'chats',
+        loadComponent:()=>
+          import('./shared/Components/chat-Component/chat-Component.component').then(m=>m.ChatComponentComponent),
+        data: { userType: 'doctor' },
+        children:[
+          {
+            path:':id',
+            loadComponent:()=>import('./shared/Components/chatRoom/chatRoom.component').then(mod=>mod.ChatRoomComponent),
+            data: { userType: 'doctor' },
+          }
+        ]
+      }
+      
     ],
   },
   {

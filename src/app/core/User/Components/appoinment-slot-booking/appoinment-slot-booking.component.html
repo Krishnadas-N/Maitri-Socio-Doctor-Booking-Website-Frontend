@@ -1,0 +1,198 @@
+<!-- https://play.tailwindcss.com/hEFwFarfTs -->
+
+<div class="mb-6">
+
+<div
+class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6 px-4 py-8 border-2  border-gray-400 dark:border-gray-400 shadow-lg rounded-lg">
+
+<span class="absolute text-xs font-medium top-0 left-0 rounded-br-lg rounded-tl-lg px-2 py-1 bg-primary-100 dark:bg-gray-900 dark:text-gray-300 border-gray-400 dark:border-gray-400 border-b-2 border-r-2 border-dashed ">
+    Doctor
+</span>
+
+<div class="w-full flex justify-center sm:justify-start sm:w-auto">
+    <img class="object-cover w-20 h-20 mt-3 mr-3 rounded-full" [src]="doctorDetails&& doctorDetails.profilePic ?doctorDetails.profilePic:'' ">
+</div>
+
+<div class="w-full sm:w-auto flex flex-col items-center sm:items-start">
+
+    <p class="font-display mb-2 text-lg font-semibold dark:text-gray-500" itemprop="author">
+        {{doctorDetails.firstName}} {{doctorDetails.lastName}}
+    </p>
+
+    <!-- <div class="mb-4 md:text-lg text-gray-400">
+        <p> {{doctorDetails.bio}}</p>
+    </div> -->
+    <p class="text-black mb-2 ">
+      {{ getSpecializationName(doctorDetails.specialization) }}
+    </p>
+    
+    <div class="flex gap-4">
+
+      <p class="text-black text-center sm:text-left">
+        <span *ngFor="let fee of doctorDetails.consultationFee">
+          <ng-container *ngIf="fee.type === 'video'">
+            <i class="fas fa-video mr-1"></i> Video: ₹{{ fee.fee }}
+          </ng-container>
+          <ng-container *ngIf="fee.type === 'chat'">
+            <i class="fas fa-comment mr-1 ml-2"></i> Chat: ₹{{ fee.fee }}
+          </ng-container>
+        </span>
+      </p>
+      <p class="text-black text-center sm:text-left" >
+        <span *ngFor="let fee of doctorDetails.consultationFee">
+          <ng-container *ngIf="fee.type === 'clinic'">
+            <i class="fas fa-hospital mr-1"></i> Clinic: ₹{{ fee.fee }}
+          </ng-container>
+        </span>
+      </p>
+    </div>
+</div>
+
+</div>
+
+
+<div class="p-3 bg-gray-100">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="col-md-3 col-sm-12 mt-3 info-part border-r border-gray-200">
+  <p class="py-2 border-b border-gray-200 font-semibold">Would you like to schedule an Interview? Pick a Type of consultation</p>
+  <div class="icon-box">
+    <div class="flex gap-3" [routerLink]="'/get-doctor/'+doctorDetails._id">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path d="M320 336c0 8.84-7.16 16-16 16h-96c-8.84 0-16-7.16-16-16v-48H0v144c0 25.6 22.4 48 48 48h416c25.6 0 48-22.4 48-48V288H320v48zm144-208h-80V80c0-25.6-22.4-48-48-48H176c-25.6 0-48 22.4-48 48v48H48c-25.6 0-48 22.4-48 48v80h512v-80c0-25.6-22.4-48-48-48zm-144 0H192V96h128v32z"></path>
+      </svg>
+      <p>With Doctor {{doctorDetails.firstName}} {{doctorDetails.lastName}}</p>
+    </div>
+    <!-- <div class="flex gap-3">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"></path>
+      </svg>
+      <p>30 Min</p>
+    </div>
+    <div class="flex gap-3">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path d="M444.52 3.52L28.74 195.42c-47.97 22.39-31.98 92.75 19.19 92.75h175.91v175.91c0 51.17 70.36 67.17 92.75 19.19l191.9-415.78c15.99-38.39-25.59-79.97-63.97-63.97z"></path>
+      </svg>
+      <p>Sylhet, Bangladesh<br><span class="form-text">1020BD, Amertam, NorthEast,Srimongol</span></p>
+    </div>
+    <div class="flex gap-3">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path>
+      </svg>
+      <p>Zoom Meeting</p>
+    </div>
+    <div class="flex gap-3">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V192H0v272zm320-196c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12v-40zm0 128c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12v-40zM192 268c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12v-40zm0 128c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12v-40zM64 268c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12v-40zm0 128c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12v-40zM400 64h-48V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48H160V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48H48C21.5 64 0 85.5 0 112v48h448v-48c0-26.5-21.5-48-48-48z"></path>
+      </svg>
+      <p></p>
+    </div> -->
+
+    <div class="flex gap-3 mt-5">
+      <p class="text-lg font-semibold">Select the Consultaion Type</p>
+    </div>
+
+    <div class="flex flex-col gap-3 mt-3 p-2">
+      <ng-container *ngFor="let type of doctorDetails.typesOfConsultation">
+        <button 
+          class="w-ful text-blue-500 border border-blue-500 py-2 px-4 rounded-lg hover:bg-blue-500 hover:text-white hover:border-transparent transition duration-300"
+          (click)="selectConsultation(type)"  [ngClass]="{'bg-blue-500 text-white': appoinMentDetail.typeofConsultaion === type,'bg-white': appoinMentDetail.typeofConsultaion !== type}"
+        >
+          <span>
+            <i [ngClass]="getIconClass(type)"></i>
+          </span>
+          {{ type | titlecase }} Consultation
+        </button>
+      </ng-container>
+    </div>
+    
+  </div>
+</div>
+
+    <div class="col-md-5 col-sm-12 mt-3 border-r border-gray-200">
+  <p class="py-2 border-b border-gray-200 font-semibold">Pick a Time  </p>
+  <div class="info-date-card grid grid-cols-2 gap-4 p-3">
+  
+      
+      <div *ngFor="let date of dates" class="mb-3">
+        <div 
+        class="p-3 mb-3 rounded-lg text-center border border-blue-500 hover:cursor-pointer"
+        [ngClass]="{
+          'text-blue-500': this.appoinMentDetail.bookingDate !== date,
+          'bg-blue-500 text-white':  this.appoinMentDetail.bookingDate === date
+        }"
+        (click)="selectDate(date)"
+      >
+          <div class="select-month text-lg">{{ date | date: 'MMMM yyyy' }}</div>
+          <div class="select-day-num text-3xl font-bold">{{ date | date: 'dd' }}</div>
+          <div class="select-month">{{ date | date: 'EEEE' }}</div>
+        </div>
+      </div>
+   
+ 
+  </div>
+</div>
+
+    <div class="col-md-4 col-sm-12 mt-3">
+  <p class="py-2 border-b border-gray-200 info-head-date">Selected -  02:00 PM To 02:30 PM</p>
+  <div class="select-time-div">
+    <h4 class="text-xl font-semibold mb-2">Morning Time <span class="text-secondary text-sm">(8AM - 12PM)</span></h4>
+  <div class="grid grid-cols-2 gap-4 text-center">
+    <!-- Morning Slots -->
+    <ng-container *ngIf="getMorningSlots().length > 0; else morningNotAvailable">
+      <div *ngFor="let slot of getMorningSlots();let i=index">
+        <button 
+        type="button"
+        [disabled]="isSlotBooked(slot)"
+        [ngClass]="{'bg-blue-500 text-white': appoinMentDetail.slotTime === slot, 'bg-white text-black': appoinMentDetail.slotTime !== slot}"
+        class="ant-btn ant-btn-default ant-btn-sm mb-3 border border-blue-500   hover:text-blue-400 px-3 py-2 rounded-lg"
+        (click)="selectSlot(slot)"
+      >{{ slot }}
+    </button>
+
+      </div>
+    </ng-container>
+    <ng-template #morningNotAvailable>
+      <div class="text-red-600 font-semibold bg-red-100 p-3 rounded-md">
+        Not Available
+      </div>
+    </ng-template>
+    
+  </div>
+  <div class="select-time-div mt-6">
+    <h4 class="text-xl font-semibold mb-2">After Noon Time <span class="text-secondary text-sm">(1PM - 5PM)</span></h4>
+    <div class="grid grid-cols-2 gap-4 text-center">
+      <!-- Afternoon Slots -->
+      <ng-container *ngIf="getAfternoonSlots().length > 0; else afternoonNotAvailable">
+        <div *ngFor="let slot of getAfternoonSlots();let i=index">
+          <button 
+          type="button"
+          [disabled]="isSlotBooked(slot)"
+          class="ant-btn ant-btn-default ant-btn-sm mb-3 border border-blue-500 px-3 py-2 rounded-lg"
+          [ngClass]="{'bg-blue-500 text-white': appoinMentDetail.slotTime === slot, 'bg-white text-black': appoinMentDetail.slotTime !== slot}"
+        (click)="selectSlot(slot)"
+        >{{ slot }}
+      </button>
+        </div>
+      </ng-container>
+      <ng-template #afternoonNotAvailable>
+        <div class="text-red-600 font-semibold bg-red-100 p-3 rounded-md">
+          Not Available
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+
+
+
+</div>
+<div class="flex justify-end mt-5">
+  <div><!-- Your content here --></div>
+  <button class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md" (click)="saveAppoinmentDetails()">
+      Next <i class="fas fa-arrow-right ml-2"></i><i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
+  </button>
+</div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Doctor } from '../../../../store/Doctor/doctor.model'; 
+import { FindDoctorsRequest } from '../../../../shared/Models/userSide.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class DoctorService {
   constructor(private http: HttpClient) {}
 
   getDoctors(page: number=1, pageSize: number=10, searchQuery: string=''): Observable<any> {
+    
     let url = `${this.apiUrl}/get-doctors`;
     if (page && pageSize) {
       url += `?page=${page}&pageSize=${pageSize}`;
@@ -41,5 +43,20 @@ export class DoctorService {
     const url = `${this.apiUrl}/get-currentDocotor`;
     return this.http.get<any>(url);
   }
+
+  saveSlots(selectedSlots: { date: Date; slots: string[]; }[]): Observable<any>{
+    console.log(selectedSlots);
+    return this.http.post<any>(`${this.apiUrl}/save-slots`,{ selectedSlots });
+  }
  
+  getDoctorAppoinments(page: number, pageSize: number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/get-doctor-appoinments?page=${page}&pageSize=${pageSize}`);
+  }
+
+  changeStatus(status:string,appoinmentId:string):Observable<any>{
+    return this.http.put(`${this.apiUrl}/change-appoinmentStatus/${appoinmentId}`,{status})
+  }
+
+
+
 }

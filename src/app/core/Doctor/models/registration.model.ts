@@ -37,9 +37,11 @@ export interface ProfessionalRegistrationFormModel {
   }
   
   export interface ConsultationRegistrationFormModel {
-    consultationFee: number;
+    consultationFee:[{
+      type:"video"|"chat"|"clinic";
+      fee:number;
+    }];
     availability: Availability[];
-    profilePic: File;
     bio: string;
     typesOfConsultation: boolean[];
     maxPatientsPerDay: number;

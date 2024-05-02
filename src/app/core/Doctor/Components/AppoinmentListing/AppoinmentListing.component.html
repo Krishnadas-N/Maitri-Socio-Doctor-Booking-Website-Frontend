@@ -1,277 +1,72 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
-<div class="flex h-full flex-col">
-  <header class="relative z-40 flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6">
-    <h1 class="text-lg font-semibold text-gray-900">
-      <time datetime="2022-01">January 2022</time>
-    </h1>
-    <div class="flex items-center">
-      <div class="flex items-center rounded-md shadow-sm md:items-stretch">
-        <button type="button" class="flex items-center justify-center rounded-l-md border border-r-0 border-gray-300 bg-white py-2 pl-3 pr-4 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:px-2 md:hover:bg-gray-50">
-          <span class="sr-only">Previous month</span>
-          <!-- Heroicon name: solid/chevron-left -->
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
-        </button>
-        <button type="button" class="hidden border-t border-b border-gray-300 bg-white px-3.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:relative md:block">Today</button>
-        <span class="relative -mx-px h-5 w-px bg-gray-300 md:hidden"></span>
-        <button type="button" class="flex items-center justify-center rounded-r-md border border-l-0 border-gray-300 bg-white py-2 pl-4 pr-3 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:px-2 md:hover:bg-gray-50">
-          <span class="sr-only">Next month</span>
-          <!-- Heroicon name: solid/chevron-right -->
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-          </svg>
-        </button>
+<div class="flex h-full m-4 p-3 flex-col">
+  <header class="flex flex-col gap-1">
+
+    <div class="flex justify-between border-b-2 mb-2 border-gray-700 px-4 py-2 ">
+      <div>
+          <h1 class="text-xl font-bold text-gray-800 dark:text-gray-800">Appointments</h1>
       </div>
-      <div class="hidden md:ml-4 md:flex md:items-center">
-        <div class="relative">
-          <button type="button" class="flex items-center rounded-md border border-gray-300 bg-white py-2 pl-3 pr-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">
-            Week view
-            <!-- Heroicon name: solid/chevron-down -->
-            <svg class="ml-2 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      
+      <div class="flex items-center space-x-4">
+        <div class="pt-2 relative mx-auto text-gray-600">
+          <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+            type="search" name="search" placeholder="Search">
+          <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+            <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+              viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+              width="512px" height="512px">
+              <path
+                d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
             </svg>
           </button>
-
-          <!--
-            Dropdown menu, show/hide based on menu state.
-
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
-          <div class="absolute right-0 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-            <div class="py-1" role="none">
-              <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-              <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Day view</a>
-              <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Week view</a>
-              <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Month view</a>
-              <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Year view</a>
-            </div>
-          </div>
-        </div>
-        <div class="ml-6 h-6 w-px bg-gray-300"></div>
-        <button type="button" class="ml-6 rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add event</button>
-      </div>
-      <div class="relative ml-6 md:hidden">
-        <button type="button" class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500" id="menu-0-button" aria-expanded="false" aria-haspopup="true">
-          <span class="sr-only">Open menu</span>
-          <!-- Heroicon name: solid/dots-horizontal -->
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-          </svg>
-        </button>
-
-        <!--
-          Dropdown menu, show/hide based on menu state.
-
-          Entering: "transition ease-out duration-100"
-            From: "transform opacity-0 scale-95"
-            To: "transform opacity-100 scale-100"
-          Leaving: "transition ease-in duration-75"
-            From: "transform opacity-100 scale-100"
-            To: "transform opacity-0 scale-95"
-        -->
-        <div class="absolute right-0 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-0-button" tabindex="-1">
-          <div class="py-1" role="none">
-            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-0-item-0">Create event</a>
-          </div>
-          <div class="py-1" role="none">
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-0-item-1">Go to today</a>
-          </div>
-          <div class="py-1" role="none">
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-0-item-2">Day view</a>
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-0-item-3">Week view</a>
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-0-item-4">Month view</a>
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-0-item-5">Year view</a>
-          </div>
         </div>
       </div>
+  </div>
+
+  
+    <div class=" flex justify-between">
+        <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+          <li class="me-2" *ngFor="let key of getObjectKeys(countsObject)">
+            <a href="#" class="inline-block px-4 py-3 text-white bg-blue-600 rounded-lg active" aria-current="page">
+              {{ key | titlecase }} ({{ countsObject[key] }})
+            </a>
+          </li>
+        </ul>
+        <div>
+          <div class="flex  rounded-md shadow-sm md:items-stretch  ">
+            <mat-form-field class="w-full">
+              <mat-label>Filter by Range</mat-label>
+              <mat-date-range-input [rangePicker]="picker" class="w-full">
+                <input matStartDate placeholder="From Date" class="form-input w-full" >
+                <input matEndDate placeholder="To Date" class="form-input w-full" >
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </div>
     </div>
+
   </header>
-  <div class="flex flex-auto flex-col overflow-auto bg-white">
-    <div style="width: 165%" class="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full">
-      <div class="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8">
-        <div class="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">M <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">10</span></button>
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">T <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">11</span></button>
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">W <span class="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">12</span></button>
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">T <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">13</span></button>
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">F <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">14</span></button>
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">S <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">15</span></button>
-          <button type="button" class="flex flex-col items-center pt-2 pb-3">S <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">16</span></button>
-        </div>
 
-        <div class="-mr-px hidden grid-cols-7 divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 sm:grid">
-          <div class="col-end-1 w-14"></div>
-          <div class="flex items-center justify-center py-3">
-            <span>Mon <span class="items-center justify-center font-semibold text-gray-900">10</span></span>
-          </div>
-          <div class="flex items-center justify-center py-3">
-            <span>Tue <span class="items-center justify-center font-semibold text-gray-900">11</span></span>
-          </div>
-          <div class="flex items-center justify-center py-3">
-            <span class="flex items-baseline">Wed <span class="ml-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">12</span></span>
-          </div>
-          <div class="flex items-center justify-center py-3">
-            <span>Thu <span class="items-center justify-center font-semibold text-gray-900">13</span></span>
-          </div>
-          <div class="flex items-center justify-center py-3">
-            <span>Fri <span class="items-center justify-center font-semibold text-gray-900">14</span></span>
-          </div>
-          <div class="flex items-center justify-center py-3">
-            <span>Sat <span class="items-center justify-center font-semibold text-gray-900">15</span></span>
-          </div>
-          <div class="flex items-center justify-center py-3">
-            <span>Sun <span class="items-center justify-center font-semibold text-gray-900">16</span></span>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-auto">
-        <div class="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-gray-100"></div>
-        <div class="grid flex-auto grid-cols-1 grid-rows-1">
-          <!-- Horizontal lines -->
-          <div class="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100" style="grid-template-rows: repeat(48, minmax(3.5rem, 1fr))">
-            <div class="row-end-1 h-7"></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">12AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">1AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">2AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">3AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">4AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">5AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">6AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">7AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">8AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">9AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">10AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">11AM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">12PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">1PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">2PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">3PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">4PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">5PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">6PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">7PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">8PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">9PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">10PM</div>
-            </div>
-            <div></div>
-            <div>
-              <div class="sticky left-0 z-20 -mt-2.5 -ml-14 w-14 pr-2 text-right text-xs leading-5 text-gray-400">11PM</div>
-            </div>
-            <div></div>
-          </div>
-
-          <!-- Vertical lines -->
-          <div class="col-start-1 col-end-2 row-start-1 hidden grid-cols-7 grid-rows-1 divide-x divide-gray-100 sm:grid sm:grid-cols-7">
-            <div class="col-start-1 row-span-full"></div>
-            <div class="col-start-2 row-span-full"></div>
-            <div class="col-start-3 row-span-full"></div>
-            <div class="col-start-4 row-span-full"></div>
-            <div class="col-start-5 row-span-full"></div>
-            <div class="col-start-6 row-span-full"></div>
-            <div class="col-start-7 row-span-full"></div>
-            <div class="col-start-8 row-span-full w-8"></div>
-          </div>
-
-          <!-- Events -->
-          <ol class="col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7 sm:pr-8" style="grid-template-rows: 1.75rem repeat(288, minmax(0, 1fr)) auto">
-            <li class="relative mt-px flex sm:col-start-3" style="grid-row: 74 / span 12">
-              <a href="#" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">
-                <p class="order-1 font-semibold text-blue-700">Breakfast</p>
-                <p class="text-blue-500 group-hover:text-blue-700"><time datetime="2022-01-12T06:00">6:00 AM</time></p>
-              </a>
-            </li>
-            <li class="relative mt-px flex sm:col-start-3" style="grid-row: 92 / span 30">
-              <a href="#" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-pink-50 p-2 text-xs leading-5 hover:bg-pink-100">
-                <p class="order-1 font-semibold text-pink-700">Flight to Paris</p>
-                <p class="text-pink-500 group-hover:text-pink-700"><time datetime="2022-01-12T07:30">7:30 AM</time></p>
-              </a>
-            </li>
-            <li class="relative mt-px hidden sm:col-start-6 sm:flex" style="grid-row: 122 / span 24">
-              <a href="#" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-gray-100 p-2 text-xs leading-5 hover:bg-gray-200">
-                <p class="order-1 font-semibold text-gray-700">Meeting with design team at Disney</p>
-                <p class="text-gray-500 group-hover:text-gray-700"><time datetime="2022-01-15T10:00">10:00 AM</time></p>
-              </a>
-            </li>
-          </ol>
-        </div>
-      </div>
+  <div class="flex flex-auto flex-col gap-4 overflow-auto ">
+    <div *ngFor="let data of doctorAppoinments.appointments">
+    <app-appoinmentList [appoinmentDetails]="data" (viewprofile)="viewDetail($event)" [userType]="userType" ></app-appoinmentList>
     </div>
+    <app-user-Pagination
+    [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            [totalCount]="totalCount"
+            [pageSize]="pageSize"
+            (prevPage)="onPreviousPage()"
+            (nextPage)="onNextPage()"
+            (goToPage)="onPageChange($event)"
+            ></app-user-Pagination>
   </div>
+ 
+ 
+
 </div>
 
 
@@ -285,147 +80,3 @@
 
 
 
-<div class="fixed z-50 inset-0 overflow-hidden" role="dialog" aria-modal="true">
-  <div class="absolute inset-0 overflow-hidden">
-    <!--
-      Background overlay, show/hide based on slide-over state.
-
-      Entering: "ease-in-out duration-500"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in-out duration-500"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
-    <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-      <!--
-        Slide-over panel, show/hide based on slide-over state.
-
-        Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-          From: "translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-          From: "translate-x-0"
-          To: "translate-x-full"
-      -->
-      <div class="pointer-events-auto relative w-96">
-        <!--
-          Close button, show/hide based on slide-over state.
-
-          Entering: "ease-in-out duration-500"
-            From: "opacity-0"
-            To: "opacity-100"
-          Leaving: "ease-in-out duration-500"
-            From: "opacity-100"
-            To: "opacity-0"
-        -->
-        <div class="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
-          <button type="button" class="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
-            <span class="sr-only">Close panel</span>
-            <!-- Heroicon name: outline/x -->
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <!-- Slide-over panel, show/hide based on slide-over state. -->
-        <div class="h-full overflow-y-auto bg-white p-8">
-          <div class="space-y-6 pb-16">
-            <div>
-              <div class="aspect-w-10 aspect-h-7 block w-full overflow-hidden rounded-lg">
-                <img src="https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80" alt="" class="object-cover">
-              </div>
-              <div class="mt-4 flex items-start justify-between">
-                <div>
-                  <h2 class="text-lg font-medium text-gray-900"><span class="sr-only">Details for </span>IMG_4985.HEIC</h2>
-                  <p class="text-sm font-medium text-gray-500">3.9 MB</p>
-                </div>
-                <button type="button" class="ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <!-- Heroicon name: outline/heart -->
-                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                  <span class="sr-only">Favorite</span>
-                </button>
-              </div>
-            </div>
-            <div>
-              <h3 class="font-medium text-gray-900">Information</h3>
-              <dl class="mt-2 divide-y divide-gray-200 border-t border-b border-gray-200">
-                <div class="flex justify-between py-3 text-sm font-medium">
-                  <dt class="text-gray-500">Uploaded by</dt>
-                  <dd class="text-gray-900">Marie Culver</dd>
-                </div>
-                <div class="flex justify-between py-3 text-sm font-medium">
-                  <dt class="text-gray-500">Created</dt>
-                  <dd class="text-gray-900">June 8, 2020</dd>
-                </div>
-                <div class="flex justify-between py-3 text-sm font-medium">
-                  <dt class="text-gray-500">Last modified</dt>
-                  <dd class="text-gray-900">June 8, 2020</dd>
-                </div>
-                <div class="flex justify-between py-3 text-sm font-medium">
-                  <dt class="text-gray-500">Dimensions</dt>
-                  <dd class="text-gray-900">4032 x 3024</dd>
-                </div>
-                <div class="flex justify-between py-3 text-sm font-medium">
-                  <dt class="text-gray-500">Resolution</dt>
-                  <dd class="text-gray-900">72 x 72</dd>
-                </div>
-              </dl>
-            </div>
-            <div>
-              <h3 class="font-medium text-gray-900">Description</h3>
-              <div class="mt-2 flex items-center justify-between">
-                <p class="text-sm italic text-gray-500">Add a description to this image.</p>
-                <button type="button" class="-mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <!-- Heroicon name: solid/pencil -->
-                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                  </svg>
-                  <span class="sr-only">Add description</span>
-                </button>
-              </div>
-            </div>
-            <div>
-              <h3 class="font-medium text-gray-900">Shared with</h3>
-              <ul role="list" class="mt-2 divide-y divide-gray-200 border-t border-b border-gray-200">
-                <li class="flex items-center justify-between py-3">
-                  <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=1024&h=1024&q=80" alt="" class="h-8 w-8 rounded-full">
-                    <p class="ml-4 text-sm font-medium text-gray-900">Aimee Douglas</p>
-                  </div>
-                  <button type="button" class="ml-6 rounded-md bg-white text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Remove<span class="sr-only"> Aimee Douglas</span></button>
-                </li>
-                <li class="flex items-center justify-between py-3">
-                  <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=oilqXxSqey&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-8 w-8 rounded-full">
-                    <p class="ml-4 text-sm font-medium text-gray-900">Andrea McMillan</p>
-                  </div>
-                  <button type="button" class="ml-6 rounded-md bg-white text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Remove<span class="sr-only"> Andrea McMillan</span></button>
-                </li>
-                <li class="flex items-center justify-between py-2">
-                  <button type="button" class="group -ml-1 flex items-center rounded-md bg-white p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <span class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-gray-400">
-                      <!-- Heroicon name: solid/plus-sm -->
-                      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-                      </svg>
-                    </span>
-                    <span class="ml-4 text-sm font-medium text-indigo-600 group-hover:text-indigo-500">Share</span>
-                  </button>
-                </li>
-              </ul>
-            </div>
-            <div class="flex">
-              <button type="button" class="flex-1 rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Download</button>
-              <button type="button" class="ml-3 flex-1 rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

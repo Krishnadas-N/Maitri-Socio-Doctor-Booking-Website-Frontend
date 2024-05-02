@@ -1,0 +1,24 @@
+/* Add hover effects for each appointment status */
+.text-yellow-700:hover {
+    background-color: #ffed4a; /* Yellow background on hover */
+    color: #444; /* Darker text color on hover */
+  }
+  
+  .text-green-700:hover {
+    background-color: #48bb78; /* Green background on hover */
+    color: #fff; /* White text color on hover */
+  }
+  
+  .text-blue-700:hover {
+    background-color: #4299e1; /* Blue background on hover */
+    color: #fff; /* White text color on hover */
+  }
+  
+  .text-red-700:hover {
+    background-color: #f56565; /* Red background on hover */
+    color: #fff; /* White text color on hover */
+  }
+  span {
+    display: block;
+  }
+  

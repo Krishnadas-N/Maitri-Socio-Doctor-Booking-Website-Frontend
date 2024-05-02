@@ -1,0 +1,8 @@
+.light-blue-border {
+    border-color: #6EE7B7; /* Light blue border color */
+  }
+  
+  .light-blue-border:hover {
+    border-color: #2563EB; /* Dark blue border color on hover */
+  }
+  

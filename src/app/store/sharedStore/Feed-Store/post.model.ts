@@ -1,6 +1,7 @@
 // src/app/store/posts/post.model.ts
 export interface Post {
    _id:string;
+   doctorId:{_id:string,profilePic:string,firstName:string} | string;
    doctorName: string; 
    doctorProfileImage:string;
     title: string;
@@ -10,6 +11,7 @@ export interface Post {
     createdAt: Date;
     likes: Like[];
     comments: Comment[];
+    isLikedByUser:boolean;
     reportedBy?: Report[];
     isBlocked?: boolean;
     isArchived?: boolean;
@@ -56,4 +58,12 @@ export interface Post {
     content: string;
     media?: File[];
     tags?: string[];
+}
+
+
+
+export interface PostModel{
+  post:Post;
+  isLikedUser:boolean,
+  isPermissionToCrud:boolean
 }

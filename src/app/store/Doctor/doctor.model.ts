@@ -1,3 +1,6 @@
+
+
+export type Specialization = string | { name: string, _id: string };
 export interface Doctor {
     _id?: string;
     firstName: string;
@@ -7,17 +10,17 @@ export interface Doctor {
     email: string;
     phone: number;
     address: {
-      street?: string;
+      state?: string;
       city?: string;
       zipcode?: number;
       country?: string;
     };
-    specialization: string; // Assuming you have a separate model for specialization
+    specialization: Specialization;
     education: { degree: string; institution: string; year: string }[];
     experience: string;
     certifications?: string[];
     languages: string[];
-    availability: { dayOfWeek: string; startTime: string; endTime: string }[];
+    availability: { dayOfWeek: string; startTime: string; endTime: string ,isAvailable:boolean}[];
     profilePic: string;
     bio: string;
     registrationStepsCompleted:number,
@@ -25,6 +28,7 @@ export interface Doctor {
       type:"video"|"chat"|"clinic";
       fee:number;
     }],
+    selectedSlots?: { date: Date; slots: string[]; }[];
     createdAt?: Date;
     updatedAt?: Date;
     followers?: string[];
@@ -36,3 +40,4 @@ export interface Doctor {
     isBlocked?:boolean
   }
   
+ 

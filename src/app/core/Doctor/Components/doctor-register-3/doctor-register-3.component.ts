@@ -4,32 +4,29 @@ import { validateImageFileType } from '../../../../shared/validators/imageValida
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ErrorComponentComponent } from '../../../../shared/Components/error-component/error-component.component';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Services/Auth/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
-import { registerAdditionalRequest } from '../../../../store/Doctor/doctor.action';
-import { FormValidator } from '../../../../shared/validators/FromValidators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-doctor-register-3',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule,MatFormFieldModule,ErrorComponentComponent],
+  imports: [ReactiveFormsModule,CommonModule,MatFormFieldModule],
   templateUrl: './doctor-register-3.component.html',
   styleUrl: './doctor-register-3.component.css'
 })
 export class DoctorRegister3Component {
   @Output() formValidityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() isLoading = new EventEmitter<boolean>(false);
+  selectedFile: File | null = null;
   consultationForm!: FormGroup;
   profileImage: string | ArrayBuffer | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private dialog: MatDialog,
-    private store: Store<AppState>,
-    private doctorAuthService: AuthService
+    private doctorAuthService: AuthService,
+    private toastr:ToastrService
   ) { }
 
   consultationFees = {
@@ -53,7 +50,6 @@ export class DoctorRegister3Component {
       availability: this.fb.array([
         this.createAvailabilityFormGroup()
       ]),
-      profilePic: ['', [Validators.required, Validators.email]],
       bio: ['', [Validators.required, Validators.minLength(20)]],
       maxPatientsPerDay: [10, [Validators.required, Validators.min(0), Validators.max(13)]],
     });
@@ -69,6 +65,7 @@ export class DoctorRegister3Component {
       type: [type]
     });
   }
+
   createConsultationFeeFormGroup(type: string): FormGroup {
     return this.fb.group({
       type: [type],
@@ -95,6 +92,14 @@ export class DoctorRegister3Component {
     return this.consultationForm.get('consultationFee') as FormArray;
   }
 
+  updateFee(index: number, event:any) {
+    const feeControl = this.consultationFeeControl.at(index).get('fee');
+    if (feeControl) {
+      feeControl.setValue(event.value);
+    }
+  }
+  
+
   createAvailabilityFormGroup(): FormGroup {
     return this.fb.group({
       dayOfWeek: ['', [Validators.required, Validators.pattern(/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)$/)]],
@@ -102,6 +107,7 @@ export class DoctorRegister3Component {
       endTime: ['', Validators.required]
     });
   }
+
   get availabilityControls(): FormArray {
     return this.consultationForm.get('availability') as FormArray;
   }
@@ -115,7 +121,7 @@ export class DoctorRegister3Component {
   addAvailability(): void {
     const availabilityArray = this.consultationForm.get('availability') as FormArray;
     if (availabilityArray.length === 5) {
-      this.openDialog();
+        this.toastr.warning('Adding more than 5 slots are not Allowed')
     } else {
       availabilityArray.push(this.createAvailabilityFormGroup());
     }
@@ -135,32 +141,44 @@ export class DoctorRegister3Component {
   }
 
 
-  previewImage(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.consultationForm.patchValue({
-        profilePic: file
-      });
-      const reader: FileReader = new FileReader();  
-      reader.onload = (e: ProgressEvent<FileReader>) => {  // Narrow event type
-        this.profileImage = e.target?.result || null;  // Use optional chaining
-      };
-      reader.readAsDataURL(file);
+ previewImage(event: any): void {
+  const file: File = event.target.files[0];
+  if (file) {
+    if (!file.type.startsWith('image/')) {
+      console.error('Invalid file type. Please select an image file.');
+      return;
+    }
+    this.selectedFile = file;
+    this.uploadImage();
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      this.profileImage = e.target?.result as string; // Casting result to string
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+  async uploadImage(): Promise<void> {
+    if (!this.selectedFile) {
+      console.error('No file selected!');
+      return;
+    }
+
+    try {
+      const response = await this.doctorAuthService.addProfilePic(this.selectedFile).toPromise();
+      console.log('Image uploaded successfully:', response);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      // Handle error
     }
   }
-  
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ErrorComponentComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 
    
   async onSubmit(): Promise<any> {
-    console.log("form trying to submit");
+  this.logErrors()
+    console.log("form trying to submit",JSON.stringify(this.consultationForm.value));
+    console.log('////////////////+', this.consultationForm.value);
     try {
       if (this.consultationForm.valid) {
         console.log('////////////////+', this.consultationForm.value);
@@ -170,7 +188,8 @@ export class DoctorRegister3Component {
         return response;
       } else {
         
-        throw new Error('Form validation failed');
+        this.consultationForm.markAllAsTouched();
+        throw new Error('Please check the form for errors')
       }
     } catch (error) {
       this.isLoading.emit(false);
@@ -179,5 +198,25 @@ export class DoctorRegister3Component {
     }
   }
   
+  logErrors(){
+    console.log('Form validity:', this.consultationForm.valid);
+console.log('Form errors:', this.consultationForm.errors);
+
+console.log('Types of consultation validity:', this.typesOfConsultation.valid);
+console.log('Types of consultation errors:', this.typesOfConsultation.errors);
+
+console.log('Consultation fee validity:', this.consultationForm.get('consultationFee')?.valid);
+console.log('Consultation fee errors:', this.consultationForm.get('consultationFee')?.errors);
+
+console.log('Availability validity:', this.availabilityControls.valid);
+console.log('Availability errors:', this.availabilityControls.errors);
+
+console.log('Bio validity:', this.bioControl?.valid);
+console.log('Bio errors:', this.bioControl?.errors);
+
+console.log('Max patients per day validity:', this.consultationForm.get('maxPatientsPerDay')?.valid);
+console.log('Max patients per day errors:', this.consultationForm.get('maxPatientsPerDay')?.errors);
+
+  }
 
 }

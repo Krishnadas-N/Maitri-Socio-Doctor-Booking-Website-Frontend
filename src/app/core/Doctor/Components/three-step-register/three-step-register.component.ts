@@ -12,14 +12,19 @@ import { GetCurrentdoctor, selectdoctorLoading } from '../../../../store/Doctor/
 import { Subscription } from 'rxjs';
 import { loadDoctor } from '../../../../store/Doctor/doctor.action';
 import { AuthService } from '../../../../shared/Services/AuthService/auth.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-three-step-register',
   standalone: true,
   imports: [ProgressiveBarComponent,
-    CommonModule,DoctorRegister2Component,DoctorRegister3Component,RouterLink],
+    CommonModule,DoctorRegister2Component,DoctorRegister3Component,RouterLink,
+    ToastModule
+  ],
   templateUrl: './three-step-register.component.html',
   styleUrl: './three-step-register.component.css',
+  providers:[MessageService],
   animations: [
     trigger('slideAnimation', [
       transition(':enter', [
@@ -45,7 +50,8 @@ export class ThreeStepRegisterComponent  implements OnInit,OnDestroy {
 
   constructor(private store: Store<AppState>,
     private router: Router,
-    private AuthService:AuthService
+    private AuthService:AuthService,
+    private messageService: MessageService
    ) {}
 
   handleFormValidityChange(isValid: boolean): void {
@@ -78,10 +84,15 @@ export class ThreeStepRegisterComponent  implements OnInit,OnDestroy {
     //   this.currentStep++;
     // }
   }
-  Complete(){
+  async Complete(){
     if (this.currentStep === 2) { 
+      try {
       this.waitloader = true; 
-      this.childComponentTwo.onSubmit();
+     await this.childComponentTwo.onSubmit();
+     this.currentStep++
+      } catch (error) {
+        this.messageService.add({ severity: 'error', summary: 'please Fill all fields', detail: 'Process incomplete', life: 3000 });
+    }
     }
   }
   getCurrentComponent(): any {
@@ -104,7 +115,7 @@ export class ThreeStepRegisterComponent  implements OnInit,OnDestroy {
           const registrationStepsCompleted = Number(doc.registrationStepsCompleted);
           if (registrationStepsCompleted === 1) {
             this.currentStep = 1;
-          } else if (registrationStepsCompleted === 2) {
+          } else if (registrationStepsCompleted === 2 ) {
             this.currentStep = 2;
           } else {
             this.handleUnauthenticated();

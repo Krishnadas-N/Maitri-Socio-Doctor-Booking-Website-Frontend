@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { AdminModel } from '../../../../store/Admin/admin.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +16,7 @@ export class AdminService {
     return this.http.get<any>(`${this.apiUrl}/admins`)
   }
 
-  addAdmin(admin: AdminModel): Observable<any> {
+  addAdmin(admin: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/admins`, admin)
   }
 

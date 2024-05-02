@@ -1,4 +1,3 @@
-import { AdminState } from '../Admin/admin.state';
 import { DoctorState } from '../Doctor/doctor.state';
 import { UserState } from '../User/user.state';
 import { PostsState } from '../sharedStore/Feed-Store/post.state';
@@ -9,5 +8,4 @@ export interface AppState {
   doctor: DoctorState;
   otp:OtpState;
   posts:PostsState;
-  admin:AdminState; 
 }

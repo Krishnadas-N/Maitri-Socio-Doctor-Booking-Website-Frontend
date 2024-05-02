@@ -32,9 +32,9 @@ export class FeedService {
     }
   
 
-  deletePost(postId: string): Observable<void> {
-    const url = `${this.apiUrl}/${postId}`;
-    return this.http.delete<void>(url);
+  deletePost(postId: string): Observable<any> {
+    const url = `${this.apiUrl}/p/${postId}`;
+    return this.http.delete<any>(url);
   }
   likePost(postId: string): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${postId}/like`, {});
@@ -55,5 +55,9 @@ export class FeedService {
 
   replyToComment(postId:string,commentId:string,content:string): Observable<any>{
      return this.http.post<any>(`${this.apiUrl}/${postId}/comment/reply`,{commentId,content})
+  }
+
+  getPostById(postId:string):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/p/${postId}`)
   }
 }

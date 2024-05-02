@@ -65,8 +65,9 @@
                           <div formArrayName="typesOfConsultation">
                             <div *ngFor="let control of typesOfConsultation.controls; let i = index">
                               <label class="text-sm mb-2 block">
-                                <input type="checkbox" [formControlName]="i" (change)="updateConsultationFees(typesOfConsultation.value)" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" />
                                 {{ control.value.type }}
+                                <input type="checkbox" [formControlName]="i" (change)="updateConsultationFees(typesOfConsultation.value)" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" />
+                                
                               </label>
                             </div>
                           </div>
@@ -74,8 +75,8 @@
                             <div *ngFor="let control of consultationFeeControl.controls; let i = index">
                               <div *ngIf="typesOfConsultation.controls[i]?.value">
                                 <label class="fee-label">
-                                  {{ control.value.type }} Fee:
-                                  <input type="number" [formControlName]="i" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" />
+                                 Enter {{ control.value.type }} Consultation Fee:
+                                  <input type="number" min="1" [formControlName]="i" (input)="updateFee(i, $event.target)" class="bg-gray-100 w-full text-sm px-4 py-3 rounded-md outline-blue-500" />
                                   <mat-error *ngIf="consultationFeeControl.at(i)?.invalid && consultationFeeControl.at(i)?.touched">
                                     Fee is required and must be greater than or equal to 0.
                                   </mat-error>

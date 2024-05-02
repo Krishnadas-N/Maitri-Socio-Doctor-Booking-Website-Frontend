@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Post } from '../../../store/sharedStore/Feed-Store/post.model';
+import { Post, PostModel } from '../../../store/sharedStore/Feed-Store/post.model';
 import { ImageModule } from 'primeng/image';
 import { PostCarouselComponent } from '../post-carousel/post-carousel.component';
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,7 @@ import { loadUser } from '../../../store/User/user.action';
 import { User } from '../../../store/User/user.model';
 import { GetCurrentUser } from '../../../store/User/user.selector';
 import { PostCommentComponent } from '../postComment/postComment.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'post-component',
   standalone:true,
@@ -19,19 +20,21 @@ import { PostCommentComponent } from '../postComment/postComment.component';
   styleUrls: ['./post-component.component.css']
 })
 export class PostComponent implements OnInit {
-  @Input() post!:Post;
+  @Input() postData!:PostModel;
+  post!:any;
   isCommentBoxHidden:boolean=false;
   currentUser!:any;
-  constructor(private store:Store<AppState>) { }
+  constructor(private store:Store<AppState>,private dialog: MatDialog) { }
   timeDifference!: string;
   isLiked: boolean=true;
   ngOnInit() {
+    this.post = this.postData.post;
+    console.log("Post data ",this.postData,this.post)
     this.calculateTimeDifference();
     this.loadCurrentUser();
     this.getCurentUser();
     this.isLiked = this.getLikedStatus();
-
-    console.log("Post data ",this.post)
+    
   }
   loadCurrentUser(){
     this.store.dispatch(loadUser())
@@ -39,7 +42,7 @@ export class PostComponent implements OnInit {
 
   getLikedStatus(): boolean {
     console.log(this.currentUser);
-    return this.post.likes.some(like => like.userId === this.currentUser._id);
+    return this.post.likes.some((like:any) => like.userId === this.currentUser._id);
   }
   getCurentUser(){
     this.store.select(GetCurrentUser).subscribe((data)=>{
@@ -73,8 +76,15 @@ export class PostComponent implements OnInit {
   }
 
   toggleCommentBoxVisibility() {
-    this.isCommentBoxHidden = !this.isCommentBoxHidden;
+    // this.isCommentBoxHidden = !this.isCommentBoxHidden;]
+    this.dialog.open(PostCommentComponent, {
+      width: '600px',
+      data: { postId:this.post._id }
+    });
   }
  
+  handleChilLike(event:any){
+    this.toggleLike()
+  }
 
 }

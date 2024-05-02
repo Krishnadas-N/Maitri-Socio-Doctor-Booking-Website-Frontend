@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { PostComponent } from '../../../../../shared/Components/post-component/post-component.component';
 import { AddPostComponent } from '../../../../../shared/Components/add-post/add-post.component';
 import { Post } from '../../../../../store/sharedStore/Feed-Store/post.model';
@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../store/GlobalStore/app.state';
 import { loadPosts } from '../../../../../store/sharedStore/Feed-Store/post.action';
 import { selectPosts } from '../../../../../store/sharedStore/Feed-Store/post.selector';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ProfileCardComponent } from '../../../../../shared/Components/profile-Card/profile-Card.component';
 import { loadDoctor } from '../../../../../store/Doctor/doctor.action';
 import { Doctor } from '../../../../../store/Doctor/doctor.model';
@@ -25,8 +25,10 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 export class DoctorFeedMainComponent implements OnInit {
   doctorDetail:Doctor | null = null;
   ngOnInit(): void {
+    if(isPlatformBrowser(this.platformId)){
     this.loadCurrentDoctor();
     this.getDoctor();
+    }
   }
   getDoctor(){
     this.store.select(GetCurrentdoctor).subscribe((data)=>{
@@ -43,6 +45,7 @@ export class DoctorFeedMainComponent implements OnInit {
   }
 
   constructor(private store:Store<AppState>,
-    private router:Router 
+    private router:Router ,
+    @Inject(PLATFORM_ID) public platformId :Object
   ){}
 }

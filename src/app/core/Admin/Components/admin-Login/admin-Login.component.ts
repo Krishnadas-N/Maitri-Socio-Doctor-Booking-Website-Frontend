@@ -1,22 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../store/GlobalStore/app.state';
-import { adminLogin } from '../../../../store/Admin/admin.action';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { AdminService } from '../../Services/Admin-Services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-Login',
-  standalone:true,
-  imports:[CommonModule,ReactiveFormsModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './admin-Login.component.html',
-  styleUrls: ['./admin-Login.component.css']
+  styleUrls: ['./admin-Login.component.css'],
 })
 export class AdminLoginComponent implements OnInit {
-
   AdminloginForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,private store:Store<AppState>) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private router:Router,
+    private adminService:AdminService,
+    private toastr:ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.AdminloginForm = this.formBuilder.group({
@@ -25,7 +35,6 @@ export class AdminLoginComponent implements OnInit {
     });
   }
 
-  
   get formControls() {
     return this.AdminloginForm.controls;
   }
@@ -35,8 +44,13 @@ export class AdminLoginComponent implements OnInit {
       return;
     }
     console.log(this.AdminloginForm.value);
-    this.store.dispatch(adminLogin(this.AdminloginForm.value))
-
+   this.adminService.login(this.AdminloginForm.value.email,this.AdminloginForm.value.password).subscribe(
+    (res)=>{
+      this.router.navigate(['/admin'])
+    },
+    (err)=>{
+      this.toastr.error(err)
+    }
+   )
   }
-
 }

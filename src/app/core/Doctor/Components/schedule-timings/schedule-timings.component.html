@@ -1,0 +1,102 @@
+<main class="flex-1 flex-col gap-4 p-4 shadow-lg ">
+  <!-- First section: Heading and Date Selection -->
+  <div class="bg-white m-1 rounded-sm p-4">
+    <div class="flex justify-between mt-2 mb-2">
+      <div class="flex gap-2">
+        <i class="fas fa-clock text-lg mr-2"></i>
+        <div class="text-lg font-bold">Schedule Timings For Seven Days</div>
+      </div>
+      <div class="mb-2">
+        <p>Time Duration</p>
+        <!-- Custom styled select box for time duration -->
+        <div class="relative inline-block w-40">
+          <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="1">1 hour</option>
+            <!-- Add more options for time duration as needed -->
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path fill="none" d="M0 0h20v20H0V0z"/>
+              <path d="M9.293 13.707a1 1 0 001.414 0L14 10.414V13a1 1 0 102 0V9a1 1 0 00-1-1h-4a1 1 0 100 2h2.586l-3.293 3.293a1 1 0 000 1.414z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="grid grid-cols-1 sm:grid-cols-7  gap-4">
+      <!-- Display single date with navigation arrows on small screens -->
+      <div class="relative sm:hidden">
+        <!-- Previous date arrow -->
+        <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full" (click)="prevDate()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <!-- Current date -->
+        <div class="block rounded-t overflow-hidden bg-white text-center hover:cursor-pointer w-full">
+          <div class="bg-red-500 text-white py-1">{{ currentDate?.name }}</div>
+          <div class="pt-1 border-l border-r">
+            <span class="text-4xl font-bold">{{ currentDate?.date }}</span>
+          </div>
+          <div class="pb-2 px-2 border-l border-r border-b rounded-b flex justify-between">
+            <span class="text-xs font-bold">{{ currentDate?.day }}</span>
+            <span class="text-xs font-bold">{{ currentDate?.year }}</span>
+          </div>
+          <!-- Slots selection area for the current date -->
+          <div class="mt-2">
+            <!-- Implement slots selection here -->
+          </div>
+        </div>
+        <!-- Next date arrow -->
+        <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full" (click)="nextDate()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- Loop through 7 days on larger screens -->
+      <ng-container class="sm:ms-5" *ngIf="!isSmallScreen">
+      <div   *ngFor="let day of days; let i=index"  class="block rounded-t overflow-hidden  bg-white text-center hover:cursor-pointer w-24" (click)="selectDate(day)">
+          <div class="bg-red-500 text-white py-1">{{ day.name }}</div>
+          <div class="pt-1 border-l  border-r" [class.bg-blue-500]="currentDate === day">
+            <span class="text-4xl font-bold" [class.bg-blue-500]="currentDate === day">{{ day.date }}</span>
+          </div>
+          <div class="pb-2 px-2  border-l border-r border-b rounded-b  flex justify-between" [class.bg-blue-500]="currentDate === day">
+            <span class="text-xs font-bold">{{ day.day }}</span>
+            <span class="text-xs font-bold">{{ day.year }}</span>
+          </div>
+          <!-- Slots selection area for each day -->
+          <div class="mt-2">
+            <!-- Implement slots selection here -->
+          </div>
+      </div>
+
+    </ng-container>
+    </div>
+
+
+    
+  </div>
+  <!-- Second section: Slot Adding -->
+  <div class="bg-white m-1 rounded-sm p-4">
+    <div class="flex justify-between mt-1 mb-2">
+      <p>Select slot for {{ currentDate?.name }} {{ currentDate?.date }} {{ currentDate?.day }} {{ currentDate?.year }}</p>
+      <button *ngIf="!isEdit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" (click)="isEdit=true">Edit slots</button>
+      <button *ngIf="isEdit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" (click)="saveSlots()">
+        <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>Save slots
+      </button>
+    </div>
+    <div class="grid grid-cols-3 gap-2">
+      <div *ngFor="let slot of availableSlots" class="col-span-1">
+        <div class="text-center bg-blue-500 border rounded-md p-2 cursor-pointer" 
+         [ngClass]="{'bg-blue-500': isSlotSelected(slot)}"
+         [style.pointer-events]="isEdit ? 'auto' : 'none'"
+         (click)="isEdit && toggleSlotSelection(slot)">
+        {{ slot }}
+        <span *ngIf="isSlotSelected(slot)" class="tick-icon">
+          <i class="fas fa-check"></i>
+      </span>
+     </div>
+      </div>
+    </div>
+  </div>
+</main>
