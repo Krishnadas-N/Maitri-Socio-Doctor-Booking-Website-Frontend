@@ -3,7 +3,7 @@ import { PostCarouselComponent } from '../../../../../shared/Components/post-car
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FeedService } from '../../../../../shared/Services/feed-Service.service';
+import { FeedService } from '../../../../../shared/Services/feed.service'; 
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-edit-post',

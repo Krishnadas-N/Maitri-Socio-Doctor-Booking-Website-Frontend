@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ScreenLoaderComponent } from './screen-Loader.component';
+import { ScreenLoaderComponent } from './screen-loader.component';
 
 describe('ScreenLoaderComponent', () => {
   let component: ScreenLoaderComponent;

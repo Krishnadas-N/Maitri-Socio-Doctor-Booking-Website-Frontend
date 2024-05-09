@@ -3,10 +3,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delay, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-import { OtpServiceService } from '../../shared/Services/otp-service.service';
-import { AuthService } from '../../core/Doctor/Services/Auth/auth.service';
+import { OtpServiceService } from '../../shared/Services/otp.service';
+import { AuthService } from '../../core/Doctor/Services/auth-service/auth.service'; 
 import * as DoctorActions from './doctor.action';
-import { DoctorService } from '../../core/Doctor/Services/Doctor-Services/doctor.service';
+import { DoctorService } from '../../core/Doctor/Services/doctor-services/doctor.service'; 
 @Injectable()
 export class doctorEffects {
 

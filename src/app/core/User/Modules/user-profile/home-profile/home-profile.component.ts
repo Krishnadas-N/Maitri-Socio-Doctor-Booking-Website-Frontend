@@ -11,8 +11,8 @@ import {
   selectUserLoading,
 } from '../../../../../store/User/user.selector';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormValidator } from '../../../../../shared/validators/FromValidators';
-import { UserServiceService } from '../../../Services/user-service.service';
+import { FormValidator } from '../../../../../shared/Validators/formValidators';
+import { UserService } from '../../../Services/user.service';
 
 @Component({
   selector: 'app-home-profile',
@@ -24,7 +24,7 @@ export class HomeProfileComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
-    private userService: UserServiceService
+    private userService: UserService
   ) {}
   UserDetails!: User;
   profileForm!: FormGroup;

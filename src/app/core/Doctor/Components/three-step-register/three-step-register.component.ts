@@ -1,8 +1,7 @@
 import { Component, ViewChild, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { ProgressiveBarComponent } from '../../../../shared/Components/progressive-bar/progressive-bar.component';
 import { CommonModule } from '@angular/common';
-import { DoctorRegister2Component } from '../doctor-register-2/doctor-register-2.component';
-import { DoctorRegister3Component } from '../doctor-register-3/doctor-register-3.component';
+import { DoctorRegisterTwoComponent } from '../doctor-additional-registration/doctor-register-two.component'; 
 import { trigger, transition, style, animate } from '@angular/animations';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, RouterLink } from '@angular/router';
@@ -11,15 +10,16 @@ import { AppState } from '../../../../store/GlobalStore/app.state';
 import { GetCurrentdoctor, selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
 import { Subscription } from 'rxjs';
 import { loadDoctor } from '../../../../store/Doctor/doctor.action';
-import { AuthService } from '../../../../shared/Services/AuthService/auth.service';
+import { AuthService } from '../../../../shared/Services/auth-service/auth.service'; 
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DoctorRegisterThreeComponent } from '../doctor-third-step-registration/doctor-third-step-registration.component';
 
 @Component({
   selector: 'app-three-step-register',
   standalone: true,
   imports: [ProgressiveBarComponent,
-    CommonModule,DoctorRegister2Component,DoctorRegister3Component,RouterLink,
+    CommonModule,DoctorRegisterTwoComponent,DoctorRegisterThreeComponent,RouterLink,
     ToastModule
   ],
   templateUrl: './three-step-register.component.html',
@@ -39,8 +39,8 @@ import { ToastModule } from 'primeng/toast';
 })
 export class ThreeStepRegisterComponent  implements OnInit,OnDestroy {
 
-  @ViewChild(DoctorRegister2Component) childComponentOne!: DoctorRegister2Component;
-  @ViewChild(DoctorRegister3Component) childComponentTwo!:DoctorRegister3Component;
+  @ViewChild(DoctorRegisterTwoComponent) childComponentOne!: DoctorRegisterTwoComponent;
+  @ViewChild(DoctorRegisterThreeComponent) childComponentTwo!:DoctorRegisterThreeComponent;
   isFormValid = false;
   successMessage: string | undefined;
   isLoading:boolean=false
@@ -59,7 +59,7 @@ export class ThreeStepRegisterComponent  implements OnInit,OnDestroy {
     console.log(this.isFormValid)
   }
   currentStep: number = 1;
-  stepComponents: any[] = [DoctorRegister2Component, DoctorRegister3Component];
+  stepComponents: any[] = [DoctorRegisterTwoComponent, DoctorRegisterThreeComponent];
   
   prevStep() {
     console.log(this.currentStep)

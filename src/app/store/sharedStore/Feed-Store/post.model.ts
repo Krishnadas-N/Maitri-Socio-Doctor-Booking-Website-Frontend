@@ -12,6 +12,7 @@ export interface Post {
     likes: Like[];
     comments: Comment[];
     isLikedByUser:boolean;
+    savedBy?:SavedPost[];
     reportedBy?: Report[];
     isBlocked?: boolean;
     isArchived?: boolean;
@@ -32,6 +33,12 @@ export interface Post {
     timestamp: Date;
     replies: Reply[]; // Nested structure
   }
+
+  export interface SavedPost {
+    userId: string;
+    createdAt: Date;
+  }
+  
   
   export interface Comment {
     _id: string;

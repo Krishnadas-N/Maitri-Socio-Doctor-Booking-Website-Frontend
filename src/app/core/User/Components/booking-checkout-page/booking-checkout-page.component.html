@@ -120,6 +120,6 @@
           </div>
       </div>
   </div>
-    <button class="mt-4 mb-8 w-full rounded-md bg-blue-500 px-6 py-3 font-medium text-white" (click)="makePayment()" >Proceed to Pay ₹{{appoinmentDetails.amount}}.00</button>
+    <button class="mt-4 mb-8 w-full rounded-md bg-blue-500 px-6 py-3 font-medium text-white" (click)="makePayment()" ><i *ngIf="isLoading" class="fas fa-spinner fa-spin mr-1"> </i>Proceed to Pay ₹{{appoinmentDetails.amount}}.00</button>
   </div>
 </div>

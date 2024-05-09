@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ProfilePictureComponent } from './Profile-Picture.component';
+import { ProfilePictureComponent } from './profile-picture.component';
 
 describe('ProfilePictureComponent', () => {
   let component: ProfilePictureComponent;

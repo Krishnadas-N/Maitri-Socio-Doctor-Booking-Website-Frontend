@@ -1,11 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DoctorService } from '../../../Doctor/Services/Doctor-Services/doctor.service';
+import { DoctorService } from '../../../Doctor/Services/doctor-services/doctor.service';
 import { ToastrService } from 'ngx-toastr';
 import { Doctor, Specialization } from '../../../../store/Doctor/doctor.model';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserServiceService } from '../../Services/user-service.service';
+import { UserService } from '../../Services/user.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -39,7 +39,7 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
     private toastr: ToastrService,
     @Inject(PLATFORM_ID) public platformId: object,
     private fb: FormBuilder,
-    private userService: UserServiceService
+    private userService: UserService
   ) {
     this.loadDates();
   }
@@ -57,10 +57,8 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
       console.log('Doctor Profile Page Params', params);
       if (params && params['id']) {
         this.doctorId = params['id'];
-        if (isPlatformBrowser(this.platformId)) {
           this.findDoctor();
-          this.getBookedSlots();
-        }
+          
       } else {
         this.router.navigate(['/find-doctors']);
       }
@@ -85,32 +83,33 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
   findDoctor() {
     this.doctorSubscription = this.doctorService
       .getDoctorById(this.doctorId)
-      .subscribe(
-        (res) => {
-          console.log(res.data);
-          this.doctorDetails = res.data.doctor;
-          if (this.doctorDetails.selectedSlots) {
-            this.slotsDetails = this.doctorDetails.selectedSlots;
-            console.log(this.slotsDetails);
-          }
-        },
-        (err) => {
-          this.toastr.error(err);
-          this.router.navigate(['/find-doctors']);
-        }
-      );
+      .subscribe({
+        next:(res) => {
+           console.log(res.data);
+           this.doctorDetails = res.data.doctor;
+           if (this.doctorDetails.selectedSlots) {
+             this.slotsDetails = this.doctorDetails.selectedSlots;
+             console.log(this.slotsDetails);
+             this.getBookedSlots();
+           }
+         },
+         error:(err) => {
+           this.toastr.error(err);
+           this.router.navigate(['/find-doctors']);
+         }
+      });
   }
 
   getBookedSlots(){
-    this.getBookedSubscription = this.userService.getBookedSlots(this.doctorId, this.selectedDate).subscribe(
-      (res)=>{
+    this.getBookedSubscription = this.userService.getBookedSlots(this.doctorId, this.selectedDate).subscribe({
+      next:(res)=>{
         console.log("booked slots",res.data)
        this.bookedSlots = res.data;
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err)
       }
-    )
+  })
   }
   getSpecializationName(specialization: Specialization): string {
     if (typeof specialization === 'object' && specialization !== null) {
@@ -151,9 +150,25 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
           slotDate.getDate() === this.selectedDate.getDate()
         );
       });
-      return slotDetails
-        ? slotDetails.slots.filter((slot) => slot.split(' ')[1] == 'AM')
-        : [];
+       // Filter slots based on current time and date
+       const currentHour = new Date().getHours();
+       const currentDate = new Date();
+       if(currentDate.getDate() === this.selectedDate.getDate()){
+       return slotDetails
+         ? slotDetails.slots.filter(
+             (slot) =>
+               (slot.split(' ')[1] === 'AM') &&
+               parseInt(slot.split(' ')[0].split(':')[0]) >= currentHour
+           )
+         : [];
+          }else{
+            return slotDetails
+            ? slotDetails.slots.filter(
+                (slot) =>
+                  (slot.split(' ')[1] === 'AM')
+              )
+            : [];
+          }
     } else {
       return [];
     }
@@ -169,10 +184,24 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
           slotDate.getDate() === this.selectedDate.getDate()
         );
       });
-
-      return slotDetails
-        ? slotDetails.slots.filter((slot) => slot.split(' ')[1] == 'PM')
+      const currentHour = new Date().getHours();
+      const currentDate = new Date();
+      if(currentDate.getDate() === this.selectedDate.getDate()){
+        return slotDetails
+        ? slotDetails.slots.filter(
+            (slot) =>
+              (slot.split(' ')[1] === 'PM' ) &&
+              parseInt(slot.split(' ')[0].split(':')[0]) >= currentHour
+          )
         : [];
+      }else{
+      return slotDetails
+        ? slotDetails.slots.filter(
+            (slot) =>
+              (slot.split(' ')[1] === 'PM' )
+          )
+        : [];
+      }
     } else {
       return [];
     }
@@ -187,23 +216,25 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
       console.log('Form values:', this.appointmentForm.value);
       this.userService
         .saveAppointment(this.appointmentForm.value, this.doctorId)
-        .subscribe(
-          (res) => {
+        .subscribe({
+          next:(res) => {
             console.log('response from slotbokking user', res);
             this.isLoading = false;
             this.router.navigate(['/checkout', res.data]);
           },
-          (err) => {
+          error:(err) => {
             this.isLoading = false;
             console.log('response from slotbokking user', err);
             this.toastr.error(err);
           }
-        );
+    });
     }
   }
   isSlotBooked(slot: string): boolean {
+    console.log(slot,this.bookedSlots.includes(slot))
     return this.bookedSlots.includes(slot);
 }
+
   ngOnDestroy() {
     this.doctorSubscription?.unsubscribe();
     this.getBookedSubscription?.unsubscribe()

@@ -228,9 +228,29 @@
             </ng-container>
 
             
-            <ng-container *ngIf="activeTab === 'reviews'"> 
+            <ng-container *ngIf="activeTab === 'posts'"> 
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <ng-container *ngFor="let post of doctorPosts">
+                    <div class="bg-white rounded-lg shadow-md">
+                      <img class="w-full h-56 object-cover rounded-t-lg" [src]="post.media[0].url" alt="Post Image">
+                      <div class="p-2">
+                        <div class="flex justify-between items-center mt-2">
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-heart mr-2 " style="color: #dc1818;"></i>
+                            <span class="text-gray-700">{{ post.likes.length }}</span>
+                          </div>
+                          <div class="flex items-center " >
+                            <i class="fa-solid fa-comment mr-2" style="color: #000000;"></i>
+                            <span class="text-gray-700">{{ post.comments.length }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
               
-            </ng-container>
+              
           </div>
           <!-- End of profile tab -->
       </div>

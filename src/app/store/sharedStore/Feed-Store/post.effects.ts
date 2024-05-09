@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Action } from "@ngrx/store";
-import { FeedService } from "../../../shared/Services/feed-Service.service";
+import { FeedService } from "../../../shared/Services/feed.service";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as PostActions from './post.action'
 import { catchError, map, of, switchMap, tap } from "rxjs";

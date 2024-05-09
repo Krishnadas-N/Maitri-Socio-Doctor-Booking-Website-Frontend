@@ -7,8 +7,8 @@ import { ToastModule } from 'primeng/toast';
   selector: 'app-Table',
   standalone:true,
   imports:[CommonModule,ConfirmDialogModule,ToastModule],
-  templateUrl: './Table.component.html',
-  styleUrls: ['./Table.component.css'],
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.css'],
   providers:[ConfirmationService,MessageService]
 })
 export class TableComponent implements OnInit {

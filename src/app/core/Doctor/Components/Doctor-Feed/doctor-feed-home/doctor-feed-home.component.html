@@ -1,0 +1,21 @@
+<div class="bg-white shadow rounded-lg mb-6 p-4">
+  <input name="message" (click)="openAddpost()" readonly placeholder="Start a Post..." class="w-full rounded-lg p-2 text-sm bg-gray-100 border border-transparent appearance-none rounded-tg placeholder-gray-400">
+</div>
+
+<app-add-post [isOpen]="addPostModal"></app-add-post>
+
+
+<ng-container *ngIf="!isLoadingPosts;else cardLoader">
+<div *ngFor="let post of posts">
+<post-component  [postData]="post"  [userType]="userType" ></post-component>
+</div>
+</ng-container>
+
+<ng-template #cardLoader>
+  <div>
+    <app-card-skelton-loader ></app-card-skelton-loader>
+    </div>
+</ng-template>
+
+
+

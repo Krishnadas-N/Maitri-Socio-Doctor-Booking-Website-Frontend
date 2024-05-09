@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Doctor, Specialization } from '../../../../store/Doctor/doctor.model';
-import { DoctorService } from '../../../Doctor/Services/Doctor-Services/doctor.service';
+import { DoctorService } from '../../../Doctor/Services/doctor-services/doctor.service'; 
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { Post } from '../../../../store/sharedStore/Feed-Store/post.model';
+import { FeedService } from '../../../../shared/Services/feed.service';
 
 @Component({
   selector: 'app-doctor-profile-page',
@@ -13,6 +15,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./doctor-profile-page.component.css']
 })
 export class DoctorProfilePageComponent implements OnInit {
+  doctorPosts:Post[]=[]
   doctorId!:string;
   doctorDetails!:Doctor;
   activeTab: string = 'home';
@@ -26,7 +29,8 @@ export class DoctorProfilePageComponent implements OnInit {
     private route:ActivatedRoute,
     private router:Router,
     private doctorService:DoctorService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private feedService:FeedService
   ) { }
   
   ngOnInit() {
@@ -45,7 +49,8 @@ export class DoctorProfilePageComponent implements OnInit {
     this.doctorService.getDoctorById(this.doctorId).subscribe(
       (res)=>{
         console.log(res.data);
-        this.doctorDetails = res.data.doctor
+        this.doctorDetails = res.data.doctor;
+        this.getDoctorPosts();
       },
       (err)=>{
         this.toastr.error(err);
@@ -54,6 +59,21 @@ export class DoctorProfilePageComponent implements OnInit {
     )
   }
 
+  getDoctorPosts(){
+    if(this.doctorDetails && this.doctorDetails?._id){
+    this.feedService.getPostsOfDoctorById(this.doctorDetails?._id).subscribe({
+      next:(res)=>{
+        this.doctorPosts = res.data;
+        console.log(" this.doctorPosts", this.doctorPosts);
+      },
+      error:(err)=>{
+        this.toastr.error(err)
+      }
+    })
+  }
+  }
+
+  
   getSpecializationName(specialization: Specialization): string {
     if (typeof specialization === 'object' && specialization !== null) {
       return specialization.name;

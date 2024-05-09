@@ -1,6 +1,6 @@
 
 
-export type Specialization = string | { name: string, _id: string };
+export type Specialization = string | { name: string ; _id: string };
 export interface Doctor {
     _id?: string;
     firstName: string;

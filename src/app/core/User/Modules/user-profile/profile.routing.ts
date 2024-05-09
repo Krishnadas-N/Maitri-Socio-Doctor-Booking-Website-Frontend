@@ -1,8 +1,11 @@
 import { Routes } from "@angular/router";
-import { UserProfileMainComponent } from "./userProfile-Main/userProfile-Main.component";
+import { UserProfileMainComponent } from "./user-profile-main-page/user-profile-main-page.component"; 
 import { HomeProfileComponent } from "./home-profile/home-profile.component";
-import { UserSideAppoinmentListingComponent } from "./User-Side-AppoinmentListing/User-Side-AppoinmentListing.component";
-import { InterestedDoctorsComponent } from "./interestedDoctors/interestedDoctors.component";
+import { UserSideAppoinmentListingComponent } from "./user-side-appoinment-listing/user-side-appoinment-listing.component"; 
+import { InterestedDoctorsComponent } from "./interested-doctors/interested-doctors.component"; 
+import { WalletComponent } from "../../../../shared/Components/wallet/wallet.component"; 
+import { MedicalRecordComponent } from "./medical-record/medical-record.component";
+import { NotificationComponent } from "../../../../shared/Components/notification-component/notification.component";
 
 
 
@@ -22,6 +25,19 @@ export const profileRoutes:Routes=[
             {
                 path:'interests',
                 component:InterestedDoctorsComponent
+            },
+            {
+                path:'wallet',
+                component:WalletComponent
+            },
+            {
+                path:'medical-records',
+                component:MedicalRecordComponent
+            },
+            {
+                path:'notifications',
+                data:{expectedRole:'User'},
+                component:NotificationComponent,
             }
         ]
     }

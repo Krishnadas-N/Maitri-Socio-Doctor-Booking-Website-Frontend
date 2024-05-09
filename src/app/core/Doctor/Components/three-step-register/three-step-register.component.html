@@ -5,12 +5,12 @@
     <div class="mx-auto max-w-7xl  pb-10">
         <div class="mt-2 mb-7"  *ngIf="currentStep === 1">
             <!-- Step 1: Registration Info -->
-            <app-doctor-register-2   (isLoading)="isLoading = $event" (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-2>
+            <app-doctor-register-two   (isLoading)="isLoading = $event" (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-two>
         </div>
 
         <div class="mt-2 mb-7" *ngIf="currentStep === 2">
             <!-- Step 2: Additional Info -->
-            <app-doctor-register-3  (isLoading)="isLoading = $event" (formValidityChange)="handleFormValidityChange($event)"></app-doctor-register-3>
+            <app-doctor-third-step-registration  (isLoading)="isLoading = $event" (formValidityChange)="handleFormValidityChange($event)"></app-doctor-third-step-registration>
         </div>
 
         <div class="fixed bottom-0 left-0 right-0 py-5 bg-white shadow-md"  *ngIf="currentStep <4">

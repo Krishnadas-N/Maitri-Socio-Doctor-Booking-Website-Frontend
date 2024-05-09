@@ -1,5 +1,75 @@
-<div>
-  <div *ngFor="let post of posts">
-    <post-component [postData]="post"></post-component>
+
+<div class="container mx-auto flex flex-col md:flex-row mb-4">
+  <!-- Right content -->
+  <div class="w-full md:w-1/4 md:order-2 p-4 mb-4 md:mb-0">
+    <!-- <h2 class="text-lg font-bold mb-4">Right Content</h2>
+    <p>This is a sidebar for additional content or actions.</p>
+    <h2 class="text-lg font-bold mb-4">Right Content</h2>
+    <p>This is a sidebar for additional content or actions.</p> -->
+  </div>
+
+  <!-- Center content -->
+  <div class="w-full md:w-3/4 md:mr-4 p-4">
+    <div>
+ 
+      <!-- <div class="max-w-full mx-auto ">
+      <ul class="flex space-x-6 font-serif ">
+      
+        <li class="flex flex-col items-center space-y-1 relative">
+          <div class="bg-gradient-to-tr from-sky-300 to-sky-500 p-1 rounded-full">
+            <a class=" bg-white block rounded-full p-1 hover:-rotate-6 transform transition" href="#">
+              <img class="h-16 w-16 rounded-full" src="https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg" alt="cute kitty" />
+            </a>
+          </div>
+          <button class="absolute bottom-8 right-1 bg-purple-800 rounded-full h-8 w-8 text-2xl
+              text-white font-semibold border-2
+               border-white flex justify-center items-center font-mono hover:bg-blue-700">+</button>
+            <a href="#">
+              you
+            </a>
+        </li>
+        
+        <li class="flex flex-col items-center space-y-1 ">
+          <div class="bg-gradient-to-tr from-sky-300 to-sky-500 p-1 rounded-full">
+            <a class=" bg-white block rounded-full p-1 hover:-rotate-6 transform transition" href="#">
+              <img class="h-16 w-16 rounded-full" src="https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg" alt="cute kitty" />
+            </a>
+          </div>
+            <a href="#">
+              snuggless
+            </a>
+        </li>
+      
+        <li class="flex flex-col items-center space-y-1 ">
+          <div class="bg-gradient-to-tr from-sky-300 to-sky-500 p-1 rounded-full">
+            <a class=" bg-white block rounded-full p-1 hover:-rotate-6 transform transition" href="#">
+              <img class="h-16 w-16 rounded-full" src="https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg" alt="cute kitty" />
+            </a>
+          </div>
+            <a href="#">
+              snuggless
+            </a>
+        </li>
+       
+        <li class="flex flex-col items-center space-y-1 ">
+          <div class="bg-gradient-to-tr from-sky-300 to-sky-500 p-1 rounded-full">
+            <a class=" bg-white block rounded-full p-1 hover:-rotate-6 transform transition" href="#">
+              <img class="h-16 w-16 rounded-full" src="https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg" alt="cute kitty" />
+            </a>
+          </div>
+            <a href="#">
+              snuggless
+            </a>
+        </li>
+      
+      </ul>
+      
+      </div> -->
+      
+      <div *ngFor="let post of posts" class="mt-2">
+        <post-component [postData]="post" [userType]="userType"></post-component>
+      </div>
+    </div>
+    
   </div>
 </div>

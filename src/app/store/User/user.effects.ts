@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delay, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { UserServiceService } from '../../core/User/Services/user-service.service';
+import { UserService } from '../../core/User/Services/user.service';
 import { blockUser, blockUserFailure, blockUserSuccess, editUserProfile, editUserProfileFailure, editUserProfileSuccess, loadUser, loadUserById, loadUserByIdFailure, loadUserByIdSuccess, loadUserFailure, loadUserSuccess, loadUsers, loadUsersFailure, loadUsersSuccess, loginUser, loginUserFailure, loginUserSuccess, registerUser, registerUserFailure, registerUserSuccess } from './user.action';
 import { Router } from '@angular/router';
+import { TokenService } from '../../shared/Services/token-auth-service/Token.service';
 
 @Injectable()
 export class UserEffects {
 
-    constructor(private userService :UserServiceService,
+    constructor(private userService :UserService,
         private actions$:Actions,
         private router: Router,
+        private tokenService:TokenService
         ){}
 
     loginUser$ = createEffect(() =>
@@ -22,7 +24,8 @@ export class UserEffects {
                 this.userService.login(email, password).pipe(
                     tap((data) => console.log('Login Data', data)),
                     map((response: any) => {
-                      localStorage.setItem('AuthToken', response.data.token);
+                      this.tokenService.setToken(response.data.token);
+                      this.tokenService.setAccessToken(response.data.revokeAcessToken)
                         this.router.navigate(['/'])
                         return loginUserSuccess({ user:response.data.user, token:response.data.token });
                     }),

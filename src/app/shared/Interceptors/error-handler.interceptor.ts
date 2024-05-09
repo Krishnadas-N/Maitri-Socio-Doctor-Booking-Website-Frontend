@@ -12,21 +12,20 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       console.log("Error from interceptor",error);
       let errorMessage = '';
-      if (isPlatformBrowser(platformId)) {
       if (error.error instanceof ErrorEvent) {
         // Client-side error
-        errorMessage = `Error: ${error.error.message}`;
+        errorMessage = `Error: ${error.message}`;
       } 
-     } else {
+    else {
         // Server-side error
         if (error.error && error.error.error && error.error.error.message) {
-          errorMessage = `Error: ${error.status}\t ${error.error.error.message}`;
+          errorMessage = `Error: ${error.status}\t ${ error.error.error.message}`;
         } else {
-          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+          errorMessage = `Error Code: ${error.status}Message: ${error.message}`;
         }
       }
       console.error(errorMessage);
-      return throwError(errorMessage);
+      return throwError(()=>new Error(errorMessage)) ;
     })
   );
 };

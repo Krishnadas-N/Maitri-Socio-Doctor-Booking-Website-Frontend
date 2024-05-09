@@ -8,15 +8,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AdminService } from '../../Services/Admin-Services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { AdminService } from '../../Services/admin-service/auth.service';
 
 @Component({
   selector: 'app-admin-Login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  templateUrl: './admin-Login.component.html',
-  styleUrls: ['./admin-Login.component.css'],
+  templateUrl: './admin-login.component.html',
+  styleUrls: ['./admin-login.component.css'],
 })
 export class AdminLoginComponent implements OnInit {
   AdminloginForm!: FormGroup;

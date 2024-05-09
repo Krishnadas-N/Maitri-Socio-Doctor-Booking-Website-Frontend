@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, delay, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as OtpActions from './otp.action';
-import { OtpServiceService } from '../../../shared/Services/otp-service.service';
+import { OtpServiceService } from '../../../shared/Services/otp.service';
 import { Router } from '@angular/router';
 @Injectable()
 export class OtpEffects {

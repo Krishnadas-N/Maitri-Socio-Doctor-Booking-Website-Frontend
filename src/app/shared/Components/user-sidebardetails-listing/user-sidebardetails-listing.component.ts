@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DoctorService } from '../../../core/Doctor/Services/Doctor-Services/doctor.service';
+import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service'; 
 import { ToastrService } from 'ngx-toastr';
-import { MessageService } from '../../Services/webSocketService/message.service';
+import { MessageService } from '../../Services/web-socketService/message.service'; 
 import { Route, Router } from '@angular/router';
+import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
+import { TokenService } from '../../Services/token-auth-service/Token.service';
+import { NotificationService } from '../../Services/notification-service/notification.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-user-sidebardetails-listing',
@@ -22,24 +26,30 @@ export class UserSidebardetailsListingComponent implements OnInit {
   ) public data: any,
   private dialogRef: MatDialogRef<UserSidebardetailsListingComponent>,
   private doctorService:DoctorService,
-  private toastr:ToastrService
+  private toastr:ToastrService,
+  private webSocket:WebSocketService,
+  private tokenService:TokenService,
+  private notification:NotificationService,
 ) { }
 
   ngOnInit() {
     console.log(this.data);
+
   }
   closeDialog(){
     this.dialogRef.close();
   }
   changeAppoinmentStatus(status:string){
-    this.doctorService.changeStatus(status,this.data.appoinments._id).subscribe(
-      (res:any)=>{
-        this.data.appoinments.status=res.data.status;
+    this.doctorService.changeStatus(status,this.data.appoinments._id).subscribe({
+      next:(res:any)=>{
+        this.data.appoinments.status=res.data.appointment.status;
+        console.log("notificationSending   ....",res.data.notificationId)
+        this.notification.sendNotification(res.data.notificationId)
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err)
       }
-    )
+  })
   }
 
 
@@ -73,14 +83,21 @@ export class UserSidebardetailsListingComponent implements OnInit {
         // Logic to start video consultation
         break;
       case 'chat':
-        this.messageService.getConversationId(userId).subscribe(
-          (res:any)=>{
+        this.messageService.getConversationId(userId,this.data.appoinments._id).subscribe({
+         next: (res:any)=>{
+            console.log("Response form the sidebar of Docotr",res);
+            const token = this.tokenService.getToken();
+            if(token){
+            this.webSocket.setToken(token)
+            this.webSocket.sendConsultationLink(userId,res.data.appointment.consultationLink)
+            }
             this.closeDialog()
-            this.router.navigate(['/doctor/chats/', res.data])
+            this.router.navigate(['/doctor/chats/', res.data.convId])
           },
-          err=>{
+         error: (err)=>{
             this.toastr.error(err)
-          } )
+          } 
+        })
         break;
       default:
         // this.router.navigate(['/pages/dashboard']);
@@ -88,3 +105,4 @@ export class UserSidebardetailsListingComponent implements OnInit {
   }
   
 }
+// {appointment:Appointment,notificationId:string}

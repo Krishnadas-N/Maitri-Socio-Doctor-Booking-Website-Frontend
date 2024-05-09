@@ -502,13 +502,10 @@
 
                       <!-- Appointment and Online Booking Buttons -->
                       <div class="flex gap-2 sm:flex-col sm:gap-4 justify-center sm:justify-start mt-2">
-                        <button
+                        <button [routerLink]="'/book-appoinment/'+doctor._id"
+
                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 sm:py-1 sm:px-2 rounded-full border-2 border-blue-500 focus:outline-none focus:border-blue-700 text-sm sm:text-base">
                           Book Appointment
-                        </button>
-                        <button
-                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full border-2 border-blue-500 focus:outline-none focus:border-blue-700">
-                          Online Book
                         </button>
                       </div>
                     </div>

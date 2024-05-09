@@ -21,7 +21,7 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { reducers } from './store/GlobalStore';
-import { authInterceptor } from './core/User/Interceptors/Auth/auth.interceptor';
+import { authInterceptor } from './shared/Interceptors/auth.interceptor'; 
 import { UserEffects } from './store/User/user.effects';
 import { doctorEffects } from './store/Doctor/doctor.effects';
 import { OtpEffects } from './store/sharedStore/otpStore/otp.effects';
@@ -33,6 +33,10 @@ import { responseTimerInterceptor } from './shared/Interceptors/response-timer.i
 import { errorHandlerInterceptor } from './shared/Interceptors/error-handler.interceptor';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { userRoutes } from './core/User/user-routes.routing';
+import { doctorRoutes } from './core/Doctor/doctor-routes.routing';
+import { adminRoutes } from './core/Admin/admin-routes.routing';
+import { refreshTokenInterceptor } from './shared/Interceptors/refresh-token.interceptor';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -44,12 +48,13 @@ export const appConfig: ApplicationConfig = {
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    provideRouter(routes),
+    provideRouter([...userRoutes,...doctorRoutes,...adminRoutes,...routes]),
     provideHttpClient(
       withFetch(),
       withInterceptors([
         authInterceptor,
         responseTimerInterceptor,
+        refreshTokenInterceptor,
         errorHandlerInterceptor,
       ])  
     ),

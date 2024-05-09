@@ -4,8 +4,8 @@ import { Component, Input, OnInit } from '@angular/core';
   selector: 'app-profile-card',
   standalone:true,
   imports:[],
-  templateUrl: './profile-Card.component.html',
-  styleUrls: ['./profile-Card.component.css']
+  templateUrl: './profile-card.component.html',
+  styleUrls: ['./profile-card.component.css']
 })
 export class ProfileCardComponent implements OnInit {
   @Input() profileImageSrc: string = '';

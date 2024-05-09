@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Doctor, Specialization } from '../../../../store/Doctor/doctor.model';
 import { ToastrService } from 'ngx-toastr';
-import { UserServiceService } from '../../Services/user-service.service';
+import { UserService } from '../../Services/user.service';
 import { RouterLink } from '@angular/router';
-import { UserPaginationComponent } from '../../../../shared/Components/user-Pagination/user-Pagination.component';
+import { UserPaginationComponent } from '../../../../shared/Components/user-pagination/user-pagination.component';
 import { FormsModule } from '@angular/forms';
-import { SpecializationService } from '../../../Doctor/Services/specialization.service';
+import { SpecializationService } from '../../../../shared/Services/specialization-service/specialization.service';
+import { FindDoctorsRequest } from '../../../../shared/Models/userSide.model';
 
 @Component({
   selector: 'app-doctor-listing',
@@ -109,7 +110,7 @@ export class DoctorListingComponent implements OnInit {
   constructor(
     private specializationService: SpecializationService,
     private toastr: ToastrService,
-    private userService: UserServiceService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -224,9 +225,10 @@ export class DoctorListingComponent implements OnInit {
         this.menuOptions.find((x) => x.selected === true)?.label || '',
       filters: this.selectedFilters,
     };
+    const queryParams = this.constructQueryParams(request)
     console.log(request);
-    this.userService.getAvailableDoctors(request).subscribe(
-      (res: any) => {
+    this.userService.getAvailableDoctors(queryParams).subscribe({
+      next:(res: any) => {
         console.log('response from server', res);
         this.doctors = res.data.doctors;
         this.currentPage = res.data.currentPage;
@@ -234,10 +236,10 @@ export class DoctorListingComponent implements OnInit {
         this.totalCount = res.data.totalCount;
         this.totalPages = res.data.totalPages;
       },
-      (err) => {
+    error: (err) => {
         console.log(err);
       }
-    );
+  });
   }
 
   addToInterestDoctor(doctor: Doctor) {
@@ -309,7 +311,7 @@ export class DoctorListingComponent implements OnInit {
         const specialityOptions = res.data.map((category: any) => ({
           id: category._id,
           label: category.name,
-          value: category.name.toLowerCase(),
+          value: category._id,
         }));
 
         const specialityFilter = this.filterCategories.find(
@@ -325,5 +327,21 @@ export class DoctorListingComponent implements OnInit {
           });
         }
       });
+  }
+
+  private constructQueryParams(request: FindDoctorsRequest): any {
+    const queryParams: any = {
+      searchQuery: request.searchQuery,
+      currentPage: request.currentPage.toString(),
+      pageSize: request.pageSize.toString(),
+      sortOption: request.sortOption
+    };
+    if(request.filters){
+    for (const category of Object.keys(request.filters)) {
+      queryParams[category] = request.filters[category].join(',');
+    }
+    }
+    console.log("queryParams",queryParams)
+    return queryParams;
   }
 }

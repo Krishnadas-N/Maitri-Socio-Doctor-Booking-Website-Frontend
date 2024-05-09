@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserServiceService } from '../../Services/user-service.service';
+import { UserService } from '../../Services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WindowRefService } from '../../../../shared/Services/window-ref.service';
+import { NotificationService } from '../../../../shared/Services/notification-service/notification.service';
 @Component({
   selector: 'app-booking-checkout-page',
   standalone:true,
@@ -13,15 +14,17 @@ import { WindowRefService } from '../../../../shared/Services/window-ref.service
   styleUrls: ['./booking-checkout-page.component.css']
 })
 export class BookingCheckoutPageComponent implements OnInit {
+  isLoading:boolean=false;
   appoinmentId!:string;
   appoinmentDetails!:any;
   selectedPaymentMethod: string = '';
   constructor(
     private route:ActivatedRoute,
-    private userService:UserServiceService,
+    private userService:UserService,
     private toastr:ToastrService,
     private winRef: WindowRefService,
-    private router:Router
+    private router:Router,
+    private notificationService:NotificationService
   ) { 
     this.route.params.subscribe(
       (param)=>{
@@ -60,12 +63,15 @@ export class BookingCheckoutPageComponent implements OnInit {
     }
   
     console.log('Selected payment method:', this.selectedPaymentMethod);
+    this.isLoading=true;
     this.userService.makePayment(this.selectedPaymentMethod,this.appoinmentId).subscribe(
       (res)=>{
         console.log(res);
+        this.isLoading=false;
         this.payWithRazorpay(res.data)
       },
       (err)=>{
+        this.isLoading=false;
         this.toastr.error(err)
       }
     )
@@ -105,8 +111,11 @@ export class BookingCheckoutPageComponent implements OnInit {
   verifyPayment(orderId: string, paymentId: string, signature: string){
       this.userService.verifyPayment(orderId,paymentId,signature,this.appoinmentDetails).subscribe(
         (res)=>{
+          
           console.log("verify payment",res);
-          this.router.navigate(['/booking-confirmation/',res.data]);
+          const notificationId = res.data.notificationId;
+          this.notificationService.sendNotification(notificationId);
+          this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         },
         (err)=>{
           this.toastr.error(err)

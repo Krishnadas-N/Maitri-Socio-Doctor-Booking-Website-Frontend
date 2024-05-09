@@ -14,7 +14,7 @@ export class MediaModalComponent implements OnInit {
   @Input() videoUrls: string[] = [];
   currentSlideIndex: number = 0;
   showModal = true;
-
+  @Output()closeMediaModal=new EventEmitter<boolean>()
 
   constructor() { }
 
@@ -37,6 +37,7 @@ export class MediaModalComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+    this.closeMediaModal.emit(true)
   }
   nextSlide() {
     this.currentSlideIndex = (this.currentSlideIndex + 1) % (this.imageUrls.length + this.videoUrls.length);

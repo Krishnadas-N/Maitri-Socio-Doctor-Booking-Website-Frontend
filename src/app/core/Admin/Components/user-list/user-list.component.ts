@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TableComponent } from '../../../../shared/Components/Table/Table.component';
+import { TableComponent } from '../../../../shared/Components/table/table.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { selectUsersByTab, GetPagesSize } from '../../../../store/User/user.selector';
@@ -7,13 +7,14 @@ import { blockUser, loadUsers } from '../../../../store/User/user.action';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule, } from '@angular/common';
 import { AdminPaginationComponent } from '../../../../shared/Components/admin-pagination/admin-pagination.component';
-import { ConfimationDialogComponent } from '../../../../shared/Components/confimation-Dialog/confimation.component';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [TableComponent,NgxPaginationModule,FormsModule,AdminPaginationComponent,ConfimationDialogComponent ,CommonModule ],
+  imports: [
+    TableComponent,NgxPaginationModule,FormsModule,AdminPaginationComponent ,CommonModule
+   ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })

@@ -1,25 +1,24 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, afterNextRender } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { PostComponent } from '../../../../shared/Components/post-component/post-component.component';
+import { PostComponent } from '../../../../shared/Components/post/post.component'; 
 import { Post, PostModel } from '../../../../store/sharedStore/Feed-Store/post.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
-import { loadPosts } from '../../../../store/sharedStore/Feed-Store/post.action';
-import { selectPosts } from '../../../../store/sharedStore/Feed-Store/post.selector';
-import { TokenService } from '../../../../shared/Services/TokenAuthService/Token.service';
-import { FeedService } from '../../../../shared/Services/feed-Service.service';
+import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service'; 
+import { FeedService } from '../../../../shared/Services/feed.service';
 import { Toast, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-User-Home',
   standalone:true,
   imports:[CommonModule,RouterLink,PostComponent],
-  templateUrl: './User-Home.component.html',
-  styleUrls: ['./User-Home.component.css']
+  templateUrl: './user-home.component.html',
+  styleUrls: ['./user-home.component.css']
 })
 export class UserHomeComponent implements OnInit {
   posts: PostModel[] = [];
+  userType:'Doctor'|'User'='User';
   constructor(
     private FeedService:FeedService,
     private store:Store<AppState>,

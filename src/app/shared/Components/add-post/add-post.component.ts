@@ -109,6 +109,7 @@ export class AddPostComponent implements OnInit {
       console.log(this.addPostForm.value);
       this.isModalOpen = true;
       this.store.dispatch(addPost({ post: this.addPostForm.value }));
+      this.addPostForm.reset()
     } else {
       this.addPostForm.markAllAsTouched();
     }

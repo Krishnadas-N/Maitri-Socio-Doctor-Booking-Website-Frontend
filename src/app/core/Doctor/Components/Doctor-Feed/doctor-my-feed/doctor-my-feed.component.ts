@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { FeedService } from '../../../../../shared/Services/feed-Service.service';
+import { FeedService } from '../../../../../shared/Services/feed.service';
 import { Post, PostModel } from '../../../../../store/sharedStore/Feed-Store/post.model';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { PostComponent } from '../../../../../shared/Components/post-component/post-component.component';
-import { PostCommentComponent } from '../../../../../shared/Components/postComment/postComment.component';
+import { PostComponent } from '../../../../../shared/Components/post/post.component'; 
+import { PostCommentComponent } from '../../../../../shared/Components/post-comment/post-comment.component'; 
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({

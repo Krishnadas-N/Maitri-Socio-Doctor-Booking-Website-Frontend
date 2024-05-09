@@ -12,9 +12,10 @@
     <router-outlet></router-outlet>
 </div> -->
 
-<div class="flex h-screen w-full bg-blue-50 " x-data="{openMenu:1}">
+<ng-container *ngIf="isAuthenticated();else notAuthenticated">
+<div class="flex h-screen w-full bg-blue-50 " >
   
-    <app-sidebar *ngIf="isAuthenticated()" class="w-20 relative z-20 flex-shrink-0  px-2 overflow-y-auto bg-blue-700 sm:block"
+    <app-sidebar  class="w-20 relative z-20 flex-shrink-0  px-2 overflow-y-auto bg-blue-700 sm:block"
         [backgroundColor]="backgroundColor"
         [profileImage]="profileImage"
         [navItems]="navItems"
@@ -25,6 +26,7 @@
      <div class="flex flex-col flex-1 w-full overflow-y-auto">
         <app-header-component></app-header-component>
         <router-outlet></router-outlet>
+       
     
     </div>
 
@@ -38,3 +40,20 @@
     </div>
 
 </div>
+
+<app-notification-popup
+*ngIf="showNotification"
+[title]="notificationTitle" 
+[message]="notificationMessage" 
+(closed)="closeNotificationPopup()"
+></app-notification-popup>
+
+</ng-container>
+
+
+<ng-template #notAuthenticated>
+    <router-outlet></router-outlet>
+</ng-template>
+
+
+

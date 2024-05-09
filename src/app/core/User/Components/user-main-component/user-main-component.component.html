@@ -1,38 +1,47 @@
-<ng-container *ngIf="isAuthenticated(); else notAuthenticated">
-  <div class="flex gap-2">
-    <!-- Sidebar -->
-    <div class="h-screen fixed left-0 top-0 w-1/4">
+
+<ng-container *ngIf="isAuthenticated();else notAuthenticated">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside class="bg-gray-900  text-white h-screen w-auto fixed">
+   
       <app-user-sidebar></app-user-sidebar>
-    </div>
-    
-    <!-- Main container -->
-    <div class="flex-grow ml-35 lg:ml-64"> <!-- Adjust margin left to accommodate sidebar -->
-      <!-- Header -->
-      <!-- <div>
-        <app-header-component class="mb-4"></app-header-component>
-      </div> -->
-      
-      <!-- Main content -->
-      <div class="p-4">
-        <div >
-          <router-outlet></router-outlet>
-        </div>
-      </div>
-    </div>
+   
+  </aside>
+
+  <!-- Main container -->
+  <div class="flex flex-col flex-1 lg:ml-48 ml-20 shadow-lg">
+    <!-- Header -->
+    <app-header-component class="m-1"></app-header-component>
+
+
+    <!-- Main content area -->
+    <main class="flex-1 p-1 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Footer -->
+  
   </div>
+</div>
+
+<app-notification-popup
+*ngIf="showNotification"
+[title]="notificationTitle" 
+[message]="notificationMessage" 
+(closed)="closeNotificationPopup()"
+></app-notification-popup>
+
 </ng-container>
 
-
-
-
-
-    <ng-template #notAuthenticated>
-      <!-- <app-header-component class="mb-4"></app-header-component> -->
+<ng-template #notAuthenticated>
+  <div class="flex min-h-screen">
+    <div class="flex flex-col flex-1 shadow-lg">
+      <app-header-component></app-header-component>
+      <main class="flex-1 overflow-y-auto">
         <router-outlet></router-outlet>
-    </ng-template>
- 
-  
+      </main>
+    </div>
+  </div>
 
-  
-<!-- <app-footer-component></app-footer-component> -->
-
+</ng-template>

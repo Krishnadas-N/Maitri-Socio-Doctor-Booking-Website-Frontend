@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Doctor } from '../../../../store/Doctor/doctor.model'; 
 import { FindDoctorsRequest } from '../../../../shared/Models/userSide.model';
+import { environment } from '../../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
-  private apiUrl = 'http://localhost:3000/api/doctors';
+  private apiUrl = environment.DoctorServiceUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +41,7 @@ export class DoctorService {
   }
 
   getDoctor(): Observable<any> {
-    const url = `${this.apiUrl}/get-currentDocotor`;
+    const url = `${this.apiUrl}/get-currentDoctor`;
     return this.http.get<any>(url);
   }
 
@@ -57,6 +58,8 @@ export class DoctorService {
     return this.http.put(`${this.apiUrl}/change-appoinmentStatus/${appoinmentId}`,{status})
   }
 
-
+  getNotificationsOfDoctor():Observable<any>{
+    return this.http.get(`${this.apiUrl}/get-notification`)
+  }
 
 }

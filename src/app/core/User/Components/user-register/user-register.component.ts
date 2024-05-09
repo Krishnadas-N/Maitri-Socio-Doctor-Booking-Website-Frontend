@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { dateLessThanFourYearsValidator } from '../../../../shared/validators/date-less-than-four-years.validator';
-import { markAllFormControlsAsTouched } from '../../../../shared/validators/MarkFromGroupTouched';
+import { dateLessThanFourYearsValidator } from '../../../../shared/Validators/date-less-than-four-years.validator'; 
+import { markAllFormControlsAsTouched } from '../../../../shared/Validators/markFormGroupTouched'; 
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { Store, select } from '@ngrx/store';
 import { registerUser, registerUserSuccess } from '../../../../store/User/user.action';
 import { selectUserLoading } from '../../../../store/User/user.selector';
-import { FormValidator } from '../../../../shared/validators/FromValidators';
+import { FormValidator } from '../../../../shared/Validators/formValidators'; 
 
 @Component({
   selector: 'app-user-register',

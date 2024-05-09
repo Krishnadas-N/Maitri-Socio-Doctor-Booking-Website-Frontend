@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { loginDoctorRequest } from '../../../../store/Doctor/doctor.action';
 import { selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
-import { TokenService } from '../../../../shared/Services/TokenAuthService/Token.service';
+import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service'; 
 @Component({
   selector: 'app-doctor-login',
   standalone: true,

@@ -4,8 +4,8 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-screen-Loader',
   standalone:true,
   imports:[],
-  templateUrl: './screen-Loader.component.html',
-  styleUrls: ['./screen-Loader.component.css']
+  templateUrl: './screen-loader.component.html',
+  styleUrls: ['./screen-loader.component.css']
 })
 export class ScreenLoaderComponent implements OnInit {
 

@@ -5,10 +5,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserServiceService } from '../../../core/User/Services/user-service.service';
+import { UserService} from '../../../core/User/Services/user.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { AuthService } from '../../Services/AuthService/auth.service';
+import { AuthService } from '../../Services/auth-service/auth.service'; 
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -24,7 +24,7 @@ export class ChangePasswordComponent implements OnInit {
   token: string = '';
   constructor(
     private fb: FormBuilder,
-    private UserService: UserServiceService,
+    private UserService: UserService,
     private route: ActivatedRoute,
     private rotuer: Router,
     private AuthService: AuthService,

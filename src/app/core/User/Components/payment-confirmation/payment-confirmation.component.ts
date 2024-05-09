@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserServiceService } from '../../Services/user-service.service';
+import { UserService } from '../../Services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CheckPlatformService } from '../../../../shared/Services/checkPlatformService/checkPlatform.service';
-import { ScreenLoaderComponent } from '../../../../shared/Components/screen-Loader/screen-Loader.component';
+import { CheckPlatformService } from '../../../../shared/Services/check-platform-service/checkPlatform.service';
+import { ScreenLoaderComponent } from '../../../../shared/Components/screen-loader/screen-loader.component'; 
 
 @Component({
   selector: 'app-payment-confirmation',
@@ -21,12 +21,10 @@ export class PaymentConfirmationComponent implements OnInit {
   isScreenLoading: boolean = false;
   constructor(
     private route: ActivatedRoute,
-    private userService: UserServiceService,
+    private userService: UserService,
     private toastr: ToastrService,
     private router: Router,
-    private platformService: CheckPlatformService
   ) {
-    this.isScreenLoading = true;
     this.route.params.subscribe((param) => {
       console.log('Param', param);
       this.appoinmentId = param['id'];
@@ -34,17 +32,18 @@ export class PaymentConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.platformService.isBrowser()) {
+    this.isScreenLoading = true;
       console.log('working confrimarion');
       this.getAppoinment();
-      this.isScreenLoading = false;
-    }
+     
+    
   }
   getAppoinment() {
     this.userService.GetAppointmentDetails(this.appoinmentId).subscribe(
       (res: any) => {
         console.log(res);
         this.appoinmentDetails = res.data;
+        this.isScreenLoading = false;
       },
       (err) => {
         this.toastr.error(

@@ -1,6 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID, afterNextRender } from '@angular/core';
-import { DoctorService } from '../../Services/Doctor-Services/doctor.service';
+import { DoctorService } from '../../Services/doctor-services/doctor.service'; 
 import { Doctor } from '../../../../store/Doctor/doctor.model';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { Store } from '@ngrx/store';

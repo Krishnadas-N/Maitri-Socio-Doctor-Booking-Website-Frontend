@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input,OnInit, Output,EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-Profile-Picture',
+  selector: 'app-profile-picture',
   standalone:true,
   imports:[CommonModule],
-  templateUrl: './Profile-Picture.component.html',
-  styleUrls: ['./Profile-Picture.component.css']
+  templateUrl: './profile-picture.component.html',
+  styleUrls: ['./profile-picture.component.css']
 })
 export class ProfilePictureComponent implements OnInit {
   @Input() src!:string;

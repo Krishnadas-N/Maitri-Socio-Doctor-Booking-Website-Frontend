@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TableComponent } from '../../../../shared/Components/Table/Table.component';
+import { TableComponent } from '../../../../shared/Components/table/table.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { AdminPaginationComponent } from '../../../../shared/Components/admin-pagination/admin-pagination.component';
-import { ConfimationDialogComponent } from '../../../../shared/Components/confimation-Dialog/confimation.component';
 import { CommonModule } from '@angular/common';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { Store } from '@ngrx/store';
@@ -25,7 +24,6 @@ import {
     NgxPaginationModule,
     FormsModule,
     AdminPaginationComponent,
-    ConfimationDialogComponent,
     CommonModule,
   ],
   templateUrl: './doctor-list.component.html',

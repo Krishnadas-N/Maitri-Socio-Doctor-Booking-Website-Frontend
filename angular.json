@@ -32,13 +32,17 @@
             ],
             "scripts": [],
             "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "prerender": false,
+            "ssr": false
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/variable/src/environments/environment.development.ts",
+                  "with": "projects/variable/src/environments/environment.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
