@@ -1,0 +1,52 @@
+<div class="relative flex h-screen w-full flex-col items-center justify-center bg-gray-900">
+  <!-- Progress Bar -->
+  <div class="absolute left-0 top-0 h-2 w-full bg-gray-800">
+    <div class="h-full bg-green-400" style="width: 50%;"></div>
+    <!-- Adjust width dynamically -->
+  </div>
+
+  <!-- Close Button -->
+  <button class="absolute right-0 top-0 z-50 m-4 rounded-full bg-white p-2 text-gray-700 hover:bg-sky-500 hover:text-gray-900">
+    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  <!-- Profile Details -->
+  <div class="absolute left-0 top-0 flex items-center p-4">
+    <!-- Profile Image -->
+    <img src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="Profile Image" class="mr-2 h-12 w-12 rounded-full" />
+
+    <!-- User Details -->
+    <div class="font-serif text-white">
+      <div class="text-lg font-bold">User Name</div>
+      <div class="text-sm font-light">Location or additional info</div>
+    </div>
+  </div>
+
+  <!-- Previous Button -->
+  <button class="absolute left-0 top-1/2 z-50 ml-4 -translate-y-1/2 transform rounded-full bg-gray-800 p-2 text-white">
+    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>
+  </button>
+
+  <!-- Story Container -->
+  <div class="relative mt-14 h-[85%] w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg">
+    <!-- Progress Bar -->
+    <div class="absolute left-0 top-0 z-40 h-[5px] w-full bg-gray-800">
+      <!-- Adjust width dynamically -->
+      <div class="h-full bg-green-400" style="width: 50%;"></div>
+    </div>
+
+    <!-- Story Image -->
+    <img src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="Story Image" class="h-full w-full" />
+  </div>
+
+  <!-- Next Button -->
+  <button class="absolute bottom-1/2 right-0 z-50 mr-4 translate-y-1/2 transform rounded-full bg-gray-800 p-2 text-white">
+    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+</div>

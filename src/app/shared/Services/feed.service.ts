@@ -2,12 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AddPost, Post } from '../../store/sharedStore/Feed-Store/post.model';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedService {
-  private apiUrl = 'http://localhost:3000/api/posts';
+  private apiUrl = environment.FeedService;
   constructor(private http: HttpClient) {}
   getAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.apiUrl);
@@ -70,6 +71,6 @@ export class FeedService {
   }
 
   getSavedPosts(){
-    return this.http.get<any>(`${this.apiUrl}/p/get-saved-posts`)
+    return this.http.get<any>(`${this.apiUrl}/get-saved-posts`)
   }
 }

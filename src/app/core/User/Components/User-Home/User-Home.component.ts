@@ -39,15 +39,15 @@ export class UserHomeComponent implements OnInit {
   }
 
   loadAllPosts(){
-    this.FeedService.getAllPosts().subscribe(
-      (res:any)=>{
+    this.FeedService.getAllPosts().subscribe({
+      next:(res:any)=>{
         this.posts=res.data
         console.log("post from user home ",this.posts)
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err)
       }
-    )
+  })
   }
 
 }

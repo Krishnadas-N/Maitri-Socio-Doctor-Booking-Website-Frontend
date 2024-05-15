@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:3000/api/admin'; // Replace 'your_api_url' with your actual API URL
+  private apiUrl = environment.AdminServiceUrl; // Replace 'your_api_url' with your actual API URL
 
   constructor(private http: HttpClient) {}
 

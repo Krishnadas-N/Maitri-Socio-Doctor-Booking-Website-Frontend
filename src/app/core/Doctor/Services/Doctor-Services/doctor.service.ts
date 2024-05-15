@@ -62,4 +62,27 @@ export class DoctorService {
     return this.http.get(`${this.apiUrl}/get-notification`)
   }
 
+  savePrescription(data:{title:string,prescription:File},appoinmentId:string):Observable<any>{
+    console.log("data",data,"appoinmentId",appoinmentId)
+    const formData = new FormData();
+    formData.append('title',data.title);
+    formData.append('prescription',data.prescription)
+    return this.http.post(`${this.apiUrl}/add-prescritption/${appoinmentId}`,formData)
+  }
+
+  changeCancellationRequests(appoinmentId:string,status:'Accepted'|'Rejected'):Observable<any>{
+    return this.http.put(`${this.apiUrl}/change-cancel-request-status/${appoinmentId}`,{status})
+  }
+
+  getWalletOfDoctor(page: number, pageSize: number):Observable<any>{
+    return this.http.get(`${this.apiUrl}/get-wallet?page=${page}&pageSize=${pageSize}`)
+  }
+
+  getTransactionDetails():Observable<any>{
+    return this.http.get(`${this.apiUrl}/get-transaction-graphdetails`)
+  }
+
+  getDashboardDetails():Observable<any>{
+    return this.http.get(`${this.apiUrl}/get-doctor-dashboarddetails`)
+  }
 }

@@ -50,7 +50,9 @@ export class DoctorMainComponent  implements OnInit{
     { iconClasses: 'fas fa-clock fa-sm text-white', backgroundColor: 'bg-green-400', tooltip: 'Schedule Timings', link: '/doctor/schedule-timings' },
     { iconClasses: 'fas fa-comment fa-sm text-white', backgroundColor: 'bg-blue-600', tooltip: 'Chat Consultation', link: '/doctor/chats/inbox' },
     { iconClasses: 'fas fa-user fa-sm text-white', backgroundColor: 'bg-purple-400', tooltip: 'Profile', link: '/doctor/profile' },
-    { iconClasses: 'fas fa-bell fa-sm text-white', backgroundColor: 'bg-orange-400', tooltip: 'Notifications', link: '/doctor/notifications' }
+    { iconClasses: 'fas fa-money-bill-wave fa-sm text-white', backgroundColor: 'bg-indigo-400', tooltip: 'Payments', link: '/doctor/payments' },
+    { iconClasses: 'fas fa-bell fa-sm text-white', backgroundColor: 'bg-orange-400', tooltip: 'Notifications', link: '/doctor/notifications' },
+   
   ];
 
   handleSidebarItemClick(item: any) {

@@ -8,6 +8,12 @@ import { UserPaginationComponent } from '../../../../shared/Components/user-pagi
 import { FormsModule } from '@angular/forms';
 import { SpecializationService } from '../../../../shared/Services/specialization-service/specialization.service';
 import { FindDoctorsRequest } from '../../../../shared/Models/userSide.model';
+import { User } from '../../../../store/User/user.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store/GlobalStore/app.state';
+import { loadUser } from '../../../../store/User/user.action';
+import { GetCurrentUser } from '../../../../store/User/user.selector';
+import { CommonService } from '../../../../shared/Services/common-services/common.service';
 
 @Component({
   selector: 'app-doctor-listing',
@@ -23,6 +29,7 @@ export class DoctorListingComponent implements OnInit {
   pageSize: number = 6;
   doctors!: Doctor[];
   InterestedDoctors!: any;
+  currentUser!:User;
 
   filterCategories = [
     {
@@ -110,10 +117,19 @@ export class DoctorListingComponent implements OnInit {
   constructor(
     private specializationService: SpecializationService,
     private toastr: ToastrService,
-    private userService: UserService
+    private userService: UserService,
+    private store:Store<AppState>,
+    private commonService:CommonService
   ) {}
 
   ngOnInit() {
+
+    this.store.dispatch(loadUser());
+    this.store.select(GetCurrentUser).subscribe((res)=>{
+      if(res){
+      this.currentUser = res
+      }
+    })
     this.totalPages = Math.ceil(this.totalCount / this.pageSize);
     this.filterCategories.forEach((category) => {
       this.openSections[category.id] = false;
@@ -139,15 +155,15 @@ export class DoctorListingComponent implements OnInit {
   }
 
   getInterestedDoctors() {
-    this.userService.getInterestedDoctors().subscribe(
-      (res) => {
+    this.userService.getInterestedDoctors().subscribe({
+      next:(res) => {
         console.log('interested doctors', res.data);
         this.InterestedDoctors = res.data;
       },
-      (err) => {
+      error:(err) => {
         this.toastr.error(err.message, 'Error');
       }
-    );
+  });
   }
 
   isInterestedDoctor(doctor: Doctor): boolean {
@@ -265,8 +281,8 @@ export class DoctorListingComponent implements OnInit {
 
   removeInterestDoctor(doctor: Doctor) {
     if (doctor && doctor._id) {
-      this.userService.removeFromInterestedDoctors(doctor._id).subscribe(
-        (res: any) => {
+      this.userService.removeFromInterestedDoctors(doctor._id).subscribe({
+        next:(res: any) => {
           console.log(this.InterestedDoctors['doctorIds']);
           const index = this.InterestedDoctors['doctorIds'].findIndex(
             (item: any) => item.doctorId === doctor._id?.toString()
@@ -279,10 +295,10 @@ export class DoctorListingComponent implements OnInit {
             console.log('Doctor not found in interested doctors list');
           }
         },
-        (err) => {
+        error:(err) => {
           this.toastr.error(err); // Display error message
         }
-      );
+    });
     }
   }
 
@@ -343,5 +359,28 @@ export class DoctorListingComponent implements OnInit {
     }
     console.log("queryParams",queryParams)
     return queryParams;
+  }
+
+  toggleFollowDoctor(doctorId:string|undefined){
+    if(!doctorId){
+      return
+    }
+    this.commonService.toggleFollowDoctors(doctorId).subscribe({
+      next:(res)=>{
+       const doctor =  this.doctors.find((doctor)=>doctor._id?.toString() === doctorId);
+       doctor!.followers=res.data
+      },
+      error:(err)=>{
+        this.toastr.error(err)
+      },
+      complete:()=> {
+         
+
+      },
+    })
+  }
+
+  isFollowedByUser(doctor:Doctor):boolean{
+    return doctor.followers?.some(follower => follower.userId.toString() === this.currentUser._id?.toString()) || false;
   }
 }

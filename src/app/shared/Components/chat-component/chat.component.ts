@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit ,OnDestroy {
-  userType!:string;
+  userType!:'User'|'Doctor';
   conversations:any[]=[];
   messages: any[] = [];
   messageSubscription!: Subscription;
@@ -27,7 +27,6 @@ export class ChatComponent implements OnInit ,OnDestroy {
   currentUser:any;
   constructor(
     private webSocketService: WebSocketService,private route: ActivatedRoute,
-    private platformService:CheckPlatformService,
     private tokenService:TokenService,
     private messagService:MessageService,
     private userService:UserService,
@@ -37,45 +36,50 @@ export class ChatComponent implements OnInit ,OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-       this.userType = data['userType'];
-      console.log('User Type:', this.userType);
-      // Now you can use the userType variable in your component
-    });
-    this.fetchCurrentUser()
-    this.messagService.getChatsOfUSer().subscribe(
-      (res:any)=>{
-        this.conversations = res.data
-        console.log(" this.consversations", this.conversations);
-      },
-      (err:any)=>{
-        console.log(err);
-      }
-    )
+      this.userType = this.route.snapshot.data['expectedRole']
+       this.fetchCurrentUser()
+        const token = this.tokenService.getToken();
+        if(token){
+          this.webSocketService.setToken(token)
+        }
+
   }
   
+  loadChatsOfUser(){
+    this.messagService.getChatsOfUSer().subscribe({
+      next:(res)=>{
+         this.conversations = res.data
+         console.log(" this.consversations", this.conversations);
+       },
+      error:(err)=>{
+         console.log(err);
+       }
+   })
+  }
 
   fetchCurrentUser():void{
-    if(this.userType==='doctor'){
-      this.doctorService.getDoctor().subscribe(
-        (res:any)=>{
+    if(this.userType==='Doctor'){
+      this.doctorService.getDoctor().subscribe({
+        next:(res)=>{
           this.currentUser = res.data
           this.webSocketService.addUser(this.currentUser._id);
           console.log("currentUser",this.currentUser);
+          this.loadChatsOfUser()
         },
-        (err:any)=>{
+        error:(err)=>{
         }
-      )
-     }else if(this.userType==='user'){
-        this.userService.getCurrentUser().subscribe(
-          (res:any)=>{
+    })
+     }else if(this.userType==='User'){
+        this.userService.getCurrentUser().subscribe({
+          next:(res:any)=>{
             this.currentUser = res.data
             this.webSocketService.addUser(this.currentUser._id);
             console.log("currentUser",this.currentUser);
+            this.loadChatsOfUser()
           },
-          (err:any)=>{
+         error:(err:any)=>{
           }
-        )
+     })
      }  
   }
   ngOnDestroy(): void {
@@ -87,13 +91,12 @@ export class ChatComponent implements OnInit ,OnDestroy {
   }
 
   getOtherMember(conversation: any): any {
-    const currentUser = this.currentUser; // Assuming currentUser holds the details of the current user
-    const otherMember = conversation.members.find((member:any) => member._id.toString() !== currentUser._id);
+    const otherMember = conversation.members.find((member:any) => member._id.toString() !== this.currentUser._id);
     return otherMember.member;
   }
 
   navigateChat(id:string){
-    if(this.userType==='doctor'){
+    if(this.userType==='Doctor'){
     this.router.navigate(['/doctor/chats',id])
     }else{
       this.router.navigate(['/chats/',id])

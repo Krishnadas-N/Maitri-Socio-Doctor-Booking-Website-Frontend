@@ -4,13 +4,19 @@
     <p class="text-gray-400">Check your Appoinment. And select a suitable payment Method.</p>
     <div class="grid gap-4  mt-10">
       <div class="flex items-center justify-center bg-gray-100 rounded px-4 py-8">
-        <input type="radio" class="w-6 h-6 cursor-pointer" id="card"  [(ngModel)]="selectedPaymentMethod" value="card" />
-        <label for="card" class="ml-4 flex gap-2 cursor-pointer">
-          <img src="https://readymadeui.com/images/visa.webp" class="w-14" alt="card1" />
-          <img src="https://readymadeui.com/images/american-express.webp" class="w-14" alt="card2" />
-          <img src="https://readymadeui.com/images/master.webp" class="w-14" alt="card3" />
+        <input type="radio" class="w-6 h-6 cursor-pointer" id="Stripe" [(ngModel)]="selectedPaymentMethod" value="Stripe" />
+        <label for="Stripe" class="ml-4 flex gap-2 cursor-pointer">
+          <img src=" https://logos-world.net/wp-content/uploads/2021/03/Stripe-Logo.png" class="w-28" alt="StripeCard" />
         </label>
       </div>
+      <div class="flex items-center justify-center bg-gray-100 rounded px-4 py-8">
+        <input type="radio" class="w-6 h-6 cursor-pointer" id="Wallet" [(ngModel)]="selectedPaymentMethod" value="Wallet" />
+        <label for="Wallet" class="ml-4 flex gap-2 cursor-pointer">
+          <img src="https://cdn.icon-icons.com/icons2/1103/PNG/512/wallet_78921.png" class="w-28" alt="Wallet" />
+        </label>
+      </div>
+
+      
       <div class="flex items-center justify-center bg-gray-100 rounded px-4 py-8">
         <input type="radio" class="w-6 h-6 cursor-pointer" id="paypal" [(ngModel)]="selectedPaymentMethod" value="paypal" />
         <label for="paypal" class="ml-4 flex gap-2 cursor-pointer">

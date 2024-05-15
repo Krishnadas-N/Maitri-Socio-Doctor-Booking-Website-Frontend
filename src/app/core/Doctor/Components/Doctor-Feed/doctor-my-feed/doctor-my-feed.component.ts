@@ -31,15 +31,15 @@ export class DoctorMyFeedComponent implements OnInit {
     }
   }
   getDoctorsPost(){
-    this.feedService.loadCurrentDoctorPosts().subscribe(
-      (res:any)=>{
+    this.feedService.loadCurrentDoctorPosts().subscribe({
+      next:(res:any)=>{
         console.log(res);
         this.doctorPosts=res.data;
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err)
       }
-    )
+  })
   }
   // handleChilLike(event:any){
   //   const postId = event;

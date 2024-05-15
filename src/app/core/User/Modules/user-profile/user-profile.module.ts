@@ -10,17 +10,25 @@ import { AppoinmentListComponent } from '../../../../shared/Components/appoinmen
 import { UserSideAppoinmentListingComponent } from './user-side-appoinment-listing/user-side-appoinment-listing.component'; 
 import { UserPaginationComponent } from '../../../../shared/Components/user-pagination/user-pagination.component';
 import { InterestedDoctorsComponent } from './interested-doctors/interested-doctors.component'; 
-import { WalletComponent } from '../../../../shared/Components/wallet/wallet.component';
+import { WalletComponent } from './wallet/wallet.component';
 import { MedicalRecordComponent } from './medical-record/medical-record.component';
 import { MediaModalComponent } from '../../../../shared/Components/media-modal/media-modal.component';
+import { SavedPostComponent } from './saved-post/saved-post.component';
+import { ImageModule } from 'primeng/image';
 
 
 
 @NgModule({
-  declarations: [UserSideAppoinmentListingComponent,UserProfileMainComponent,HomeProfileComponent,InterestedDoctorsComponent,MedicalRecordComponent],
+  declarations: [UserSideAppoinmentListingComponent,
+    UserProfileMainComponent,
+    HomeProfileComponent,
+    InterestedDoctorsComponent
+    ,MedicalRecordComponent,
+    SavedPostComponent,
+    WalletComponent],
   imports: [
+    ImageModule, 
     MediaModalComponent,
-    WalletComponent,
     UserPaginationComponent,
     AppoinmentListComponent,
     RouterModule,

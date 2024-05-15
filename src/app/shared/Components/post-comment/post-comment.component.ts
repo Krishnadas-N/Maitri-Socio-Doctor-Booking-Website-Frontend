@@ -74,35 +74,35 @@ export class PostCommentComponent implements OnInit {
     this.isLoading = true;
     replyText = this.removeMention(replyText);
     console.log(replyText);
-    this.feedService.replyToComment(this.postData.post._id as string, comment._id, replyText).subscribe(
-      (res:any)=>{
+    this.feedService.replyToComment(this.postData.post._id as string, comment._id, replyText).subscribe({
+      next:(res:any)=>{
         this.isLoading=false;
         console.log(res);
         
         console.log( comment);
         this.postData.post.comments.find((c: any) => c._id.toString() === comment._id.toString())!['replies'].push(res.data)
       },
-      (err)=>{
+      error:(err)=>{
         this.isLoading=false;
         this.toastr.error(err)
-      })
+      }})
   }
 
   postNewComment(commentText: string): void {
     if (commentText.trim() !== '' && this.postData.post._id) {
       console.log(commentText);
       this.isLoading=true;
-      this.feedService.commentOnPost(this.postData.post._id as string, commentText.trim()).subscribe(
-        (res:any)=>{
+      this.feedService.commentOnPost(this.postData.post._id as string, commentText.trim()).subscribe({
+       next:(res:any)=>{
           this.isLoading=false;
           console.log(res);
           this.postData.post.comments.push(res.data);
         },
-        (err)=>{
+      error:(err)=>{
           this.isLoading=false;
           this.toastr.error(err)
         }
-      )
+    })
     }
   }
 

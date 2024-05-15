@@ -2,12 +2,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable,throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OtpServiceService {
-  private apiUrl = 'http://localhost:3000/api/otp';
+  private apiUrl = environment.OtpService;
   constructor(private http: HttpClient) { };
   
   verifyOtp(otp: string,section:string): Observable<any> {
@@ -29,6 +30,6 @@ export class OtpServiceService {
     }
     console.log(errorMessage);
     
-    return throwError(errorMessage);
+    return throwError(()=>new Error(errorMessage));
   }
 }

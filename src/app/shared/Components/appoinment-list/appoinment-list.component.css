@@ -21,4 +21,40 @@
   span {
     display: block;
   }
+  .custom-dialog {
+    width: 400px; /* Adjust width as needed */
+    border-radius: 10px;
+  }
   
+  .dialog-content {
+    padding: 20px;
+  }
+  
+  .custom-dialog {
+    max-width: 400px; /* Adjust width as needed */
+  }
+  
+  .dialog-content {
+    padding: 20px;
+  }
+  
+  p-footer {
+    margin-top: 20px;
+    text-align: right;
+  }
+  
+  p-footer button {
+    margin-left: 10px;
+  }
+
+.btn-cancel {
+  padding: 10px;
+  background-color: #3490dc; /* Blue color */
+  color: #fff; /* White text color */
+}
+
+.btn-confirm {
+  padding: 10px;
+  background-color: #e53e3e; /* Red color */
+  color: #fff; /* White text color */
+}

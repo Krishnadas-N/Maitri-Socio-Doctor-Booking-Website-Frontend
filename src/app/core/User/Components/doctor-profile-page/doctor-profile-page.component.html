@@ -34,7 +34,7 @@
           <!-- End of profile card -->
           <div class="my-4"></div>
           <!-- Friends card -->
-          <div class="bg-white p-3 hover:shadow">
+          <div class="bg-white p-3 hover:shadow" *ngIf="similarProfileDoctors.length>0">
               <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                   <span class="text-green-500">
                       <svg class="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -45,32 +45,49 @@
                   </span>
                   <span>Similar Profiles</span>
               </div>
-              <div class="grid grid-cols-3">
-                  <div class="text-center my-2">
-                      <img class="h-16 w-16 rounded-full mx-auto"
-                          src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg"
-                          alt="">
-                      <a href="#" class="text-main-color">Kojstantin</a>
-                  </div>
-                  <div class="text-center my-2">
-                      <img class="h-16 w-16 rounded-full mx-auto"
-                          src="https://avatars2.githubusercontent.com/u/24622175?s=60&amp;v=4"
-                          alt="">
-                      <a href="#" class="text-main-color">James</a>
-                  </div>
-                  <div class="text-center my-2">
-                      <img class="h-16 w-16 rounded-full mx-auto"
-                          src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-                          alt="">
-                      <a href="#" class="text-main-color">Natie</a>
-                  </div>
-                  <div class="text-center my-2">
-                      <img class="h-16 w-16 rounded-full mx-auto"
-                          src="https://bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com/public/images/f04b52da-12f2-449f-b90c-5e4d5e2b1469_361x361.png"
-                          alt="">
-                      <a href="#" class="text-main-color">Casey</a>
-                  </div>
-              </div>
+              <div class="relative">
+                <div class="max-w-xs mx-auto bg-gray-900 dark:bg-white rounded-lg overflow-hidden shadow-lg relative">
+                    <div class="border-b px-4">
+                        <div class="text-center my-2">
+                            <img class="h-24 w-24 rounded-full border-2 border-gray-800 dark:border-white mx-auto my-2" src="https://randomuser.me/api/portraits/women/21.jpg" alt="">
+                            <div class="py-1">
+                                <h3 class="font-bold text-lg text-white dark:text-gray-800 mb-1">
+                                  {{similarProfileDoctors[currentCountOfSimilarProfileDoctors]?.firstName}}  {{similarProfileDoctors[currentCountOfSimilarProfileDoctors]?.lastName}}
+                                </h3>
+                                <div class="inline-flex text-white dark:text-gray-700 items-center text-sm">
+                                    <svg class="h-4 w-4 text-white dark:text-gray-400 mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path class="" d="M5.64 16.36a9 9 0 1 1 12.72 0l-5.65 5.66a1 1 0 0 1-1.42 0l-5.65-5.66zm11.31-1.41a7 7 0 1 0-9.9 0L12 19.9l4.95-4.95zM12 14a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                                    </svg>
+                                    {{getSpecializationName(similarProfileDoctors[currentCountOfSimilarProfileDoctors]!.specialization)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2">
+                        <div class="flex flex-col gap-2 px-2">
+                            <button class="flex-1 rounded-full bg-white dark:bg-gray-800 text-black dark:text-white antialiased font-sm hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1">
+                                Follow
+                            </button>
+                            <button class="flex-1 rounded-full border-2 border-white dark:border-gray-700 font-sm text-white dark:text-black px-3 py-1">
+                                Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            
+                <button  (click)="getPreviousDoctor()" class="absolute top-1/2 left-0 transform -translate-y-1/2 ml-4 bg-gray-800 text-white rounded-full p-2">
+                    <!-- Previous Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button (click)="getNextDoctor()" class="absolute top-1/2 right-0 transform -translate-y-1/2 mr-4 bg-gray-800 text-white rounded-full p-2">
+                    <!-- Next Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
           </div>
           <!-- End of friends card -->
       </div>
@@ -120,10 +137,6 @@
                           <div class="px-4 py-2">
                               <a class="text-blue-800" href="mailto:{{doctorDetails.email}}">{{doctorDetails.email}}</a>
                           </div>
-                      </div>
-                      <div class="grid grid-cols-2">
-                          <div class="px-4 py-2 font-semibold">Birthday</div>
-                          <div class="px-4 py-2">{{doctorDetails.dateOfBirth | date}}</div>
                       </div>
                   </div>
               </div>

@@ -44,18 +44,18 @@ export class EditPostComponent implements OnInit {
         tags: this.convertTagsToArray(this.editPostForm.value.tags)
       };
       console.log('Updated post:', updatedPost);
-      this.feedService.editPost(this.post._id,updatedPost).subscribe(
-        (res)=>{
+      this.feedService.editPost(this.post._id,updatedPost).subscribe({
+        next:(res)=>{
          this.closeEditModal.emit(true)
          this.isLoading=false;
           this.updatedPostData.emit(res.data);
         },
-        (err)=>{
+        error:(err)=>{
           this.isLoading=false;
           this.closeEditModal.emit(true)
           this.toastr.error(err)
         }
-      )
+    })
       // You can now perform further actions like updating the post
     }else{
       this.toastr.error("please fill all fields correctly")

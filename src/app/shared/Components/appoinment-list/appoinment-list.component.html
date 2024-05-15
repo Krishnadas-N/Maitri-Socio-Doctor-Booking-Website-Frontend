@@ -3,10 +3,15 @@
       
         <ng-container *ngIf="userType === 'doctor'; else userTemplate">
           <li class="min-w-150 mb-4">
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-cover rounded-lg"
-            [style.background-image]="'url(' + appoinmentDetails.user[0].profilePic + ')'">
-            </div>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-cover rounded-lg"
+              [style.background-image]="'url(' + appoinmentDetails.user[0].profilePic + ')'">
+              <span *ngIf=" appoinmentDetails.cancellationRequests && appoinmentDetails.cancellationRequests.status==='Pending'" class="relative flex h-5 w-5 -mt-1.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-5 w-5 bg-red-500"></span>
+              </span>
+              </div>
+            
             <div class="leading-none ml-5 flex flex-col justify-around">
                 <div class="tracking-wide font-bold">{{appoinmentDetails.user[0].firstName}} {{appoinmentDetails.user[0].lastName}}</div>
                 <div class="text-xs text-gray-600">{{appoinmentDetails.user[0].email}}</div>
@@ -90,43 +95,56 @@
       <div *ngIf="appoinmentDetails.paymentStatus === 'Pending'" class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-red-200 text-red-700 hover:bg-red-300 hover:text-red-800">
         Not Paid
       </div> -->
-      <div aria-disabled="true" *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Cancelled'"
-      class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-yellow-400 text-white hover:bg-yellow-600">
-      <span class="block">Your Appointment is Rejected by Doctor</span>
-      <span class="block">Your payent will Refund shortly</span>
-    </div>
-      <div (click)="changeStatus()" *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Pending' " class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-green-400 text-white hover:bg-green-600 ">
+
+      <div aria-disabled="true" *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Cancelled' && !appoinmentDetails.cancellationRequests"
+         class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-yellow-400 text-white hover:bg-yellow-600">
+        <span class="block">Your Appointment is Rejected by Doctor</span>
+        <span class="block">Your Entire Payment will Refund shortly</span>
+     </div>
+
+
+      <div (click)="openConfirmationDialog()" *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Pending' &&  !appoinmentDetails.cancellationRequests" class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-green-400 text-white hover:bg-green-600 ">
         <i class="far fa-eye mr-3"></i> Cancel Your Appoinment
       </div>
+
       <div *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Scheduled'"
       class="text-center">
- 
-   <!-- Countdown Timer Section -->
- 
-   <!-- Cancel Appointment Button Section -->
-          <div (click)="changeStatus()"
+          <div (click)="openConfirmationDialog()"
           [ngClass]="{'pointer-events-none': isSessionEnded(appoinmentDetails.date, appoinmentDetails.slot)}"
           class="cursor-pointer px-4 py-2 text-xs font-bold rounded bg-red-400 text-white hover:bg-red-600">
             <span class="block">Your Appointment is Confirmed</span>
             <span class="block">If you want to cancel, click here!</span>
             <span class="block">Session starts in: {{ calculateTimeRemaining(appoinmentDetails.date, appoinmentDetails.slot) }} </span>
           </div>
-          <div *ngIf="appoinmentDetails.typeOfAppointment !== 'clinic' && consultationLink && isOneHourOrLessDifference(appoinmentDetails.date, appoinmentDetails.slot)">
-            <a [href]="consultationLink" class="animate-bounce focus:animate-none hover:animate-none inline-flex text-md font-medium bg-sky-500 mt-3 px-4 py-2 rounded-lg tracking-wide text-white" target="_blank">
+          
+          <div *ngIf="appoinmentDetails.status!=='Completed' && appoinmentDetails.typeOfAppointment !== 'clinic' && (appoinmentDetails.consultationLink || consultationLink) ">
+            <a href={{appoinmentDetails.consultationLink}} class="animate-bounce focus:animate-none hover:animate-none inline-flex text-md font-medium bg-sky-500 mt-3 px-4 py-2 rounded-lg tracking-wide text-white" target="_blank"
+              [@fadeInOut]> <!-- Apply the animation trigger here -->
               <span class="ml-2">Join the Session 🏀</span>
             </a>
           </div>
-          
- </div>
+         </div>
  
     <div aria-disabled="true" *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Rejected'"
-    class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-yellow-400 text-white hover:bg-yellow-600">
-    <span class="block">Your Appointment is Rejected by Doctor</span>
-    <span class="block">Your payent will Refund shortly</span>
-  </div>
-      <div  *ngIf="appoinmentDetails.paymentStatus !== 'Paid'" aria-disabled:true class="cursor-pointer  text-center px-4 py-2 text-xs font-bold rounded bg-blue-400 text-white hover:bg-blue-600 " [style.opacity]="0.5">
+         class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-yellow-400 text-white hover:bg-yellow-600">
+         <span class="block">Your Appointment is Rejected by Doctor</span>
+          <span class="block">Your payent will Refund shortly</span>
+    </div>
+
+      <div *ngIf="appoinmentDetails.paymentStatus !== 'Paid'" aria-disabled:true class="cursor-pointer  text-center px-4 py-2 text-xs font-bold rounded bg-blue-400 text-white hover:bg-blue-600 " [style.opacity]="0.5">
         Payment not completed
       </div>
+
+      <div *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Pending' && appoinmentDetails.cancellationRequests && appoinmentDetails.cancellationRequests.status === 'Pending'" class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-green-400 text-white hover:bg-green-600 ">
+        <i class="far fa-clock mr-3"></i> Your Cancellation Request is Pending. The refund will be processed shortly.
+     </div>
+
+     <div *ngIf="appoinmentDetails.paymentStatus === 'Paid' && appoinmentDetails.status === 'Pending' && appoinmentDetails.cancellationRequests && appoinmentDetails.cancellationRequests.status === 'Completed'" class="cursor-pointer text-center px-4 py-2 text-xs font-bold rounded bg-green-400 text-white hover:bg-green-600 ">
+       <i class="far fa-check-circle mr-3"></i> Your appointment has been cancelled. The amount will be refunded to your wallet.
+     </div>
+
+     
+  
     </ng-container>
 
     <ng-template  #doctorTemplate>
@@ -141,15 +159,19 @@
 </div>
 
 <p-toast></p-toast>
-<p-confirmDialog #cd icon="pi pi-exclamation-triangle" [styleClass]="'bg-red-500 shadow-md rounded-lg'" key="positionDialog" [position]="position">
+<p-dialog #confirmationDialog header="Confirmation" [(visible)]="displayConfirmationDialog" [styleClass]="'custom-dialog'" [modal]="true">
+  <div class="dialog-content">
+    <div class="flex items-center mb-3">
+      <label for="reason" class="font-semibold w-32">Reason for cancellation:</label>
+      <input pInputText id="reason" name="reason" [(ngModel)]="cancellationReason" class="flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" autocomplete="off" />
+    </div>
+    <div class="text-sm text-gray-600 mb-3">Please note that cancelling the appointment at this stage will result in a refund of 70% of the total amount paid.</div>
+ </div>
   <p-footer>
-    <button type="button" (click)="cd.reject()"
-      pButton icon="pi pi-times" label="Cancel" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"></button>
-    <button type="button" pButton icon="pi pi-check" label="Confirm" 
-      (click)="cd.accept()" class="ms-2 bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"></button>
-  </p-footer>
-  <!-- Indication message -->
-  <div class="text-center text-red-600 mt-4">
-    <p>This action cannot be undone.</p>
-  </div>
-</p-confirmDialog>
+    <button type="button" (click)="onRejectCancellation()" pButton label="Cancel" class="btn-cancel"></button>
+    <button type="button" (click)="onConfirmCancellation()" pButton label="Confirm" class="btn-confirm"></button>
+   </p-footer>
+</p-dialog>
+
+
+

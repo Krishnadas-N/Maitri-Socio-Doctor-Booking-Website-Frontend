@@ -30,15 +30,15 @@ export class InterestedDoctorsComponent implements OnInit {
   }
 
   removeInterest(doctorId:string){
-    this.userService.removeFromInterestedDoctors(doctorId).subscribe(
-      (res:any)=>{
+    this.userService.removeFromInterestedDoctors(doctorId).subscribe({
+      next:(res:any)=>{
         this.intertestedDoctors = this.intertestedDoctors.doctorsInfo.filter((x: any) => x._id.toString() !== doctorId);
         console.log( this.intertestedDoctors);
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err)
       }
-    )
+  })
   }
 
 }

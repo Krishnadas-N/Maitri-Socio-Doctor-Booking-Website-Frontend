@@ -1,3 +1,4 @@
+declare var google:any;
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -86,9 +87,10 @@ export class UserService {
   GetAppointmentDetails(appoinmentId: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/get-appoinment/${appoinmentId}`);
   }
-  makePayment(paymentMethod: string, appoinmentId: string): Observable<any> {
+  makePayment(paymentMethod: string, appoinmentId: string,token?:any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/make-payment/${appoinmentId}`, {
       paymentMethod,
+      token:token?token:null
     });
   }
 
@@ -113,10 +115,10 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/get-appoinments?page=${page}&pageSize=${pageSize}`);
   }
 
-  changeAppoinmentStatus(id: string, status: string): Observable<any> {
+  requestTochangeAppoinmentStatus(id: string,reason:string,status: string): Observable<any> {
     return this.http.put<any>(
-      `${this.baseUrl}/change-appoinment-status/${id}`,
-      { status }
+      `${this.baseUrl}/cancel-appoinment/${id}`,
+      { reason }
     );
   }
 
@@ -129,8 +131,8 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/get-doctors`, { params: params });
   }
   
-  getWalletOfUser(): Observable<any>{
-   return this.http.get<any>(`${this.baseUrl}/get-wallet`)
+  getWalletOfUser(page: number, pageSize: number): Observable<any>{
+   return this.http.get<any>(`${this.baseUrl}/get-wallet?page=${page}&pageSize=${pageSize}`)
   }
 
   uploadMedicalRecords(file: File,title:string,description: string):Observable<any>{
@@ -151,5 +153,18 @@ export class UserService {
 
    getNotifications():Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/get-notifications`)
+   }
+
+   deleteMedicalRecord(medicalrecordId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/delete-medical-record/${medicalrecordId}`);
+  }
+
+  getPrescritpionsOfUser():Observable<any>{
+    return this.http.get(`${this.baseUrl}/get-userPrescriptions`)
+  }
+   
+
+   signOut(){
+    google.accounts.id.disableAutoSelect();
    }
 }

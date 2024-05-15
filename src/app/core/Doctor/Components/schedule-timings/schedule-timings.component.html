@@ -80,7 +80,7 @@
   <div class="bg-white m-1 rounded-sm p-4">
     <div class="flex justify-between mt-1 mb-2">
       <p>Select slot for {{ currentDate?.name }} {{ currentDate?.date }} {{ currentDate?.day }} {{ currentDate?.year }}</p>
-      <button *ngIf="!isEdit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" (click)="isEdit=true">Edit slots</button>
+      <button *ngIf="!isEdit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" (click)="toggleIsEdit()">Edit slots</button>
       <button *ngIf="isEdit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" (click)="saveSlots()">
         <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>Save slots
       </button>
@@ -90,7 +90,7 @@
         <div class="text-center bg-blue-500 border rounded-md p-2 cursor-pointer" 
          [ngClass]="{'bg-blue-500': isSlotSelected(slot)}"
          [style.pointer-events]="isEdit ? 'auto' : 'none'"
-         (click)="isEdit && toggleSlotSelection(slot)">
+         (click)="toggleSlotSelection(slot)">
         {{ slot }}
         <span *ngIf="isSlotSelected(slot)" class="tick-icon">
           <i class="fas fa-check"></i>

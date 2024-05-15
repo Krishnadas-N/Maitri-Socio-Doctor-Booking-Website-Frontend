@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service'; 
 import { ToastrService } from 'ngx-toastr';
 import { MessageService } from '../../Services/web-socketService/message.service'; 
-import { Route, Router } from '@angular/router';
+import { NavigationExtras, Route, Router } from '@angular/router';
 import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
 import { TokenService } from '../../Services/token-auth-service/Token.service';
 import { NotificationService } from '../../Services/notification-service/notification.service';
@@ -51,6 +51,23 @@ export class UserSidebardetailsListingComponent implements OnInit {
       }
   })
   }
+  changeCancellationRequests(status:"Accepted"|"Rejected"){
+    if(status){
+      this.doctorService.changeCancellationRequests(this.data.appoinments._id,status).subscribe({
+        next:(res:any)=>{
+          this.data.appoinments.status=res.data.appointment.status;
+          this.data.cancellationRequests = res.data.appointment.cancellationRequests
+          console.log("notificationSending   ....",res.data.notificationId)
+          this.notification.sendNotification(res.data.adminNotificationId);
+          this.notification.sendNotification(res.data.userNotificationId);
+          
+        },
+        error:(err)=>{
+          this.toastr.error(err)
+        }
+    })
+    }
+  }
 
 
   calculateTimeRemaining(date: string, slot: string): string {
@@ -80,19 +97,44 @@ export class UserSidebardetailsListingComponent implements OnInit {
     const userId = this.data.appoinments.user[0]._id
     switch (this.data.appoinments.typeOfAppointment) {
       case 'video':
-        // Logic to start video consultation
+        this.messageService.getConversationId(userId,this.data.appoinments._id).subscribe({
+          next: (res:any)=>{
+             console.log("Response form the sidebar of Docotr",res);
+             const token = this.tokenService.getToken();
+             if(token){
+             this.webSocket.setToken(token)
+             this.webSocket.sendConsultationLink(userId,res.data.consultationLink)
+             }
+             this.closeDialog()
+             const queryParams: NavigationExtras = {
+              queryParams: {
+                apppoinmentId: this.data.appoinments._id,
+              }
+            };
+             this.router.navigate(['/doctor/video-consult/', res.data.convId],queryParams)
+           },
+          error: (err)=>{
+             this.toastr.error(err)
+           } 
+         })
+         break;
         break;
       case 'chat':
         this.messageService.getConversationId(userId,this.data.appoinments._id).subscribe({
          next: (res:any)=>{
             console.log("Response form the sidebar of Docotr",res);
             const token = this.tokenService.getToken();
-            if(token){
+            if(token && res.data.consultationLink){
             this.webSocket.setToken(token)
-            this.webSocket.sendConsultationLink(userId,res.data.appointment.consultationLink)
+            this.webSocket.sendConsultationLink(userId,res.data.consultationLink)
             }
             this.closeDialog()
-            this.router.navigate(['/doctor/chats/', res.data.convId])
+            const queryParams: NavigationExtras = {
+              queryParams: {
+                apppoinmentId: this.data.appoinments._id,
+              }
+            };
+            this.router.navigate(['/doctor/chats/', res.data.convId],queryParams)
           },
          error: (err)=>{
             this.toastr.error(err)

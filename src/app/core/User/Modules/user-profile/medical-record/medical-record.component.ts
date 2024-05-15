@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadMedicalRecordComponent } from '../../../../../shared/Components/upload-medical-record/upload-medical-record.component';
 import { UserService } from '../../../Services/user.service';
+import { ToastrService } from 'ngx-toastr';
+import { AppointmentPrescriptionModel } from '../Models/appointments.model';
 
 @Component({
   selector: 'app-medical-record',
@@ -9,15 +11,17 @@ import { UserService } from '../../../Services/user.service';
   styleUrls: ['./medical-record.component.css']
 })
 export class MedicalRecordComponent implements OnInit {
-  showMediaModal:boolean=false;
-  medicalRecords:any[]=[]
-  imageUrls:string[]=[]
+  medicalRecords:any[]=[];
+  appoinmentDetails:AppointmentPrescriptionModel[]=[]
+  section:'MedicalRecords'|'Prescriptions'= 'MedicalRecords'
   constructor(public dialog: MatDialog,
-    private userService:UserService
+    private userService:UserService,
+    private toastr:ToastrService
   ) { }
 
   ngOnInit() {
-    this.fetchMedicalRecords()
+    this.fetchMedicalRecords();
+    this.fetchPrescritptions()
   }
   openUploadModal() {
     const dialogRef = this.dialog.open(UploadMedicalRecordComponent, {
@@ -30,23 +34,47 @@ export class MedicalRecordComponent implements OnInit {
   }
 
   fetchMedicalRecords(){
-    this.userService.getMedicalRecords().subscribe(
-      (res)=>{
+    this.userService.getMedicalRecords().subscribe({
+      next:(res)=>{
         console.log("medicalRecords",this.medicalRecords);
         this.medicalRecords = res.data
       },
-      (err)=>{
+      error:(err)=>{
         console.log(err)
 
       }
-    )
+  })
   }
-  viewRecord(record:any){
-    this.imageUrls=[record.fileUrl]
-    this.showMediaModal=true;
+ 
+  
+  deleteRecord(recordId: string): void {
+    this.userService.deleteMedicalRecord(recordId).subscribe({
+      next: () => {
+      this.toastr.success("SuccessFully deleted");
+      const indextoDelete =  this.medicalRecords.findIndex(record=>record._id.toString()===recordId) 
+      this.medicalRecords.splice(indextoDelete,1)
+      },
+      error: (error) => {
+        // Handle error, e.g., show an error message
+        console.error('Error deleting record:', error);
+        this.toastr.error(error)
+      }
+    });
+  }
+  changeSection(sectionName:'MedicalRecords'|'Prescriptions'){
+    this.section = sectionName
   }
 
-  closeMedia(event:any){
-    this.showMediaModal=false
+  fetchPrescritptions(){
+    this.userService.getPrescritpionsOfUser().subscribe({
+      next:(res)=>{
+        console.log("getPrescritpionsOfUser",res);
+        this.appoinmentDetails = res.data
+      },
+      error:(err)=>{
+        console.log(err)
+
+      }
+  })
   }
 }

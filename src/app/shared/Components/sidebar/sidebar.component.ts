@@ -14,9 +14,9 @@ import { TokenService } from '../../Services/token-auth-service/Token.service';
 })
 export class SidebarComponent implements OnInit {
 
-  @Input() backgroundColor: string = '';
-  @Input() profileImage: string = '';
-  @Input() navItems: { iconClasses: string, backgroundColor: string, tooltip?: string,link?:string }[] = [];
+  @Input({required:true}) backgroundColor: string = '';
+  @Input({required:true}) profileImage: string = '';
+  @Input({required:true}) navItems: { iconClasses: string, backgroundColor: string, tooltip?: string,link?:string }[] = [];
   @Output() itemClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() itemHover: EventEmitter<{ item: any, index: number } | null> = new EventEmitter<{ item: any, index: number } | null>();
 

@@ -90,7 +90,7 @@ export class WebSocketService {
 
   addUser(userId: string): void {
     console.log("Current user added to scoker",userId);
-    this.webSocket.emit('add user', userId);
+    this.webSocket.emit('add users', userId);
   }
 
   getError(): Observable<any> {

@@ -4,6 +4,8 @@ import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.
 import { DoctorMainComponent } from './doctor-main-page/doctor-main.component';
 import { DoctorFeedMainComponent } from './Components/Doctor-Feed/doctor-feed-main/doctor-feed-main.component';
 
+
+
 export const doctorRoutes: Routes = [
 
   {
@@ -11,6 +13,7 @@ export const doctorRoutes: Routes = [
     data: { expectedRole: 'Doctor' },
     component: DoctorMainComponent,
     children: [
+      
       {
         path: 'register',
         data: { expectedRole: 'Doctor' },
@@ -79,6 +82,12 @@ export const doctorRoutes: Routes = [
         ],
       },
       {
+        path:'',
+        data: { expectedRole: 'Doctor' },
+        canActivate:[RoleGuardService],
+        loadComponent: () => import('./Components/doctor-dashboard/doctor-dashboard.component').then(m=>m.DoctorDashboardComponent)
+       },
+      {
         path:'schedule-timings',
         data: { expectedRole: 'Doctor' },
         canActivate:[RoleGuardService],
@@ -92,6 +101,7 @@ export const doctorRoutes: Routes = [
         loadComponent :()=> import('./Components/doctor-settings/doctor-settings.component'
       ).then((m)=>m.SettingsPageComponent)
       },
+     
       {
         path:'appoinments',
         data: { expectedRole: 'Doctor' },
@@ -116,8 +126,8 @@ export const doctorRoutes: Routes = [
         children:[
           {
             path:':id',
+            data: { expectedRole: 'Doctor' },
             loadComponent:()=>import('../../shared/Components/chat-room/chat-room.component').then(mod=>mod.ChatRoomComponent),
-            data: { userType: 'doctor' },
           }
         ]
       },
@@ -127,6 +137,12 @@ export const doctorRoutes: Routes = [
         canActivateChild:[RoleGuardService],
         data: { expectedRole: 'Doctor' },
         loadChildren:()=>import( '../../shared/Modules/videoCall-module/video-call.module').then(m=>m.VideoCallModule)
+        },
+        {
+          path:'payments',
+          data: { expectedRole: 'Doctor' },
+          canActivate:[RoleGuardService],
+          loadComponent:()=>import('./Components/payment-wallet/payment-wallet.component').then(m=>m.PaymentWalletComponent)
         },
       
     ],

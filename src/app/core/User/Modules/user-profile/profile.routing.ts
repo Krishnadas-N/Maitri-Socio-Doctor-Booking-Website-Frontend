@@ -3,9 +3,10 @@ import { UserProfileMainComponent } from "./user-profile-main-page/user-profile-
 import { HomeProfileComponent } from "./home-profile/home-profile.component";
 import { UserSideAppoinmentListingComponent } from "./user-side-appoinment-listing/user-side-appoinment-listing.component"; 
 import { InterestedDoctorsComponent } from "./interested-doctors/interested-doctors.component"; 
-import { WalletComponent } from "../../../../shared/Components/wallet/wallet.component"; 
+import { WalletComponent } from "./wallet/wallet.component"; 
 import { MedicalRecordComponent } from "./medical-record/medical-record.component";
 import { NotificationComponent } from "../../../../shared/Components/notification-component/notification.component";
+import { SavedPostComponent } from "./saved-post/saved-post.component";
 
 
 
@@ -35,10 +36,15 @@ export const profileRoutes:Routes=[
                 component:MedicalRecordComponent
             },
             {
+                path:'saved-posts',
+                component:SavedPostComponent
+            },
+            {
                 path:'notifications',
                 data:{expectedRole:'User'},
                 component:NotificationComponent,
-            }
+            },
+
         ]
     }
 ]

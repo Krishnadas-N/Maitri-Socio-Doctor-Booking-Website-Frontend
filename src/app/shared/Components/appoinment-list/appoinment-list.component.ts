@@ -7,25 +7,41 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../core/User/Services/user.service';
-
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-appoinment-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ConfirmDialogModule, ToastModule],
+  imports: [CommonModule, RouterLink, ConfirmDialogModule,FormsModule,DialogModule, ToastModule],
   templateUrl: './appoinment-list.component.html',
   styleUrls: ['./appoinment-list.component.css'],
   providers: [ConfirmationService, MessageService],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      state('*', style({
+        opacity: 1
+      })),
+      transition('void => *', animate('500ms')),
+      transition('* => void', animate('500ms')),
+    ]),
+  ]
 })
 
 export class AppoinmentListComponent implements OnInit, OnDestroy {
   @Input() appoinmentDetails: any;
+  cancellationReason: string = '';
   consultationLink: string | null = null;
   currentUserId: string | null = null;
   private consultationLinkSubscription!: Subscription;
+  displayConfirmationDialog: boolean = false;
   @Input() userType!: 'doctor' | 'user';
   @Output() viewprofile = new EventEmitter<string>();
-  @Output() editUserStatus: EventEmitter<{ id: string; status: string }> =
-    new EventEmitter<{ id: string; status: string }>();
+  @Output() editUserStatus: EventEmitter<{ id: string, reason:string, status: string }> =
+    new EventEmitter<{ id: string, reason:string, status: string }>();
   position: string = 'center';
   constructor(
     private userService: UserService,
@@ -36,7 +52,6 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.userType === 'user') {
-      this.consultationLink = this.appoinmentDetails.consultationLink ? this.appoinmentDetails.consultationLink:null;
       this.getCurrentUser();
       this.consultationLinkSubscription = this.webSocketService
         .receiveConsultationLink()
@@ -63,36 +78,7 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
     this.viewprofile.emit(this.appoinmentDetails?._id);
   }
 
-  changeStatus() {
-    this.confirmationService.confirm({
-      message: `Please note that cancelling the appointment at <br> \nthis stage will result in a refund of 70% of the total amount paid.`,
-      header: 'Confirmation',
-      icon: 'pi pi-info-circle',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-      rejectButtonStyleClass: 'p-button-text',
-      accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Request submitted',
-        });
-        this.editUserStatus.emit({
-          id: this.appoinmentDetails._id,
-          status: 'Cancelled',
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'Process incomplete',
-          life: 3000,
-        });
-      },
-      key: 'positionDialog',
-    });
-  }
+  
   calculateTimeRemaining(date: string, slot: string): string {
     console.log(date, slot);
     const now = new Date();
@@ -117,7 +103,6 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
   }
 
   isSessionEnded(date: string, slot: string): boolean {
-    console.log(date, slot);
     const now = new Date();
     const startTime = new Date(date);
 
@@ -150,6 +135,33 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
     return false;
   }
   
+  openConfirmationDialog() {
+    this.displayConfirmationDialog = true;
+  }
+
+  onRejectCancellation() {
+    this.displayConfirmationDialog = false;
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Rejected',
+      detail: 'Process incomplete',
+      life: 3000,
+    });
+  }
+
+  onConfirmCancellation() {
+    this.displayConfirmationDialog = false;
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Confirmed',
+      detail: 'Request submitted',
+    });
+    this.editUserStatus.emit({
+      id: this.appoinmentDetails._id,
+      reason:this.cancellationReason,
+      status: 'Cancelled',
+    });
+  }
   ngOnDestroy() {
     if(this.consultationLinkSubscription){
     this.consultationLinkSubscription.unsubscribe();

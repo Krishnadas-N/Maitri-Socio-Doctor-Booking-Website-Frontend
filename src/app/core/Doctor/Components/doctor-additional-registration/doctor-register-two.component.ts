@@ -175,16 +175,16 @@ export class DoctorRegisterTwoComponent implements OnInit {
         this.isLoading.emit(true);
         this.doctorAuthSevice
           .registerProfessional(this.registrationForm.value)
-          .subscribe(
-            (response) => {
+          .subscribe({
+           next: (response) => {
               this.isLoading.emit(false);
               resolve(response);
             },
-            (error) => {
+            error:(error) => {
               this.isLoading.emit(false);
               reject(error);
             }
-          );
+      });
       } else {
         console.error('Form is invalid');
         reject('Form is invalid');

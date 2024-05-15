@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { VideoCallComponent } from './video-call.component';
+import { SavedPostComponent } from './saved-post.component';
 
-describe('VideoCallComponent', () => {
-  let component: VideoCallComponent;
-  let fixture: ComponentFixture<VideoCallComponent>;
+describe('SavedPostComponent', () => {
+  let component: SavedPostComponent;
+  let fixture: ComponentFixture<SavedPostComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VideoCallComponent ]
+      declarations: [ SavedPostComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VideoCallComponent);
+    fixture = TestBed.createComponent(SavedPostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

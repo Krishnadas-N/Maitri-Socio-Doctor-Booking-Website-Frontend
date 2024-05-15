@@ -31,7 +31,10 @@ export interface Doctor {
     selectedSlots?: { date: Date; slots: string[]; }[];
     createdAt?: Date;
     updatedAt?: Date;
-    followers?: string[];
+    followers?: [{
+      userId: string;
+      userModel: 'User' | 'Doctor';
+    }];
     isVerified?: boolean;
     typesOfConsultation?: string[];
     maxPatientsPerDay?: number;

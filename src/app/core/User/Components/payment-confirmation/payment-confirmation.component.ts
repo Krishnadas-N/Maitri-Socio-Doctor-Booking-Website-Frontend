@@ -39,18 +39,18 @@ export class PaymentConfirmationComponent implements OnInit {
     
   }
   getAppoinment() {
-    this.userService.GetAppointmentDetails(this.appoinmentId).subscribe(
-      (res: any) => {
+    this.userService.GetAppointmentDetails(this.appoinmentId).subscribe({
+      next:(res: any) => {
         console.log(res);
         this.appoinmentDetails = res.data;
         this.isScreenLoading = false;
       },
-      (err) => {
+      error:(err) => {
         this.toastr.error(
           err || 'Error while Get Appoinments please try again'
         );
       }
-    );
+  });
   }
   viewBookings() {
     this.router.navigate(['/profile/appoinments']);

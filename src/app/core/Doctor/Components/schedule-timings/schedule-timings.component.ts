@@ -38,7 +38,6 @@ export class ScheduleTimingsComponent implements OnInit,OnDestroy {
   
 
   ngOnInit() {
-    if(isPlatformBrowser(this.platformId)){
       this.store.dispatch(loadDoctor());
    
     this.fetchDoctorSubscritpion = this.store.select(GetCurrentdoctor).subscribe(
@@ -53,7 +52,7 @@ export class ScheduleTimingsComponent implements OnInit,OnDestroy {
     this.selectedDate = new Date();
     this.generateDays();
   
-}
+
    
   }
 
@@ -157,16 +156,19 @@ export class ScheduleTimingsComponent implements OnInit,OnDestroy {
     this.toastr.warning('Please ensure to save the selected day\'s slots before proceeding.')
   }
   }
+  toggleIsEdit(){
+    this.isEdit = true
+  }
 
   isSlotSelected(slot: string): boolean {
     const selectedDateSlots = this.selectedSlots?.find(slotItem => {
       return new Date(slotItem.date).toDateString() === new Date(this.currentDate.fullDate).toDateString();
     });
-
-    return selectedDateSlots && selectedDateSlots.slots.includes(slot) || false;
+    console.log("selectedDateSlots",selectedDateSlots);
+    return selectedDateSlots ? selectedDateSlots.slots.includes(slot) : false;
   }
   toggleSlotSelection(slot: string): void {
-    
+      console.log(slot ,"clicket to add new");
     if (!Array.isArray(this.selectedSlots)) {
         console.error('Error: this.selectedSlots is not an array!');
         return;
@@ -182,6 +184,7 @@ export class ScheduleTimingsComponent implements OnInit,OnDestroy {
           const selectedSlotsArray = existingDateIndex !== -1 ? this.selectedSlots[existingDateIndex].slots : [];
 
             const slotIndex = selectedSlotsArray.indexOf(slot);
+            console.log("selectedSlotsArray,slotIndex",selectedSlotsArray,slotIndex);
             if (slotIndex === -1) {
                 selectedSlotsArray.push(slot);
             } else {

@@ -85,8 +85,8 @@ export class ChangePasswordComponent implements OnInit {
         this.token,
         this.changePassword.value.password,
         this.changePassword.value.confirmPassword
-      ).subscribe(
-        (res) => {
+      ).subscribe({
+        next:(res) => {
           this.toastr.success('Password Reset SuccessFully');
           this.isLoading = false;
           if (this.AuthService.isAuthenticated()) {
@@ -95,11 +95,11 @@ export class ChangePasswordComponent implements OnInit {
             this.rotuer.navigate(['/login']);
           }
         },
-        (err) => {
+        error:(err) => {
           this.isLoading = false;
           this.toastr.error(err);
         }
-      );
+    });
     } else {
       this.changePassword.markAllAsTouched();
     }

@@ -1,5 +1,5 @@
 
-<div class="flex flex-col w-full flex-auto h-screen p-6 ">
+<div class="flex flex-col w-full flex-auto h-screen px-4 pb-4 pt-2 ">
   <div *ngIf="!isDisplayDummy" class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-50 h-full  border-1 border-black">
     
     <div class="py-2 px-3 bg-grey-lighter flex flex-row justify-between rounded-t-lg items-center bg-blue-500 ">
@@ -10,11 +10,12 @@
                  <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
               </svg>
            </span>
-        <img [src]="getUserDetails(recipientId).profilePic" alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
+        <img [src]="getUserDetails(recipientId).profilePic" alt="" class="w-9 sm:w-10 h-9 sm:h-10 rounded-full">
         </div>
         <div class="flex flex-col leading-tight">
-           <div class="text-2xl mt-1 flex items-center">
+           <div class="text-2xl mt-1 flex gap-1 items-center">
               <span class="text-gray-700 mr-3">{{getUserDetails(recipientId).firstName}} {{getUserDetails(recipientId).lastName}}</span>
+             
            </div>
            <!-- <span userType="doctor" class="text-lg text-gray-600">Junior Developer</span> -->
         </div>
@@ -22,19 +23,37 @@
 
       <div class="flex">
           <div  class="inline-flex items-center justify-center rounded-lg  h-10 w-10 transition duration-500 ease-in-out hover:bg-blue-600 focus:outline-none">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#263238" fill-opacity=".5" d="M15.9 14.3H15l-.3-.3c1-1.1 1.6-2.7 1.6-4.3 0-3.7-3-6.7-6.7-6.7S3 6 3 9.7s3 6.7 6.7 6.7c1.6 0 3.2-.6 4.3-1.6l.3.3v.8l5.1 5.1 1.5-1.5-5-5.2zm-6.2 0c-2.6 0-4.6-2.1-4.6-4.6s2.1-4.6 4.6-4.6 4.6 2.1 4.6 4.6-2 4.6-4.6 4.6z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" fill-opacity=".5" d="M15.9 14.3H15l-.3-.3c1-1.1 1.6-2.7 1.6-4.3 0-3.7-3-6.7-6.7-6.7S3 6 3 9.7s3 6.7 6.7 6.7c1.6 0 3.2-.6 4.3-1.6l.3.3v.8l5.1 5.1 1.5-1.5-5-5.2zm-6.2 0c-2.6 0-4.6-2.1-4.6-4.6s2.1-4.6 4.6-4.6 4.6 2.1 4.6 4.6-2 4.6-4.6 4.6z"></path></svg>
           </div>
           <div class="ml-6 inline-flex items-center justify-center rounded-lg h-10 w-10 transition duration-500 ease-in-out hover:bg-blue-600 focus:outline-none">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#263238" fill-opacity=".5" d="M1.816 15.556v.002c0 1.502.584 2.912 1.646 3.972s2.472 1.647 3.974 1.647a5.58 5.58 0 0 0 3.972-1.645l9.547-9.548c.769-.768 1.147-1.767 1.058-2.817-.079-.968-.548-1.927-1.319-2.698-1.594-1.592-4.068-1.711-5.517-.262l-7.916 7.915c-.881.881-.792 2.25.214 3.261.959.958 2.423 1.053 3.263.215l5.511-5.512c.28-.28.267-.722.053-.936l-.244-.244c-.191-.191-.567-.349-.957.04l-5.506 5.506c-.18.18-.635.127-.976-.214-.098-.097-.576-.613-.213-.973l7.915-7.917c.818-.817 2.267-.699 3.23.262.5.501.802 1.1.849 1.685.051.573-.156 1.111-.589 1.543l-9.547 9.549a3.97 3.97 0 0 1-2.829 1.171 3.975 3.975 0 0 1-2.83-1.173 3.973 3.973 0 0 1-1.172-2.828c0-1.071.415-2.076 1.172-2.83l7.209-7.211c.157-.157.264-.579.028-.814L11.5 4.36a.572.572 0 0 0-.834.018l-7.205 7.207a5.577 5.577 0 0 0-1.645 3.971z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" fill-opacity=".5" d="M1.816 15.556v.002c0 1.502.584 2.912 1.646 3.972s2.472 1.647 3.974 1.647a5.58 5.58 0 0 0 3.972-1.645l9.547-9.548c.769-.768 1.147-1.767 1.058-2.817-.079-.968-.548-1.927-1.319-2.698-1.594-1.592-4.068-1.711-5.517-.262l-7.916 7.915c-.881.881-.792 2.25.214 3.261.959.958 2.423 1.053 3.263.215l5.511-5.512c.28-.28.267-.722.053-.936l-.244-.244c-.191-.191-.567-.349-.957.04l-5.506 5.506c-.18.18-.635.127-.976-.214-.098-.097-.576-.613-.213-.973l7.915-7.917c.818-.817 2.267-.699 3.23.262.5.501.802 1.1.849 1.685.051.573-.156 1.111-.589 1.543l-9.547 9.549a3.97 3.97 0 0 1-2.829 1.171 3.975 3.975 0 0 1-2.83-1.173 3.973 3.973 0 0 1-1.172-2.828c0-1.071.415-2.076 1.172-2.83l7.209-7.211c.157-.157.264-.579.028-.814L11.5 4.36a.572.572 0 0 0-.834.018l-7.205 7.207a5.577 5.577 0 0 0-1.645 3.971z"></path></svg>
           </div>
-          <div class="ml-6 inline-flex items-center justify-center rounded-lg  h-10 w-10 transition duration-500 ease-in-out hover:bg-blue-600 focus:outline-none">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#263238" fill-opacity=".6" d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z"></path></svg>
-          </div>
-      </div>
-     </div>
+          <div class="ml-6 inline-flex items-center justify-center rounded-lg relative h-10 w-10 transition duration-500 ease-in-out hover:bg-blue-600 focus:outline-none">
+            <button id="dropdownMenuIconButton" (click)="isOptionsModalOpen=!isOptionsModalOpen" data-dropdown-toggle="dropdownDots" class="inline-flex items-center p-2 text-sm font-medium text-center  rounded-lg  focus:ring-4 focus:outline-none dark:text-white  " type="button">
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 4 15">
+              <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+              </svg>
+              </button>
 
+              <div *ngIf="isOptionsModalOpen"  class="absolute z-40 right-0 mt-44 w-48 bg-white rounded-lg shadow-lg" >
+                <div class="py-1">
+                  <!-- Delete option (red) -->
+                  <button  *ngIf="!conversationalData.isClosed && userType === 'Doctor'" (click)="toggleConsultation()" class="block w-full text-center py-2 px-4 text-red-600 hover:text-red-900 border-b border-gray-200">Finish Consultation</button>
+                  <!-- Edit option -->
+                  <button  class="block w-full text-center py-2 px-4 hover:text-blue-600 border-b border-gray-200">Edit</button>
+                  <!-- Archive option -->
+                  <button class="block w-full text-center py-2 px-4 hover:text-blue-600 border-b border-gray-200" >Archive</button>
+                  <!-- Cancel option -->
+                </div>
+              </div>
+          </div>
+          
+      </div>
+
+     </div>
+ 
     <div  class="flex m-2  flex-col h-full overflow-x-auto overflow-y-auto  mb-4">
-      <div  #chatContainer class="flex flex-col h-full overflow-y-scroll scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+      <div  #chatContainer class="flex flex-col h-full overflow-y-scroll ">
         <div class="grid grid-cols-12 gap-y-2">
           <ng-container *ngFor="let message of messages">
             <ng-container *ngIf="!isCurrentLoggedUser(message.senderId); else currentUserTemplate">
@@ -47,26 +66,33 @@
                   />
                   </div>
                 
-                  <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                    <div class="font-semibold ">{{ getUserDetails(message.senderId)?.firstName }}</div>
-                    <ng-container *ngIf="message.messageType === 'text'">
-                      <div>{{ message.content.text }}</div>
-                    </ng-container>
-                    <ng-container *ngIf="message.messageType === 'video'">
-                      <video controls width="200">
-                        <source [src]="message.content.fileUrl" type="video/mp4">
-                        Your browser does not support the video tag.
-                      </video>
-                    </ng-container>
-                    <ng-container *ngIf="message.messageType === 'audio'">
-                      <audio controls>
-                        <source [src]="message.content.fileUrl" type="audio/mpeg">
-                        Your browser does not support the audio tag.
-                      </audio>
-                    </ng-container>
-                    <ng-container *ngIf="message.messageType === 'document'">
-                      <iframe [src]="message.content.fileUrl" width="100%" height="400"></iframe>
-                    </ng-container>
+                  <div class="relative ml-3 text-sm bg-white py-2 px-2 shadow rounded-xl">
+                    <div class="font-semibold  flex justify-between">{{ getUserDetails(message.senderId)?.firstName }}
+                      <span class="text-black font-thin font-size ml-2 ">{{ message.createdAt |  date: "shortTime"}}</span>
+
+                       </div>
+                    @switch (message.messageType) {
+                      @case ('video') {
+                        <video controls width="200">
+                          <source [src]="message.content.fileUrl" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      }
+                      @case ('audio') {
+                        <audio controls>
+                          <source [src]="message.content.fileUrl" type="audio/mpeg">
+                          Your browser does not support the audio tag.
+                        </audio>
+                      }
+                      @case ('document') {
+                        <iframe [src]="message.content.fileUrl" width="100%" height="400"></iframe>
+                      }
+                      @default {
+                        <div>{{ message.content.text }}</div>
+                      }
+                    }
+                    
+                   
                   </div>
                 </div>
               </div>
@@ -111,6 +137,8 @@
   
     
     <div class="flex m-2 flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+      @if(userType==='Doctor'){
+      @if(!conversationalData.isClosed){
       <div>
         <button class="flex items-center justify-center text-gray-400 hover:text-gray-600">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -148,6 +176,16 @@
           </span>
         </button>
       </div>
+    }@else{
+      <div (click)="toggleConsultation()" class="bg-gradient-to-br from-blue-500 w-full to-blue-600 font-serif text-center hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-md shadow-lg cursor-pointer transition duration-300 ease-in-out">
+        Start Consultation
+       </div>
+      }
+    }@else {
+      <div (click)="navigateDoctorPage()" class="bg-gradient-to-br from-blue-500 w-full to-blue-600 font-serif text-center hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-md shadow-lg cursor-pointer transition duration-300 ease-in-out">
+        Click here to Schedule an Appointment
+       </div>
+    }
     </div>
   </div>   
 

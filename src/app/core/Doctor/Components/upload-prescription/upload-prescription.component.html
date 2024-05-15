@@ -1,0 +1,51 @@
+  <div class="sm:max-w-lg w-full p-5 bg-white rounded-xl z-10 relative">
+    <div class="absolute top-0 right-0 mr-4 mt-2 z-20 cursor-pointer " (click)="closeDialog()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 hover:text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </div>
+        <div class="text-center">
+            <h2 class="mt-5 text-3xl font-bold text-gray-900">
+                Upload Prescription
+            </h2>
+           <p class="mt-2 text-sm text-gray-400">Please upload any prescriptions or documents related to the consultation. This will help us keep a record of your treatment plan and ensure continuity of care. Your uploaded documents are securely stored and accessible only to authorized medical personnel.</p>
+
+
+        </div>
+        <form class="mt-8 space-y-3" [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
+            <div class="grid grid-cols-1 space-y-2">
+                <label class="text-sm font-bold text-gray-500 tracking-wide">Title of prescription</label>
+                <input formControlName="title"  class="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type="text" placeholder="Enter title">
+            </div>
+            <div class="grid grid-cols-1 space-y-1">
+                <label class="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
+                <div class="flex items-center justify-center w-full">
+                    <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-44 p-1 group text-center">
+                        <div class="h-full w-full text-center flex flex-col justify-center items-center p-1">
+                            <!-- Image Preview -->
+                            <img *ngIf="previewUrl" [src]="previewUrl" alt="Uploaded Image" class="h-full w-full object-contain" />
+            
+                            <!-- Drag and Drop Section -->
+                            <div *ngIf="!previewUrl" class="h-full w-full flex flex-col justify-center items-center">
+                                <div class="flex flex-auto max-h-36 w-2/5 mx-auto -mt-10"></div>
+                                <p class="pointer-none text-gray-500">
+                                    <span class="text-sm">Drag and drop</span> files here <br />
+                                </p>
+                            </div>
+                        </div>
+                        <input type="file" (change)="onFileSelected($event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-300">
+                <span>File type: doc, pdf, types of images</span>
+            </p>
+            <div>
+              <button type="submit" [disabled]="prescriptionForm.invalid" class="my-3 w-full flex gap-2 justify-center bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300  ">
+                <i *ngIf="isLoading" class="fas fa-spinner fa-spin mr-1"> </i>
+                Upload
+              </button>
+                    </div>
+        </form>
+	</div>

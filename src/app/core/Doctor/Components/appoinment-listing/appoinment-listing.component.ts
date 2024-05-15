@@ -55,8 +55,8 @@ export class AppoinmentListingComponent implements OnInit {
     this.getDoctorAppoinments()
   }
   getDoctorAppoinments(){
-    this.doctorService.getDoctorAppoinments(this.currentPage, this.pageSize).subscribe(
-      (res:any)=>{
+    this.doctorService.getDoctorAppoinments(this.currentPage, this.pageSize).subscribe({
+      next:(res:any)=>{
         console.log("response",res);
         this.doctorAppoinments = res.data.appointments;
         this.countsObject =   this.doctorAppoinments.counts.counts;
@@ -66,10 +66,10 @@ export class AppoinmentListingComponent implements OnInit {
         this.totalCount = res.data.totalCount;
         this.totalPages = res.data.totalPages;
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err)
       }
-    )
+  })
   }
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);

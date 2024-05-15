@@ -11,47 +11,57 @@ import { Doctor } from '../../../store/Doctor/doctor.model';
 import { User } from '../../../store/User/user.model';
 import { UserService } from '../../../core/User/Services/user.service';
 import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadPrescriptionComponent } from '../../../core/Doctor/Components/upload-prescription/upload-prescription.component';
 @Component({
   selector: 'app-video-call',
   templateUrl: './video-call.component.html',
   styleUrls: ['./video-call.component.css']
 })
-export class VideoCallComponent implements OnInit,AfterViewInit {
+export class VideoCallComponent implements OnInit {
   @ViewChild('root') root!: ElementRef;
+  userType!:'Doctor'|'User';
+  isLoading:boolean=false;
   roomID:string='';
   expectedRole: string = '';
   currentUser!:Doctor|User;
-  isInvalidRoomId:boolean=true;
+  isInvalidRoomId:boolean=false;
   userDataLoaded: boolean = false;
   conversationDataLoaded: boolean = false;
-
+  appoinmentId:string | null =null;
   constructor(private webSocketService: WebSocketService,
     private messageService:MessageService,
     private route:ActivatedRoute,
     private toastr:ToastrService,
     private router:Router,
     private userService:UserService,
-    private doctorService:DoctorService
+    private doctorService:DoctorService,
+    public dialog: MatDialog
     ) { }
 
    ngOnInit() {
-    alert("jer")
+  this.userType = this.route.snapshot.data['expectedRole']; 
+  this.route.queryParams.subscribe(params => {
+    this.appoinmentId = params['apppoinmentId'] || null;
+    console.log('Appointment ID:', this.appoinmentId);
+  });
     this.route.params.subscribe(param=>{
       this.roomID = param['roomId'] 
     })
+    this.isLoading = true;
     this.expectedRole = this.route.snapshot.data['expectedRole'];
     this.fetchConversation();
     this.getCurrentUserData();
   
   
   }
-  ngAfterViewInit(): void {
-    console.log(this.currentUser,this.isInvalidRoomId,this.userDataLoaded, this.conversationDataLoaded);
-    if (this.currentUser && !this.isInvalidRoomId && this.userDataLoaded && this.conversationDataLoaded) {
-      // Zego Cloud function call
-      this.callZegoCloudFunction();
-    }
-  }
+  // ngAfterViewInit(): void {
+  //   console.log(this.currentUser,this.isInvalidRoomId,this.userDataLoaded, this.conversationDataLoaded);
+  //   if (this.currentUser && !this.isInvalidRoomId && this.userDataLoaded && this.conversationDataLoaded) {
+  //     // Zego Cloud function call
+  //     this.callZegoCloudFunction();
+  //   }
+  // }
   getCurrentUserData(){
     if(this.expectedRole==='Doctor'){
       this.doctorService.getDoctor().subscribe({
@@ -86,6 +96,7 @@ export class VideoCallComponent implements OnInit,AfterViewInit {
       },
       error:(err)=>{
        this.toastr.error(err);
+       this.isLoading = false
        this.isInvalidRoomId = true
       },
         complete() {
@@ -99,7 +110,9 @@ export class VideoCallComponent implements OnInit,AfterViewInit {
     const appID = environment.PUBLIC_ZEGO_APP_ID;
     const serverSecret = environment.PUBLIC_ZEGO_SERVER_ID;
     console.log("appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`",appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`);
+    this.isLoading = false;
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`);
+   
     const zp = ZegoUIKitPrebuilt.create(kitToken);
     zp.joinRoom({
       container: this.root.nativeElement,
@@ -110,7 +123,25 @@ export class VideoCallComponent implements OnInit,AfterViewInit {
       scenario: {
         mode: ZegoUIKitPrebuilt.GroupCall,
       },
+      lowerLeftNotification: {
+        showUserJoinAndLeave: true,
+        showTextChat: true,
+      },
+      branding: {
+        logoURL: environment.Logo_Url
+      },
+      showRoomTimer:true,
+      onLeaveRoom: () => this.openPrescritptionModal(),
     });
+  }
+  openPrescritptionModal(){
+    console.log("called by leaving",this.userType,this.appoinmentId);
+    if(this.userType==='Doctor' && this.appoinmentId ){
+      console.log("called by leavingthis.appoinmentId ");
+      this.dialog.open(UploadPrescriptionComponent,{
+        data: {appoinmentId:this.appoinmentId }
+      });
+    }
   }
   returnToHome(){
     console.log("this.expectedRole",this.expectedRole);

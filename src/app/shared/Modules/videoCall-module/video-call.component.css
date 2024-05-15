@@ -27,4 +27,19 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
   }
+  @keyframes bounce {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  img {
+    animation: bounce 1.5s infinite;
+  }
   

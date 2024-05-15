@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DoctorSpecialization } from '../../../core/Doctor/models/doctor-specialization';
+import { environment } from '../../../../environments/environment.development';
 @Injectable({
   providedIn: 'root'
 })
 export class SpecializationService {
-  private apiUrl = 'http://localhost:3000/api/spec';
+  private apiUrl = environment.SpeciailizationService;
   constructor(private http: HttpClient) { }
   creeateDoctorCategory(doctorCategory: {name:string,descritption:string}): Observable<DoctorSpecialization> {
     return this.http.post<DoctorSpecialization>(this.apiUrl, doctorCategory);

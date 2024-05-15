@@ -40,24 +40,28 @@ export class UserSideAppoinmentListingComponent implements OnInit {
       }
     )
   }
-  changeStatus(event:any){
-    this.userService.changeAppoinmentStatus(event.id,event.status).subscribe(
-      (res:any)=>{
-        console.log(res.data);
-        const index = this.userAppoinmentDetails.findIndex((appointment: any) => appointment._id.toString() === event.id.toString());
-        console.log(res.data,index);
-        if (index !== -1) {
-        // Update the status of the appointment at the found index
-        this.userAppoinmentDetails[index].status = event.status;
-      } else {
-        // Handle case where appointment with the given ID is not found
-        console.error('Appointment not found:', event.id);
-      }
-      },
-      (err)=>{
-
-      })
+  changeStatus(event: any): void {
+    console.log("event",event);
+    this.userService.requestTochangeAppoinmentStatus(event.id, event.reason, event.status)
+      .subscribe({
+        next: (res: any) => {
+          console.log(res.data);
+          const index = this.userAppoinmentDetails.findIndex((appointment: any) => appointment._id.toString() === event.id.toString());
+          console.log(res.data, index);
+          if (index !== -1) {
+            this.userAppoinmentDetails[index].status = event.status;
+          } else {
+            console.error('Appointment not found:', event.id);
+          }
+        },
+        error: (err: any) => {
+          // Handle error
+          console.error('Error:', err);
+          // You can add additional error handling logic here
+        }
+      });
   }
+  
 
   onPreviousPage(): void {
     if (this.currentPage > 1) {

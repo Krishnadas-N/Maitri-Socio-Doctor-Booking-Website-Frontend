@@ -37,6 +37,7 @@ import { userRoutes } from './core/User/user-routes.routing';
 import { doctorRoutes } from './core/Doctor/doctor-routes.routing';
 import { adminRoutes } from './core/Admin/admin-routes.routing';
 import { refreshTokenInterceptor } from './shared/Interceptors/refresh-token.interceptor';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -92,6 +93,6 @@ export const appConfig: ApplicationConfig = {
       doctorEffects,
       OtpEffects,
       postEffects,
-    ]),
+    ]), provideCharts(withDefaultRegisterables()),
   ],
 };

@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WindowRefService } from '../../../../shared/Services/window-ref.service';
 import { NotificationService } from '../../../../shared/Services/notification-service/notification.service';
+import { environment } from '../../../../../environments/environment.development';
+
+declare var StripeCheckout: any;
 @Component({
   selector: 'app-booking-checkout-page',
   standalone:true,
@@ -36,18 +39,19 @@ export class BookingCheckoutPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadStripe();
     this.getAppoinment();
   }
   getAppoinment(){
-    this.userService.GetAppointmentDetails(this.appoinmentId).subscribe(
-      (res:any)=>{
+    this.userService.GetAppointmentDetails(this.appoinmentId).subscribe({
+      next:(res:any)=>{
         console.log(res);
         this.appoinmentDetails = res.data;
       },
-      (err)=>{
+      error:(err)=>{
         this.toastr.error(err|| 'Error while Get Appoinments please try again');
       }
-    )
+  })
   }
   makePayment() {
     if (!this.selectedPaymentMethod) {
@@ -56,7 +60,7 @@ export class BookingCheckoutPageComponent implements OnInit {
       return;
     }
 
-    if (this.selectedPaymentMethod !== 'Debit Card' && this.selectedPaymentMethod !== 'PayPal' && this.selectedPaymentMethod !== 'Razorpay') {
+    if (this.selectedPaymentMethod !== 'Debit Card' && this.selectedPaymentMethod !== 'PayPal' && this.selectedPaymentMethod !== 'Razorpay' && this.selectedPaymentMethod !=='Stripe') {
       console.log('Invalid payment method selected.');
       this.toastr.warning( "Invalid payment method selected");
       return;
@@ -64,21 +68,55 @@ export class BookingCheckoutPageComponent implements OnInit {
   
     console.log('Selected payment method:', this.selectedPaymentMethod);
     this.isLoading=true;
-    this.userService.makePayment(this.selectedPaymentMethod,this.appoinmentId).subscribe(
-      (res)=>{
-        console.log(res);
-        this.isLoading=false;
-        this.payWithRazorpay(res.data)
-      },
-      (err)=>{
-        this.isLoading=false;
-        this.toastr.error(err)
-      }
-    )
+    if(this.selectedPaymentMethod==='Stripe'){
+      this.stripePaymentHandler()
+    }else if(this.selectedPaymentMethod ==='Razorpay'){
+      this.processPayment()
+    }else{
+      return
+    }
     // this.http.post('/api/payment', { paymentMethod: this.selectedPaymentMethod }).subscribe(response => {
     //   console.log('Backend response:', response);
     // });
   }
+
+  processPayment(stripeToken?: any) {
+    this.userService.makePayment(this.selectedPaymentMethod,this.appoinmentId,stripeToken).subscribe({
+      next:(res)=>{
+        console.log(res);
+        this.isLoading=false;
+        if(this.selectedPaymentMethod==='Stripe'){
+          this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
+        }else if(this.selectedPaymentMethod ==='Razorpay'){
+          this.payWithRazorpay(res.data)
+        }else{
+          return
+        }
+       
+      },
+      error:(err)=>{
+        this.isLoading=false;
+        this.toastr.error(err)
+      }
+  })
+  }
+
+  stripePaymentHandler(){
+    const paymentHandler = StripeCheckout.configure({
+      key: environment.Stripe_Publishable_key,
+      locale: 'auto',
+      token: (stripeToken: any) => {
+        console.log(stripeToken);
+        this.processPayment(stripeToken)
+      }
+    });
+
+    paymentHandler.open({
+      name: 'Edopedia.com Payment',
+      description: 'Some sample description of product',
+      amount: this.appoinmentDetails.amount * 100,
+    });
+  } 
 
   payWithRazorpay(data:any): void {
     const options = {
@@ -109,18 +147,30 @@ export class BookingCheckoutPageComponent implements OnInit {
   }
 
   verifyPayment(orderId: string, paymentId: string, signature: string){
-      this.userService.verifyPayment(orderId,paymentId,signature,this.appoinmentDetails).subscribe(
-        (res)=>{
+      this.userService.verifyPayment(orderId,paymentId,signature,this.appoinmentDetails).subscribe({
+        next:(res)=>{
           
           console.log("verify payment",res);
           const notificationId = res.data.notificationId;
           this.notificationService.sendNotification(notificationId);
           this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         },
-        (err)=>{
+        error:(err)=>{
           this.toastr.error(err)
         }
-      )
+  })
+  }
+
+  loadStripe() {
+    if (!window.document.getElementById('stripe-script')) {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.stripe.com/checkout.js';
+    script.async = true;
+    script.onload = () => {
+      console.log('Stripe script loaded');
+    };
+    document.body.appendChild(script);
+  }
   }
 }
 

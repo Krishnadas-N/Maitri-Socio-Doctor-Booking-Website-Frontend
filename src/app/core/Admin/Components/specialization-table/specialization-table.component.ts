@@ -158,21 +158,21 @@ export class SpecializationTableComponent implements OnInit {
   }
   if(this.specializationForm.valid){
   this.isAdding=true;
-  this.specializationService.creeateDoctorCategory(this.specializationForm.value).subscribe(
-    (res: any) => {
+  this.specializationService.creeateDoctorCategory(this.specializationForm.value).subscribe({
+    next:(res:any) => {
       // Request was successful
       this.isAdding = false;
       this.mapNewData(res.data);
       this.addingSpecialization = false;
       this.toastSuccessService.showSuccessNotification('New Specialization is added.', 'Close');
     },
-    (error:any) => {
+    error:(error) => {
       // Request encountered an error
       this.isAdding = false;
       this.toastrService.showErrorNotification('Error occurred while adding specialization.', 'Close');
       console.error('Error occurred while adding specialization:', error);
     }
-  );
+  });
   }else{
     this.toastrService.showErrorNotification('Please fill the Form correctly.', 'Close');
   }

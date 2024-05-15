@@ -56,13 +56,13 @@ export class UserProfileMainComponent implements OnInit {
   ChangeProfileImage(imageFile: File) {
     const fd = new FormData();
     fd.append('profilePic', imageFile, imageFile.name);
-    this.userService.changeProfilePic(fd).subscribe(
-      (res) => {
+    this.userService.changeProfilePic(fd).subscribe({
+      next:(res) => {
         this.imageSrc = res.data;
       },
-      (error) => {
+     error:(error) => {
         alert(error);
       }
-    );
+  });
   }
 }
