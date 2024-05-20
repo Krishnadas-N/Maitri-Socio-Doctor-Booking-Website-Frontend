@@ -5,4 +5,23 @@
   .light-blue-border:hover {
     border-color: #2563EB; /* Dark blue border color on hover */
   }
-  
+  /* global styles.css or component-specific styles */
+.custom-no-appointments {
+  @apply flex flex-col items-center justify-center h-64 bg-white shadow-md rounded-lg p-6;
+}
+
+.custom-no-appointments svg {
+  @apply h-12 w-12 text-gray-400 mb-4;
+}
+
+.custom-no-appointments p {
+  @apply text-lg font-semibold text-gray-800;
+}
+
+.custom-no-appointments p + p {
+  @apply mt-2 text-gray-600;
+}
+
+.custom-no-appointments button {
+  @apply mt-4 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none;
+}

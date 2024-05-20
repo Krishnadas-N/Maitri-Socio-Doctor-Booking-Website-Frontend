@@ -1,0 +1,84 @@
+<div class="w-[98%] mx-auto ">
+  <!-- Heading and Search Bar -->
+  <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-300 bg-slate-50 p-4 rounded-lg">
+    <div>    <h1 class=" text-sm lg:text-2xl font-bold text-gray-900">Specialized Doctors</h1></div>
+   
+       <div class="w-full md:w-72">
+      <div class="relative h-10 w-full min-w-[200px]">
+        <div class="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-blue-gray-500">
+          <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" aria-hidden="true" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+          </svg>
+        </div>
+        <input
+          class="peer h-full w-full rounded-[7px] border border-blue-gray-200  bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+          placeholder=" " />
+        <label
+          class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+          Search
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsive Grid -->
+  <ng-container *ngIf="!isLoading && doctors.length>0;else noDoctors">
+  <div class="grid gap-6 grid-cols-2 lg:grid-cols-5">
+
+    <ng-container *ngFor="let doctor of doctors">
+    <div *skeleton="isLoading; repeat: 5; width: '100%'; height: '200px'; className: 'skeleton'">
+      <div class="max-w-sm mx-auto  bg-white rounded-lg shadow-lg hover:shadow-blue-400">
+        <div class="relative">
+          <img class="w-full h-32 object-cover" [src]="doctor?.profilePic" alt="Profile Image">
+        </div>
+        <div class="text-center mt-2">
+              <h2 class="font-semibold">Sarah Smith</h2>
+              <p class="text-gray-500">Freelance Web Designer</p>
+          </div>
+          <ul class="py-2 mt-1 text-gray-700 flex items-center justify-around">
+              <li class="flex flex-col items-center justify-around">
+                  <svg class="w-4 fill-current text-yellow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path  fill="yellow"
+                          d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                  </svg>
+                  <div>{{doctor.averageRating}}</div>
+              </li>
+              <li class="flex flex-col items-center justify-between">
+                  <svg  class="w-4 fill-current text-blue-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path
+                          d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z" />
+                  </svg>
+                  <div>{{doctor.completedAppointments}}</div>
+              </li>
+              <li class="flex flex-col items-center justify-around">
+                <i class="fa-solid fa-comments"></i>
+                
+                  <div>{{doctor.totalReviews}}</div>
+              </li>
+          </ul>
+          <div class="p-2 border-t  mt-2">
+              <button [routerLink]="'/admin/doctors/'+doctor._id" class="w-full block mx-auto rounded-lg bg-gray-900 hover:shadow-lg font-semibold text-white  py-2">View Doctor</button>
+          </div>
+      </div>
+    </div>
+   </ng-container>
+  
+  </div>
+</ng-container>
+</div>
+
+
+<ng-template #noDoctors>
+
+  <div  class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="text-center" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#85c5db" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-96 55.2C54 332.9 0 401.3 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7c0-81-54-149.4-128-171.1V362c27.6 7.1 48 32.2 48 62v40c0 8.8-7.2 16-16 16H336c-8.8 0-16-7.2-16-16s7.2-16 16-16V424c0-17.7-14.3-32-32-32s-32 14.3-32 32v24c8.8 0 16 7.2 16 16s-7.2 16-16 16H256c-8.8 0-16-7.2-16-16V424c0-29.8 20.4-54.9 48-62V304.9c-6-.6-12.1-.9-18.3-.9H178.3c-6.2 0-12.3 .3-18.3 .9v65.4c23.1 6.9 40 28.3 40 53.7c0 30.9-25.1 56-56 56s-56-25.1-56-56c0-25.4 16.9-46.8 40-53.7V311.2zM144 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>
+      <p class="text-xl font-semibold text-gray-800">No doctors are available</p>
+    </div>
+  </div>
+  
+  
+</ng-template>

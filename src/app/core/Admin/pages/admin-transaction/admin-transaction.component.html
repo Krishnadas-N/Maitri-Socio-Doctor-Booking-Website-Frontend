@@ -1,0 +1,88 @@
+<div class="flex-col gap-2">
+  <div class="grid lg:grid-cols-3 grid-cols-1">
+    <div class="p-10 col-span-1 ">
+      <h1 class="text-3xl font-bold mb-6">My Wallet</h1>
+      
+      <!-- Wallet Balance -->
+      <div class="bg-gray-100 shadow-md rounded-lg p-6 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Wallet Balance</h3>
+        <div class="flex flex-col items-start gap-4">
+          <div class="flex items-start">
+            <span class="text-4xl font-bold text-gray-900 mr-2">&#8377;{{ currentDoctorWallet.balance }}</span>
+            <span class="text-lg font-medium text-gray-600">INR</span> <!-- Currency -->
+          </div>
+          <button class="bg-gradient-to-r from-gray-600 to-gray-900 hover:from-gray-600 hover:to-gray-900 text-white py-2 px-6 rounded-md transition duration-300 transform hover:scale-105">Withdraw Funds</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2 col-span-1 p-6 overflow-y-hidden lg:overflow-x-hidden overflow-x-scroll">
+      <ngx-charts-line-chart
+      [results]="dataLC"
+      [view]="viewLC"
+      [animations]="animationsLC"
+      [showGridLines]="showGridLinesLC"
+      [legend]="legendLC"
+      [legendTitle]="legendTitleLC"
+      [roundDomains]="roundDomainsLC"
+      [xAxis]="true"
+      [yAxis]="true"
+      [yAxisTickFormatting]="currencyFormatterLC"
+      [xAxisTickFormatting]="dateFormatterLC"
+    ></ngx-charts-line-chart>
+  </div>
+
+  
+  </div>
+  
+  <div class="p-5">
+    <div class="container mx-auto py-6">
+      <!-- Payment History -->
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="bg-gradient-to-b from-gray-700 to-gray-900 px-6 py-4 custom-shadow">
+          <h3 class="text-lg font-semibold text-white">Payment History</h3>
+        </div>
+        <div class="px-6 py-4">
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse mb-3">
+              <thead>
+                <tr class="bg-gray-200 text-sm text-gray-700 font-semibold uppercase border-b">
+                  <th class="px-4 py-3">Date</th>
+                  <th class="px-4 py-3">Description</th>
+                  <th class="px-4 py-3">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="currentDoctorWallet.transactions.length > 0">
+                  <tr *ngFor="let transaction of currentDoctorWallet.transactions" class="hover:bg-gray-100 text-center transition duration-300">
+                    <td class="px-4 py-3 whitespace-nowrap">{{ transaction.date | date}}</td>
+                    <td class="px-4 py-3">{{ transaction.description }}</td>
+                    <td class="px-4 py-3" [ngClass]="{'text-green-500': transaction.type === 'credit', 'text-red-500': transaction.type === 'debit'}">
+                      <span>{{ transaction.type === 'credit' ? '+' : '-' }}</span>&#8377;{{ transaction.amount }}
+                    </td> </tr>
+                </ng-container>
+                <tr *ngIf="currentDoctorWallet.transactions.length === 0">
+                  <td colspan="3" class="text-center py-8 text-gray-600">
+                    <p>No transactions available.</p>
+                  </td>
+                </tr>
+                <!-- Add more transaction rows here -->
+              </tbody>
+            </table>
+            <app-admin-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            [totalCount]="totalCount"
+            [pageSize]="pageSize"
+            (prevPage)="onPreviousPage()"
+            (nextPage)="onNextPage()"
+            (goToPage)="onPageChange($event)">
+           </app-admin-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+

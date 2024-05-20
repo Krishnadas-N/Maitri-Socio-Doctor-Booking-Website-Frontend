@@ -13,6 +13,7 @@ import { UserService } from '../../../core/User/Services/user.service';
 import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadPrescriptionComponent } from '../../../core/Doctor/Components/upload-prescription/upload-prescription.component';
+import { RatingReviewDialogComponent } from '../../../core/User/Components/rating-review-dialog/rating-review-dialog.component';
 @Component({
   selector: 'app-video-call',
   templateUrl: './video-call.component.html',
@@ -36,7 +37,8 @@ export class VideoCallComponent implements OnInit {
     private router:Router,
     private userService:UserService,
     private doctorService:DoctorService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    
     ) { }
 
    ngOnInit() {
@@ -131,10 +133,29 @@ export class VideoCallComponent implements OnInit {
         logoURL: environment.Logo_Url
       },
       showRoomTimer:true,
-      onLeaveRoom: () => this.openPrescritptionModal(),
+      onLeaveRoom: () => this.openDialogBasedOnuser(),
     });
   }
+
+  openDialogBasedOnuser(){
+    if(this.userType==='Doctor' && this.appoinmentId){
+      this.doctorService.changeStatus('Completed', this.appoinmentId).subscribe({
+        next: (res) => {
+          this.openPrescritptionModal()
+        },
+        error:(err)=>{
+          this.toastr.error(err)
+        }
+        })
+      
+    }else{
+      this.openRatingDialog()
+     
+    }
+  }
+
   openPrescritptionModal(){
+   
     console.log("called by leaving",this.userType,this.appoinmentId);
     if(this.userType==='Doctor' && this.appoinmentId ){
       console.log("called by leavingthis.appoinmentId ");
@@ -142,6 +163,12 @@ export class VideoCallComponent implements OnInit {
         data: {appoinmentId:this.appoinmentId }
       });
     }
+  }
+
+  openRatingDialog(){
+    this.dialog.open(RatingReviewDialogComponent,{
+      data: {appoinmentId:this.appoinmentId, }
+    });
   }
   returnToHome(){
     console.log("this.expectedRole",this.expectedRole);

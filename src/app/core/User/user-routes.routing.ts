@@ -44,6 +44,15 @@ export const userRoutes: Routes = [
             (m) => m.UserLoginComponent
           ),
       },
+      {
+        path:'survey',
+        canActivate:[RoleGuardService],
+        data: { expectedRole: 'User' },
+        loadComponent: () =>
+          import('./Components/survery-component/survey.component').then(
+            (m) => m.SurveyComponent
+          ),
+      },
       
       {
         path: '',

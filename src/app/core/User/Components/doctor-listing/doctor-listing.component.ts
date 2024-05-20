@@ -168,11 +168,10 @@ export class DoctorListingComponent implements OnInit {
 
   isInterestedDoctor(doctor: Doctor): boolean {
     if (doctor._id) {
-      return this.InterestedDoctors['doctorIds'].find(
-        (x: any) => x.doctorId.toString() === doctor._id!.toString()
-      )
-        ? true
-        : false;
+      return this.InterestedDoctors && this.InterestedDoctors['doctorIds'] && 
+             this.InterestedDoctors['doctorIds'].some(
+               (x: any) => x.doctorId.toString() === doctor._id!.toString()
+             );
     } else {
       return false;
     }
@@ -260,15 +259,15 @@ export class DoctorListingComponent implements OnInit {
 
   addToInterestDoctor(doctor: Doctor) {
     if (doctor && doctor._id) {
-      this.userService.addInterestedDoctor(doctor._id).subscribe(
-        (res: any) => {
+      this.userService.addInterestedDoctor(doctor._id).subscribe({
+       next: (res: any) => {
           console.log(res.data);
           this.InterestedDoctors.doctorIds = res.data.doctorIds;
         },
-        (err) => {
+        error:(err) => {
           this.toastr.error(err);
         }
-      );
+    });
     }
   }
 

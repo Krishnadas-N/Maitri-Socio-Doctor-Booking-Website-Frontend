@@ -29,6 +29,7 @@
   @if(section==='MedicalRecords'){
   <div class="overflow-x-auto" >
     <div class="w-full min-w-[500px] rounded-lg  border-1 border-gray-700 ">
+      <ng-container *ngIf="medicalRecords.length > 0; else noRecordsTemplate">
       <table class="min-w-full divide-y border-1 rounded-lg border-gray-700 divide-gray-200 dark:divide-gray-700">
         <thead class="bg-gray-50 dark:bg-gray-300">
           <tr>
@@ -71,6 +72,7 @@
 
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-white">
+          
           <tr *ngFor="let record of medicalRecords" >
             <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-700 whitespace-nowrap">
               <div class="inline-flex items-center gap-x-3">
@@ -100,8 +102,10 @@
               </div>
             </td>
           </tr>
+       
         </tbody>
       </table>
+    </ng-container>
     </div>
   </div>
  }@else {
@@ -192,3 +196,14 @@
  }
 </div>
 
+
+<ng-template #noRecordsTemplate>
+  <div class="flex flex-col items-center justify-center h-64 bg-gradient-to-r from-blue-100 to-blue-200 shadow-lg rounded-lg p-6">
+    <svg class="h-12 w-12 text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <p class="text-xl font-bold text-gray-800">No medical records found!</p>
+    <p class="mt-2 text-gray-700">Please add new records to see them here.</p>
+    <button  (click)="openUploadModal()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none">Add Record</button>
+  </div>
+</ng-template>

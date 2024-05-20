@@ -1,8 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
 import { CheckLoggedInService } from '../../shared/Services/auth-service/check-isloggedIn.service';
-import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
+import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.service';
-import { AdminPageComponentComponent } from './Components/admin-page/admin-page.component';
+import { AdminPageComponentComponent } from './pages/admin-page/admin-page.component'; 
+
 
 
 export const adminRoutes: Routes = [
@@ -21,10 +22,18 @@ export const adminRoutes: Routes = [
     data: { expectedRole: 'Admin' },
     children: [
       {
+        path: '',
+        data: {expectedRole: 'Admin' },
+        loadComponent: () =>
+          import('./pages/admin-dashboard/admin-dashboard.component').then(
+            (m) => m.AdminDashboardComponent
+          ),
+      },
+      {
         path: 'users',
         data: { expectedRole: 'Admin' },
         loadComponent: () =>
-          import('./Components/user-list/user-list.component').then(
+          import('./pages/user-list/user-list.component').then(
             (m) => m.UserListComponent
           ),
       },
@@ -41,7 +50,7 @@ export const adminRoutes: Routes = [
         data: { expectedRole: 'Admin' },
         loadComponent: () =>
           import(
-            './Components/doctor-list/doctor-list.component'
+            './pages/doctor-list/doctor-list.component'
           ).then((m) => m.DoctorListComponent),
       },
       {
@@ -49,7 +58,7 @@ export const adminRoutes: Routes = [
         data: { expectedRole: 'Admin' },
         loadComponent: () =>
           import(
-            './Components/specialization-table/specialization-table.component'
+            './pages/specialization-table/specialization-table.component'
           ).then((m) => m.SpecializationTableComponent),
       },
       {
@@ -60,6 +69,54 @@ export const adminRoutes: Routes = [
             '../../shared/Components/profile/profile.component'
           ).then((m) => m.ProfileComponent),
       },
+      {
+        path:'specialized-doctors/:specId',
+        data: { expectedRole: 'Admin' },
+        loadComponent: () =>
+          import(
+            './pages/specialized-doctors/specialized-doctors.component'
+          ).then((m) => m.SpecializedDoctorsComponent),
+      },
+      {
+        path:'appointments',
+        data: { expectedRole: 'Admin' },
+        loadComponent: () =>
+          import(
+            './pages/appoinment-list/appoinment-list.component'
+          ).then((m) => m.AppoinmentListComponent),
+      },
+      {
+        path:'transactions',
+        data: { expectedRole: 'Admin' },
+        loadComponent: () =>
+          import(
+            './pages/admin-transaction/admin-transaction.component'
+          ).then((m) => m.AdminTransactionComponent),
+      },
+      {
+        path:'appointments/:appointmentId',
+        data: { expectedRole: 'Admin' },
+        loadComponent: () =>
+          import(
+            './pages/appoinment-details/appoinment-details.component'
+          ).then((m) => m.AppoinmentDetailsComponent),
+      },
+      {
+        path:'reviews',
+        data: { expectedRole: 'Admin' },
+        loadComponent: () =>
+          import(
+            './pages/review-listing/review-listing.component'
+          ).then((m) => m.ReviewListingComponent),
+      },
+      {
+        path:'notifications',
+        data: { expectedRole: 'Admin' },
+        loadComponent: () =>
+          import(
+            '../../shared/Components/notification-component/notification.component'
+          ).then((m) => m.NotificationComponent),
+      }
     ],
   },
 

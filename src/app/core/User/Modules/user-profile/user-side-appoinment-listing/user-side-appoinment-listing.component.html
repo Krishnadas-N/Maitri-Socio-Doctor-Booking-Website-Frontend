@@ -29,11 +29,12 @@
       </div>
     </div>
   </div>
-  
+  <ng-container *ngIf="userAppoinmentDetails.length > 0; else noAppointments" class="space-y-4">
   <div  *ngFor="let appoinment of userAppoinmentDetails">
     <app-appoinment-list (editUserStatus)="changeStatus($event)"  [appoinmentDetails]="appoinment" [userType] = "userType"> </app-appoinment-list>
   </div>
-  
+</ng-container>
+
 <app-user-Pagination
 [currentPage]="currentPage"
         [totalPages]="totalPages"
@@ -44,5 +45,17 @@
         (goToPage)="onPageChange($event)"
         ></app-user-Pagination>
 </div>
+
+
+<ng-template #noAppointments>
+  <div class="custom-no-appointments">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <p>You don't have any appointments</p>
+    <p>Click the button below to schedule your first appointment.</p>
+    <button [routerLink]="'/find-doctors'" >Schedule Appointment</button>
+  </div>
+</ng-template>
 
 

@@ -5,6 +5,7 @@ import { AppointmentNotificationDTO } from '../../Models/notification.models';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service';
+import { AdminService } from '../../../core/Admin/Services/admin-service/auth.service';
 
 @Component({
   selector: 'app-notification',
@@ -20,7 +21,8 @@ export class NotificationComponent implements OnInit {
     private route: ActivatedRoute,
     private userService:UserService,
     private toastr:ToastrService,
-    private doctorService:DoctorService
+    private doctorService:DoctorService,
+    private adminService:AdminService
   ) { }
 
   ngOnInit() {
@@ -44,6 +46,19 @@ export class NotificationComponent implements OnInit {
     })
    }else if(this.expectedRole === 'Doctor'){
     this.doctorService.getNotificationsOfDoctor().subscribe({
+      next:(res)=>{
+        console.log(res);
+        this.notifications = res.data;
+
+        console.log(this.notifications);
+      },
+      error:(err)=>{
+        this.toastr.error(err)
+      }
+    })
+   }else if(this.expectedRole === 'Admin'){
+    
+    this.adminService.getNotification().subscribe({
       next:(res)=>{
         console.log(res);
         this.notifications = res.data;

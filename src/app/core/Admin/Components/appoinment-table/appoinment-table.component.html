@@ -1,0 +1,47 @@
+<table class="min-w-full divide-y divide-gray-200">
+  <thead>
+    <tr>
+      <th *ngFor="let header of headers"
+          class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+        <div class="flex cursor-pointer">
+          <span class="mr-2">{{ header.text }}</span>
+        </div>
+      </th>
+      <th *ngIf="actions"
+          class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+        <div class="flex cursor-pointer">
+          <span class="mr-2">ACTION</span>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+    <tr *ngFor="let row of rows">
+      <td *ngFor="let header of headers" class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+        <div *ngIf="header.key === 'doctorName'" class="flex items-center">
+          <img [src]="row.doctorProfilePic" alt="Doctor Profile" class="w-10 h-10 rounded-full mr-2" />
+          <p>{{ row[header.key] }}</p>
+        </div>
+        <div *ngIf="header.key === 'patientName'" class="flex items-center">
+          <img [src]="row.patientProfilePic" alt="Patient Profile" class="w-10 h-10 rounded-full mr-2" />
+          <p>{{ row[header.key] }}</p>
+        </div>
+        <ng-container *ngIf="header.key !== 'doctorName' && header.key !== 'patientName'">
+          <p [ngClass]="header.key === 'status' ? getStatusClass(row[header.key]) : ''">{{ row[header.key] }}</p>
+        </ng-container>
+      </td>
+
+      <td *ngIf="actions" class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+        <div *ngIf="config.showViewButton" (click)="viewDetails(row._id)" class="flex gap-2 rounded-lg px-3 pt-3 cursor-pointer hover:bg-blue-200">
+            <i class="fa-solid fa-eye" style="color: #2268e2;"></i>
+            <p>View</p>
+        </div>
+        <div *ngIf="config.showDeleteButton" (click)="deleteRow(row._id)" class="flex gap-2 rounded-lg px-3 pt-3 cursor-pointer hover:bg-red-200">
+            <i class="fa-solid fa-trash" style="color: #e22d2d;"></i>
+            <p>Delete</p>
+        </div>
+    </td>
+    
+    </tr>
+  </tbody>
+</table>

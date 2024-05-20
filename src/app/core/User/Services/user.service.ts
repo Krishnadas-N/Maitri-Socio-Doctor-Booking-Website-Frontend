@@ -1,11 +1,20 @@
 declare var google:any;
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { User } from '../../../store/User/user.model';
 import { FindDoctorsRequest } from '../../../shared/Models/userSide.model';
 import { environment } from '../../../../environments/environment.development';
 
+interface UserSocialRegister{
+  firstName:string,
+  lastName:string,
+  username:string,
+  email:string,
+  gender:string,
+  dateOfBirth:string,
+  profilePic?:string
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -17,6 +26,13 @@ export class UserService {
     const loginData = { email, password };
     return this.http.post<User>(`${this.baseUrl}/login`, loginData);
   }
+  loginWithGoogle(credential: string):Observable<any>  {
+    const url = `${this.baseUrl}/social-login`;
+    const body = { credential };
+    const headers = new HttpHeaders({ 'X-Social-Login': 'google' });
+
+   return this.http.post(url, body, { headers })
+  }
 
   register(
     user: User,
@@ -27,18 +43,16 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/register`, userData);
   }
 
+  registerWithGoogle(user:UserSocialRegister): Observable<any> {
+      return this.http.post(`${this.baseUrl}/social-register`,user).pipe(
+
+      )
+  }
   getCurrentUser(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/profile`);
   }
 
-  getAllUsers(
-    page: number = 1,
-    pageSize: number = 10,
-    searchQuery: string = ''
-  ): Observable<any> {
-    const queryParams = `page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery}`;
-    return this.http.get<any>(`${this.baseUrl}/get-Users?${queryParams}`);
-  }
+
 
   blockUser(id: string): Observable<any> {
     return this.http.patch(`${this.baseUrl}/change-status/${id}`, {});
@@ -162,9 +176,16 @@ export class UserService {
   getPrescritpionsOfUser():Observable<any>{
     return this.http.get(`${this.baseUrl}/get-userPrescriptions`)
   }
-   
 
    signOut(){
     google.accounts.id.disableAutoSelect();
    }
+   
+   submitSurvey(surveyData:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/submit-survey`,surveyData)
+  }
+  
+  getWalletBalance():Observable<any>{
+    return this.http.get(`${this.baseUrl}/get-wallet-balance`)
+  }
 }

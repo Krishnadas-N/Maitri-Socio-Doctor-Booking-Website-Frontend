@@ -1,0 +1,223 @@
+<div class="m-3 rounded-xl p-3  h-full w-[98%]">
+    <div class="grid grid-cols-12 gap-3">
+      <div class="grid grid-cols-12 col-span-12 gap-3 xxl:col-span-9">
+          <div class="col-span-12 mt-1">
+              <div class="grid grid-cols-12 gap-3">
+                  <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
+>
+                <div class="bg-white shadow-lg rounded-lg p-6 flex items-center space-x-4">
+                    <div class="bg-blue-500 text-white rounded-full p-3">
+                        <!-- Heroicon: User Group -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-4-4h-5a4 4 0 00-4 4v2h5zM9 20H4v-2a4 4 0 014-4h5a4 4 0 014 4v2H9zM12 12a4 4 0 100-8 4 4 0 000 8zM18 8a4 4 0 100-8 4 4 0 000 8z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800">Total Doctors</h2>
+                        <div class="text-2xl font-bold text-gray-900">{{dashBoardData.doctorsCount}}</div> <!-- Replace 123 with the dynamic count -->
+                    </div>
+                </div> 
+                  </a>
+                  <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white">
+                    <div class="bg-white shadow-lg rounded-lg p-6 flex items-center space-x-4">
+                        <div class="bg-blue-500 text-white rounded-full p-3">
+                            <!-- Heroicon: Heart -->
+                            <i class="fa-solid fa-bed-pulse w-6 h-6" style="color: #ffff; font-size: x-large;"></i>  </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Total Patients</h2>
+                            <div id="patients-count" class="text-2xl font-bold text-gray-900">{{dashBoardData.patientsCount}}</div>
+                        </div>
+                    </div>
+                  </a>
+                  <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
+                    > <div class="bg-white shadow-lg rounded-lg p-6 flex items-center space-x-4">
+                        <div class="bg-blue-500 text-white rounded-full p-3">
+                            <!-- Heroicon: Calendar -->
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-5 9h6m-6 4h6M3 21h18M3 5h18a2 2 0 012 2v14a2 2 0 01-2 2H3a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Appointments</h2>
+                            <div id="appointments-count" class="text-2xl font-bold text-gray-900">{{dashBoardData.totalCompleted}}</div>
+                        </div>
+                    </div>
+                  </a>
+                  <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
+>
+                    <div class="bg-white shadow-lg rounded-lg p-6 flex items-center space-x-4">
+                        <div class="bg-yellow-500 text-white rounded-full p-3">
+                            <!-- Heroicon: Cash -->
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 4a2 2 0 100-4 2 2 0 000 4zm0-4V3m0 7v4m-6 4h12m-3 4H9m3-4a6 6 0 100-12 6 6 0 000 12z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Total Revenue</h2>
+                            <div id="revenue" class="text-2xl font-bold text-gray-900">₹ {{dashBoardData.totalRevenue}}</div>
+                        </div>
+                    </div>
+                  </a>
+              </div>
+          </div>
+          <div class="col-span-12 mt-5">
+              <div class="grid gap-2 grid-cols-1 lg:grid-cols-2">
+                  <div class="bg-white shadow-lg p-4" >
+                    <app-line-chart height="70" [data]="lineChartData" [options]="lineChartOptions"></app-line-chart>
+
+              
+                  </div>
+                  <div class="bg-white shadow-lg" >
+                    <p-chart type="line" [data]="appoinmentStatusdata" [options]="appoinmentStatusoptions" />
+                  </div>
+              </div>
+          </div>
+          <div class="col-span-12 mt-5">
+            <div class="grid gap-2 grid-cols-1 lg:grid-cols-2">
+                <div class="bg-white p-4 shadow-lg rounded-lg">
+                    <h1 class="font-bold text-base">Doctors</h1>
+                    <div class="mt-4">
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto">
+                                <div class="py-2 align-middle inline-block min-w-full">
+                                    <div
+                                        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead>
+                                                <tr>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Doctor Name</span>
+                                                        </div>
+                                                    </th>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Speciality</span>
+                                                        </div>
+                                                    </th>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Earned</span>
+                                                        </div>
+                                                    </th>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Reviews</span>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <tr *ngFor="let item of doctorAndUserDetails.doctors">
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+                                                      <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-10 w-10">
+                                                          <img class="h-10 w-10 rounded-full" [src]="item.profilePic" alt="{{ item.fullName }}">
+                                                        </div>
+                                                        <div class="ml-4">
+                                                          <div class="text-sm font-medium text-gray-900">
+                                                            {{ item.fullName }}
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+                                                        <p>{{ item.specialization }}</p>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+                                                      <p>₹ {{ item.totalEarnings }}</p>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+                                                        <app-star-rating [rating]="item.averageRating"></app-star-rating>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-4 shadow-lg rounded-lg">
+                    <h1 class="font-bold text-base">Patients</h1>
+                    <div class="mt-4">
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto">
+                                <div class="py-2 align-middle inline-block min-w-full">
+                                    <div
+                                        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead>
+                                                <tr>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Patient Name</span>
+                                                        </div>
+                                                    </th>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Email</span>
+                                                        </div>
+                                                    </th>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Last Appoimnent</span>
+                                                        </div>
+                                                    </th>
+                                                    <th
+                                                        class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        <div class="flex cursor-pointer">
+                                                            <span class="mr-2">Total Paid</span>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <tr *ngFor="let patient of doctorAndUserDetails.patients">
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">{{ patient.fullName }}</td>
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
+                                                      <img [src]="patient.profilePic" alt="Profile Picture" class="h-10 w-10 rounded-full">
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">{{ patient.lastAppointmentDate ? (patient.lastAppointmentDate | date) : 'N/A' }}</td>
+                                                  <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">{{ patient.totalPaid }}</td>
+                                                  </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+          <div class="col-span-12 mt-5">
+              <div class="grid gap-2 grid-cols-1 lg:grid-cols-1">
+                  <div class="bg-white p-4 shadow-lg rounded-lg">
+                      <h1 class="font-bold text-base">Appointments</h1>
+                      <div class="mt-4">
+                          <div class="flex flex-col">
+                              <div class="-my-2 overflow-x-auto">
+                                  <div class="py-2 align-middle inline-block min-w-full">
+                                      <div
+                                          class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white">
+                                         <app-appoinment-table (viewAppoinment)="viewAppoinment($event)" [config]="config" [headers]="tableHeaders" [rows]="appoinmentDetails" [actions]="true"></app-appoinment-table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -30,10 +30,6 @@ export class DoctorService {
     return this.http.get<any>(url);
   }
 
-  blockDoctor(id: string): Observable<any> {
-    const url = `${this.apiUrl}/change-status/${id}`;
-    return this.http.put<any>(url, null);
-  }
 
   verifyProfileDoctor(id: string): Observable<any> {
     const url = `${this.apiUrl}/verify-profile/${id}`;

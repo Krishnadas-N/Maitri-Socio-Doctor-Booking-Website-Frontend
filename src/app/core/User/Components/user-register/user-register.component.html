@@ -20,6 +20,7 @@
         Read our <a href="#" class="underline">terms</a> and <a href="#" class="underline">conditions</a>
       </p>
     </div>
+    <ng-container *ngIf="!signUpWithGoogle; else addAddtionalData">
     <div class="p-5 bg-white md:flex-1">
       <h3 class="my-4 text-2xl font-semibold text-gray-700">Account Login</h3>
      
@@ -96,33 +97,29 @@
           />
           <p  *ngIf="registrationForm.get('dateOfBirth')?.invalid && (registrationForm.get('dateOfBirth')?.dirty || registrationForm.get('dateOfBirth')?.touched)" class="text-red-500">Please enter a valid date of birth (must be less than 6 years before).</p>
         </div>
-        <div class="flex flex-col space-y-1">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col space-y-1">
             <label for="password" class="text-sm font-semibold text-gray-500">Password</label>
-            <a href="#" class="text-sm text-blue-600 hover:underline focus:text-blue-800">Forgot Password?</a>
+            <input
+              formControlName="password"
+              type="password"
+              id="password"
+              class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+            />
+            <p *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)" class="text-red-500">Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>
           </div>
-          <input
-          formControlName="password"
-            type="password"
-            id="password"
-            class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-          />
-          <p *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)" class="text-red-500">Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>
-        </div>
-        <div class="flex flex-col space-y-1">
-          <div class="flex items-center justify-between">
-            <label for="confirmPassword" class="text-sm font-semibold text-gray-500">Confirm Password</label>
+          <div class="flex flex-col space-y-1">
+            <div class="flex items-center justify-between">
+              <label for="confirmPassword" class="text-sm font-semibold text-gray-500">Confirm Password</label>
+            </div>
+            <input
+              formControlName="confirmPassword"
+              type="password"
+              id="confirmPassword"
+              class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+            />
+            <p *ngIf="registrationForm.get('confirmPassword')?.errors?.['mismatch'] && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)" class="text-red-500">Passwords do not match.</p>
           </div>
-          <input
-            formControlName="confirmPassword"
-            type="password"
-            id="confirmPassword"
-            class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-          />
-          <p *ngIf="registrationForm.get('confirmPassword')?.errors?.['mismatch'] && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)" class="text-red-500">Passwords do not match.</p>
-
-
-        </div>
+        
         <!-- <div class="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -153,7 +150,18 @@
           <span class="flex items-center justify-center space-x-2">
             <!-- <span class="h-px bg-gray-400 w-14"></span> -->
             <!-- <span class="font-normal text-gray-500">or sign up with</span> -->
-            <div id="google-btn"></div>
+            <google-login-button [callback]="SignupUsingGoogle"
+            [clientId]="clientId"
+            [width]="250"
+            locale="en"
+            shape="pill"
+            size="large"
+            text="signin_with"
+            theme="outline"
+            type="standard"
+            [displayOneTapDialog]="true"
+        ></google-login-button>
+
           </span>
           <div class="flex flex-col  space-y-4">
 
@@ -175,10 +183,82 @@
         </div>
       </form>
     </div>
+  </ng-container>
   </div>
 </div>
   
 
+<ng-template #addAddtionalData>
+  <div class="p-5 bg-white md:flex-1">
+    <h3 class="my-4 text-2xl font-semibold text-gray-700">Additonal Data</h3>
 
+    <form [formGroup]="GoogleRegistrationForm" (ngSubmit)="SignupWithGoogle()" class="flex flex-col space-y-5">
+      <div class="flex flex-col space-y-1">
+        <label for="username" class="text-sm font-semibold text-gray-500">User Name</label>
+        <input
+          type="username"
+          formControlName="username"
+          id="username"
+          autofocus
+          class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+        />
+        <p  *ngIf="GoogleRegistrationForm.get('username')?.invalid && (GoogleRegistrationForm.get('username')?.dirty || GoogleRegistrationForm.get('username')?.touched)" class="text-red-500">Username is required (up to 25 characters, letters, numbers, and underscores only).</p>
+      </div>
+      <div class="flex flex-col space-y-1">
+        <div class="flex items-center justify-between">
+          <label for="gender" class="text-sm font-semibold text-gray-500">Gender</label>
+        </div>
+        <select
+        formControlName="gender"
+          id="gender"
+          class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+        >
+        <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              <p  *ngIf="GoogleRegistrationForm.get('gender')?.invalid && (GoogleRegistrationForm.get('gender')?.dirty || GoogleRegistrationForm.get('gender')?.touched)" class="text-red-500">Gender is required.</p>
+      </div>
+      <div class="flex flex-col space-y-1">
+        <div class="flex items-center justify-between">
+          <label for="dateOfBirth" class="text-sm font-semibold text-gray-500">Enter Your D.O.B</label>
+        </div>
+        <input
+        formControlName="dateOfBirth"
+          type="date"
+          id="dateOfBirth"
+          class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+        />
+        <p  *ngIf="GoogleRegistrationForm.get('dateOfBirth')?.invalid && (GoogleRegistrationForm.get('dateOfBirth')?.dirty || GoogleRegistrationForm.get('dateOfBirth')?.touched)" class="text-red-500">Please enter a valid date of birth (must be less than 6 years before).</p>
+      </div>
+      
+      <!-- <div class="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="remember"
+          class="w-4 h-4 transition duration-300 rounded focus:ring-2 focus:ring-offset-0 focus:outline-none focus:ring-blue-200"
+        />
+        <label for="remember" class="text-sm font-semibold text-gray-500">Remember me</label>
+      </div> -->
+      <div>
+        <button
+        type="submit"
+        class="w-full px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-blue-200 focus:ring-4 relative"
+        [disabled]="isLoading"
+      >
+        <span class="flex gap-2 justify-center"> 
+          <svg *ngIf="isLoading"  class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.001 8.001 0 0112 4.472v3.998a.5.5 0 001 0V4.472c3.027 0 5.562 2.138 6.181 5H18c0-3.859-3.141-7-7-7s-7 3.141-7 7h-2c0 4.97 4.03 9 9 9v-2c-3.584 0-6.743-1.99-8.366-5zM12 18.528V14.53a.5.5 0 00-1 0v3.998a7.998 7.998 0 01-3.619-1.529C6.243 20.176 8.777 22 12 22v-2c-1.556 0-2.979-.64-4.005-1.672A8.013 8.013 0 014 12.528h2a6.008 6.008 0 006 6v-2h-2z"></path>
+          </svg> Confirm Register
+          </span>
+        
+      </button>
+      
+      </div>
+    </form>
+   </div>
+</ng-template>
 
-
+<p-toast [life]="10000" />

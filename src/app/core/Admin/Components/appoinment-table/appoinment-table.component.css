@@ -1,0 +1,36 @@
+/* appoinment-list.component.css */
+.status-completed {
+    background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .status-pending {
+    background-color: orange;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .status-cancelled {
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .status-scheduled {
+    background-color: blue;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .status-rejected {
+    background-color: grey;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  

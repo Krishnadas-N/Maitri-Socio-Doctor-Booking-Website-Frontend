@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../Services/user.service';
+import { Appointment } from '../Models/appointments.model';
 
 @Component({
   selector: 'app-user-side-appoinment-listing',
@@ -12,7 +13,7 @@ export class UserSideAppoinmentListingComponent implements OnInit {
   totalPages: number = 0;
   totalCount: number = 0; 
   pageSize: number = 6;
-  userAppoinmentDetails!:any;
+  userAppoinmentDetails!:Appointment[];
   userType:"doctor" | "user" = 'user';
   constructor(
     private userService:UserService,

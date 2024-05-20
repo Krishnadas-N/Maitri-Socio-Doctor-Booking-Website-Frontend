@@ -109,6 +109,20 @@ export class WebSocketService {
     return this.webSocket.fromEvent<any>('consultation-link');
   }
 
+  emitOpenRatingModal(appointmentId: string,userId:string) {
+    this.webSocket.emit('open_rating_modal', {appointmentId,userId});
+  }
+
+  getRatingModalOpen(): Observable<any> {
+    return this.webSocket.fromEvent('open_rating_modal');
+  }
+  
+  emitCloseConversation(appointmentId: string,userId:string,status:boolean){
+    this.webSocket.emit('toggle consultation',{appointmentId,userId,status})
+  }
+  getCloseConversation(): Observable<any> {
+    return this.webSocket.fromEvent('toggle consultation');
+  }
   disconnectSocket() {
     if (this.webSocket) {
       this.webSocket.disconnect();

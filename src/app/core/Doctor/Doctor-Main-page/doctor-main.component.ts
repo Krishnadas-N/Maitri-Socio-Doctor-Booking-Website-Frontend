@@ -43,17 +43,17 @@ export class DoctorMainComponent  implements OnInit{
   tooltipLeft = 0;
   tooltipText = '';
   profileImage: string = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80';
-  navItems: { iconClasses: string, backgroundColor: string, tooltip?: string,link?:string }[] = [
-    { iconClasses: 'fas fa-tachometer-alt fa-sm  text-white', backgroundColor: 'bg-blue-400', tooltip: 'DashBoard',link:'/doctor/' },
-    { iconClasses: "fab fa-instagram fa-sm text-white", backgroundColor: 'bg-pink-400', tooltip: 'Feed', link:'/doctor/feed'},
-    { iconClasses: 'fas fa-calendar-alt fa-sm text-white', backgroundColor: 'bg-yellow-400', tooltip: 'Appoinments',link:'/doctor/appoinments' },
+  navItems: { iconClasses: string, backgroundColor: string, tooltip?: string, link?: string }[] = [
+    { iconClasses: 'fas fa-tachometer-alt fa-sm text-white', backgroundColor: 'bg-blue-400', tooltip: 'DashBoard', link: '/doctor/' },
+    { iconClasses: 'fab fa-instagram fa-sm text-white', backgroundColor: 'bg-pink-400', tooltip: 'Feed', link: '/doctor/feed' },
+    { iconClasses: 'fas fa-calendar-alt fa-sm text-white', backgroundColor: 'bg-yellow-400', tooltip: 'Appointments', link: '/doctor/appointments' },
     { iconClasses: 'fas fa-clock fa-sm text-white', backgroundColor: 'bg-green-400', tooltip: 'Schedule Timings', link: '/doctor/schedule-timings' },
     { iconClasses: 'fas fa-comment fa-sm text-white', backgroundColor: 'bg-blue-600', tooltip: 'Chat Consultation', link: '/doctor/chats/inbox' },
     { iconClasses: 'fas fa-user fa-sm text-white', backgroundColor: 'bg-purple-400', tooltip: 'Profile', link: '/doctor/profile' },
     { iconClasses: 'fas fa-money-bill-wave fa-sm text-white', backgroundColor: 'bg-indigo-400', tooltip: 'Payments', link: '/doctor/payments' },
     { iconClasses: 'fas fa-bell fa-sm text-white', backgroundColor: 'bg-orange-400', tooltip: 'Notifications', link: '/doctor/notifications' },
-   
-  ];
+     ];
+  
 
   handleSidebarItemClick(item: any) {
     console.log('Item Clicked:', item);

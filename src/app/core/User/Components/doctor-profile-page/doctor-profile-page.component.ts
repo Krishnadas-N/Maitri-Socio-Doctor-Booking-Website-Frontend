@@ -8,6 +8,7 @@ import { Post } from '../../../../store/sharedStore/Feed-Store/post.model';
 import { FeedService } from '../../../../shared/Services/feed.service';
 import { CommonService } from '../../../../shared/Services/common-services/common.service';
 import { Subscription } from 'rxjs';
+import { Review } from '../../../../shared/Models/doctor.model';
 
 @Component({
   selector: 'app-doctor-profile-page',
@@ -20,6 +21,7 @@ export class DoctorProfilePageComponent implements OnInit, OnDestroy {
   doctorPosts: Post[] = [];
   doctorId!: string;
   doctorDetails!: Doctor;
+  reviews:Review[]=[];
   activeTab: string = 'home';
   similarProfileDoctors: Partial<Doctor[]> = [];
   currentCountOfSimilarProfileDoctors = 0;
@@ -42,6 +44,15 @@ export class DoctorProfilePageComponent implements OnInit, OnDestroy {
       if (params && params['id']) {
         this.doctorId = params['id'];
         this.findDoctor();
+        this.commonService.getReviews( this.doctorId).subscribe({
+          next:(res)=>{
+            this.reviews =  res.data
+            console.log("Reviews",res);
+          },
+          error:(err)=>{
+            console.log(err);
+          }
+        })
       } else {
         this.router.navigate(['/find-doctors']);
       }

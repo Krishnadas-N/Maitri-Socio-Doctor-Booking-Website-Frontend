@@ -56,18 +56,7 @@ export class UserEffects {
         )
     );
 
-    loadUsers$ = createEffect(()=>
-        this.actions$.pipe(
-            ofType(loadUsers),
-            switchMap(({ page, pageSize, searchQuery}) => 
-                this.userService.getAllUsers(page, pageSize, searchQuery).pipe(
-                         tap(data=>console.log("Log from get all users",data)),
-                        map((res:any)=>loadUsersSuccess({users: res.data.users,totalPages:res.data.totalCount})),
-                         catchError((error)=>of(loadUsersFailure({error})))
-                )
-            )
-        )  
-    )
+
 
     
   blockUser$ = createEffect(() => this.actions$.pipe(

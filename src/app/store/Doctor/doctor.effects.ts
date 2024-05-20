@@ -115,18 +115,6 @@ export class doctorEffects {
     )
   );
 
-  blockDoctor$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DoctorActions.blockDoctor),
-      switchMap(({ id }) =>
-        this.doctorService.blockDoctor(id).pipe(
-          tap(data=>console.log(data)),
-          map((res:any) => DoctorActions.blockDoctorSuccess({ doctor:res.data.doctor })),
-          catchError((error) => of(DoctorActions.blockDoctorFailure({ error })))
-        )
-      )
-    )
-  );
 
   VerifyProfileDoctor$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,0 +1,9 @@
+<div class="survey-container">
+    <div class="survey-content">
+      <survey [model]="surveyModel"></survey>
+    </div>
+    <button class="close-button" (click)="closeSurvey()"><i class="fa-solid fa-xmark" style="color: #0154e4;"></i></button>
+  </div>
+  <div *ngIf="loading" class="loading-spinner">
+    <i class="fa fa-spinner fa-spin"></i> Loading...
+  </div>

@@ -92,7 +92,7 @@
           <!-- End of friends card -->
       </div>
       <!-- Right Side -->
-      <div class="w-full md:w-9/12 mx-2 h-64">
+      <div class="w-full md:w-9/12 mx-2 h-auto">
           <!-- Profile tab -->
           <!-- About Section -->
           <div class="bg-white p-3 shadow-sm rounded-sm">
@@ -262,10 +262,137 @@
                   </ng-container>
                 </div>
               </ng-container>
+
+              <ng-container  *ngIf="activeTab === 'reviews'">
+                
+                <div *ngIf="reviews.length>0" class="grid grid-cols-1 sm:grid-cols-3  gap-1">
+                    <!-- Content for each column -->
+                    <div class=" w-full sm:col-span-2 order-2 lg:order-1">
+                        <div  *ngFor="let review of reviews" class="antialiased my-2">
+                            <div class="ps-3" >
+                              <div class="max-w-lg px-5 py-5 rounded-md shadow-lg bg-white">
+                                <div class="flex items-center">
+                                    <svg aria-hidden="true" class="w-6 h-6" [class.text-yellow-500]="review.rating >= 1" [class.text-gray-500]="review.rating < 1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg aria-hidden="true" class="w-6 h-6" [class.text-yellow-500]="review.rating >= 2" [class.text-gray-500]="review.rating < 2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Second star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg aria-hidden="true" class="w-6 h-6" [class.text-yellow-500]="review.rating >= 3" [class.text-gray-500]="review.rating < 3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Third star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg aria-hidden="true" class="w-6 h-6" [class.text-yellow-500]="review.rating >= 4" [class.text-gray-500]="review.rating < 4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg aria-hidden="true" class="w-6 h-6" [class.text-yellow-500]="review.rating >= 5" [class.text-gray-500]="review.rating < 5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fifth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <p class="ml-8 pt-4 text-sm font-medium text-gray-500 dark:text-gray-400">{{ review.rating }} out of 5</p>
+                                </div>
+                                
+                                <p class="mt-2 text-sm font-medium leading-5 text-gray-500">
+                                  {{review.createdAt|date:'yy/mm/dd'}}
+                               </p>
+                               
+                                <div class="space-y-1">
+                                  <p class="text-sm font-medium leading-5 text-gray-800">
+                                     {{review.comment}}
+                                  </p>
+                                </div>
+                                <div class="mt-6 flex items-center space-x-2">
+                                  <div class="flex flex-shrink-0 rounded-full border border-gray-200">
+                                    <img
+                                      class="w-8 h-8 object-cover rounded-full"
+                                      [src]="review.patientName.profilePic"
+                                      alt=""
+                                    />
+                                  </div>
+                                  <span class="text-sm font-semibold leading-5 text-gray-900">
+                                   {{review.patientName.firstName}} {{review.patientName.lastName}}
+                                 </span>
+                                  <div class="flex-shrink-0">
+                                    <svg
+                                      class="w-5 h-5 text-gray-600"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                          </div>
+                    </div>
+                    <div class="p-3 sm:col-span-1 order-1 lg:order-2">
+                        
+
+                        <div class="flex flex-col gap-2 mb-4 items-center">
+                            <!-- Star icons for rating -->
+                            <div class="flex items-center">
+                              <!-- 5-star rating -->
+                              <svg class="h-8 w-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 1l2.776 5.702 6.222.908-4.513 4.398 1.066 6.192-5.551-2.92-5.55 2.92 1.065-6.192L1 7.61l6.222-.908L10 1z" clip-rule="evenodd" />
+                              </svg>
+                              <svg class="h-8 w-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 1l2.776 5.702 6.222.908-4.513 4.398 1.066 6.192-5.551-2.92-5.55 2.92 1.065-6.192L1 7.61l6.222-.908L10 1z" clip-rule="evenodd" />
+                              </svg>
+                              <svg class="h-8 w-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 1l2.776 5.702 6.222.908-4.513 4.398 1.066 6.192-5.551-2.92-5.55 2.92 1.065-6.192L1 7.61l6.222-.908L10 1z" clip-rule="evenodd" />
+                              </svg>
+                              <svg class="h-8 w-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 1l2.776 5.702 6.222.908-4.513 4.398 1.066 6.192-5.551-2.92-5.55 2.92 1.065-6.192L1 7.61l6.222-.908L10 1z" clip-rule="evenodd" />
+                              </svg>
+                              <svg class="h-8 w-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 1l2.776 5.702 6.222.908-4.513 4.398 1.066 6.192-5.551-2.92-5.55 2.92 1.065-6.192L1 7.61l6.222-.908L10 1z" clip-rule="evenodd" />
+                              </svg>
+                            </div>
+                            <!-- Rating Value -->
+                            <span class="ml-2 text-lg text-gray-800 font-semibold">4.0 out of 5</span>
+                          </div>
+                          
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{reviews.length}} ratings</p>
+                    <div class="flex items-center mt-4">
+                        <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">5 star</a>
+                        <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-300">
+                            <div class="h-5 bg-yellow-300 rounded" style="width: 70%"></div>
+                        </div>
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">70%</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">4 star</a>
+                        <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-300">
+                            <div class="h-5 bg-yellow-300 rounded" style="width: 17%"></div>
+                        </div>
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">17%</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">3 star</a>
+                        <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-300">
+                            <div class="h-5 bg-yellow-300 rounded" style="width: 8%"></div>
+                        </div>
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">8%</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">2 star</a>
+                        <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-300">
+                            <div class="h-5 bg-yellow-300 rounded" style="width: 4%"></div>
+                        </div>
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">4%</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">1 star</a>
+                        <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-300">
+                            <div class="h-5 bg-yellow-300 rounded" style="width: 1%"></div>
+                        </div>
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">1%</span>
+                    </div>   
+
+                    </div>
+                </div>
+              </ng-container>
               
-              
+            
           </div>
           <!-- End of profile tab -->
       </div>
   </div>
 </div>
+
+
+<!-- https://play.tailwindcss.com/6JoCpL01W9 -->

@@ -17,6 +17,7 @@ import { TimeDiffPipe } from '../../Pipes/time-diff.pipe';
 import { TimeFormatPipe } from '../../Pipes/timeFormat.pipe';
 import { UploadPrescriptionComponent } from '../../../core/Doctor/Components/upload-prescription/upload-prescription.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { RatingReviewDialogComponent } from '../../../core/User/Components/rating-review-dialog/rating-review-dialog.component';
 
 @Component({
   selector: 'app-chat-room',
@@ -91,8 +92,26 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
+
+    if(this.userType==='User'){
+      this.subCloseConverstation()
+      this.subOpeningRatingModal()
+
+    }
   }
 
+  subCloseConverstation(){
+    this.webSocketService.getCloseConversation().subscribe((data: any) => {
+      console.log('Received open_rating_modal event with data:', data);
+      this.conversationalData.isClosed = data.status;
+    });
+  }
+  subOpeningRatingModal(){
+    this.webSocketService.getRatingModalOpen().subscribe((data: any) => {
+      console.log('Received open_rating_modal event with data:', data);
+      this.openRatingDialog(data);
+    });
+  }
   private scrollToBottom() {
     if (this.chatContainer) {
       console.log(this.chatContainer);
@@ -211,29 +230,39 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    // Unsubscribe from any subscriptions to prevent memory leaks
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
     }
   }
 
-  toggleConsultation(){
-    if(this.userType==='Doctor'){
-      this.messageService.toggleConsultation( this.conversationId).subscribe({
-        next:(res)=>{
-          this.conversationalData.isClosed = !this.conversationalData.isClosed;
-          if(this.conversationalData.isClosed){
-            if(this.appointmentId ){
-            this.openUploadPrescription()
-            }
-          }
-        },
-        error:(err)=>{
-          this.toastr.error(err)
-        }
-      })
+  toggleConsultation() {
+    if (this.userType === 'Doctor' && this.appointmentId) {
+        this.doctorService.changeStatus('Completed', this.appointmentId)
+            .subscribe({
+                next: (res) => {
+                    this.messageService.toggleConsultation(this.conversationId)
+                        .subscribe({
+                            next: (res) => {
+                                this.conversationalData.isClosed = !this.conversationalData.isClosed;
+                                this.webSocketService.emitCloseConversation(this.appointmentId!,this.recipientId,this.conversationalData.isClosed)
+                                if (this.conversationalData.isClosed && this.appointmentId) {
+                                 
+                                    this.webSocketService.emitOpenRatingModal(this.appointmentId,this.recipientId);
+                                    this.openUploadPrescription();
+                                }
+                            },
+                            error: (err) => {
+                                this.toastr.error('Error toggling consultation: ' + err);
+                            }
+                        });
+                },
+                error: (err) => {
+                    this.toastr.error('Error changing appointment status: ' + err);
+                }
+            });
     }
-  }
+   }
+
 
   navigateDoctorPage(){
     const doctor = this.conversationalData.members.find(
@@ -247,5 +276,16 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dialog.open(UploadPrescriptionComponent,{
       data: {appoinmentId:this.appointmentId }
     });
+  }
+
+  openRatingDialog(appoinmentId:string){
+   
+      console.log(appoinmentId);
+    console.log(appoinmentId);
+    this.dialog.open(RatingReviewDialogComponent,{
+      width: '50%',
+      data: {appoinmentId:appoinmentId}
+    });
+ 
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -10,10 +10,13 @@ import { UserService } from '../../../core/User/Services/user.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { Appointment } from '../../Models/appoinment.model';
+import { MatDialog } from '@angular/material/dialog';
+import { RatingReviewDialogComponent } from '../../../core/User/Components/rating-review-dialog/rating-review-dialog.component';
 @Component({
   selector: 'app-appoinment-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ConfirmDialogModule,FormsModule,DialogModule, ToastModule],
+  imports: [CommonModule, RouterLink, ConfirmDialogModule,FormsModule,DialogModule, ToastModule,RouterLink],
   templateUrl: './appoinment-list.component.html',
   styleUrls: ['./appoinment-list.component.css'],
   providers: [ConfirmationService, MessageService],
@@ -32,13 +35,13 @@ import { DialogModule } from 'primeng/dialog';
 })
 
 export class AppoinmentListComponent implements OnInit, OnDestroy {
-  @Input() appoinmentDetails: any;
+  @Input({required:true}) appoinmentDetails!: any;
   cancellationReason: string = '';
   consultationLink: string | null = null;
   currentUserId: string | null = null;
   private consultationLinkSubscription!: Subscription;
   displayConfirmationDialog: boolean = false;
-  @Input() userType!: 'doctor' | 'user';
+  @Input({required:true}) userType!: 'doctor' | 'user';
   @Output() viewprofile = new EventEmitter<string>();
   @Output() editUserStatus: EventEmitter<{ id: string, reason:string, status: string }> =
     new EventEmitter<{ id: string, reason:string, status: string }>();
@@ -47,10 +50,14 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private router:Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
+
+    console.log(this.appoinmentDetails)
     if (this.userType === 'user') {
       this.getCurrentUser();
       this.consultationLinkSubscription = this.webSocketService
@@ -65,13 +72,13 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUser() {
-    this.userService.getCurrentUser().subscribe(
-      (res) => {
+    this.userService.getCurrentUser().subscribe({
+      next:(res) => {
         console.log('current user', res);
         this.currentUserId = res.data._id;
       },
-      (err) => console.error('Error in getting current user details', err)
-    );
+     error: (err) => console.error('Error in getting current user details', err)
+  });
   }
 
   viewUserProfile() {
@@ -167,4 +174,25 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
     this.consultationLinkSubscription.unsubscribe();
     }
   }
+
+  navigateToChat(){
+    if(this.appoinmentDetails && this.appoinmentDetails.consultationLink){
+      const queryParams = { appoinmentId: this.appoinmentDetails._id };
+      this.router.navigate([this.appoinmentDetails.consultationLink], { queryParams: queryParams });
+    }
+  }
+  openRatingDialog(){
+   
+    const dialogRef = this.dialog.open(RatingReviewDialogComponent,{
+      width: '50%',
+      data: {appoinmentId: this.appoinmentDetails._id}
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+      this.appoinmentDetails.reviews.push(result)
+    });
+  
+
+}
 }

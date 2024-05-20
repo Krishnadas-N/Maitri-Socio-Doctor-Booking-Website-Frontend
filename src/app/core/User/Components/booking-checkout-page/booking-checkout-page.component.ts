@@ -19,6 +19,7 @@ declare var StripeCheckout: any;
 export class BookingCheckoutPageComponent implements OnInit {
   isLoading:boolean=false;
   appoinmentId!:string;
+  walletBalance!:number;
   appoinmentDetails!:any;
   selectedPaymentMethod: string = '';
   constructor(
@@ -171,6 +172,17 @@ export class BookingCheckoutPageComponent implements OnInit {
     };
     document.body.appendChild(script);
   }
+  }
+
+  getWalletBalance(){
+    this.userService.getWalletBalance().subscribe({
+      next:(res)=>{
+        this.walletBalance = res.data;
+      },
+      error:(err)=>{
+        this.toastr.error(err)
+      }
+    })
   }
 }
 
