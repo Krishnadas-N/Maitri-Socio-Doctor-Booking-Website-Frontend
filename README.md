@@ -1,4 +1,6 @@
-# MaitriFrontend
+# Maitri-Socio-Doctor-Booking-Website-Frontend
+Welcome to the frontend repository of our Mental Health Consultation Platform! This Angular-based web application offers users a seamless experience to connect with licensed mental health professionals for consultation and support. Our platform prioritizes accessibility, security, and ease of use, ensuring that users can access the help the easily 
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.9.
 
@@ -25,3 +27,4 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
