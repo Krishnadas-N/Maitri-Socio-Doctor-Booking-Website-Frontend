@@ -12,4 +12,34 @@
     width: 100px; /* Adjust width as needed */
     margin-top: 5px;
   }
-  
+  /* src/styles.css or component-specific CSS file */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px; /* Adjust spacing between checkbox items */
+}
+
+.checkbox-input {
+  appearance: none; /* Hide default checkbox appearance */
+  margin-right: 8px; /* Adjust spacing between checkbox and label */
+  width: 16px; /* Set checkbox width */
+  height: 16px; /* Set checkbox height */
+  border: 1px solid #4a5568; /* Define checkbox border */
+  border-radius: 4px; /* Round checkbox corners */
+  outline: none; /* Remove outline */
+  cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.checkbox-input:checked {
+  background-color: #1f6df5; /* Change background color when checked */
+}
+
+.checkbox-label {
+  font-size: 14px; /* Adjust label font size */
+  color: #4a5568; /* Set label color */
+  cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.checkbox-label:hover {
+  text-decoration: underline; /* Underline label on hover */
+}

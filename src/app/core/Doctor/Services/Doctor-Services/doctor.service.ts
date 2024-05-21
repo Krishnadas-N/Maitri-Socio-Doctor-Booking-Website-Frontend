@@ -81,4 +81,15 @@ export class DoctorService {
   getDashboardDetails():Observable<any>{
     return this.http.get(`${this.apiUrl}/get-doctor-dashboarddetails`)
   }
+  getDoctorStatus():Observable<any>{
+    return this.http.get(`${this.apiUrl}/get-doctor-cuurentStatus`)
+  }
+
+  
+  changeProfilePic(imageFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('profilePic', imageFile);
+
+    return this.http.patch(`${this.apiUrl}/change-profile-pic`, formData);
+  }
 }

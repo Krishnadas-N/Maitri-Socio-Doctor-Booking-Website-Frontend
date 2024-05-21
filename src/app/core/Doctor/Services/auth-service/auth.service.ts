@@ -82,6 +82,6 @@ export class AuthService {
   logout(nameOfToken:string): void {
     localStorage.removeItem(nameOfToken); 
 }
-
+  
 
 }

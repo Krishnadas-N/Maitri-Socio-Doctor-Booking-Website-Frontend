@@ -35,7 +35,7 @@ export class OtpComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.section = this.route.snapshot.data['section'];
+    this.section = this.route.snapshot.data['expectedRole'];
 
     this.token = this.route.snapshot.queryParamMap.get('authToken');
     if (!this.token || !isJWTToken(this.token)) {

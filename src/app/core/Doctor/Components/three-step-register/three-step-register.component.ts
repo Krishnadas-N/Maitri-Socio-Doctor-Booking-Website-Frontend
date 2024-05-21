@@ -117,6 +117,9 @@ export class ThreeStepRegisterComponent  implements OnInit,OnDestroy {
             this.currentStep = 1;
           } else if (registrationStepsCompleted === 2 ) {
             this.currentStep = 2;
+          } 
+          else if (registrationStepsCompleted === 3 && !doc.isProfileComplete) {
+            this.currentStep = 3;
           } else {
             this.handleUnauthenticated();
           }

@@ -24,7 +24,7 @@
                             <div class="max-w-md mx-auto bg-white shadow-md rounded-md overflow-hidden">
 
                                   <p-skeleton *ngIf="intialLoading" shape="circle" size="5rem" />
-                                    <app-profile-picture *ngIf="!intialLoading" [src]='currentDoctor.profilePic'  ></app-profile-picture>
+                                    <app-profile-picture (imageFile)="onImageSelected($event)" *ngIf="!intialLoading" [src]='currentDoctor.profilePic'  ></app-profile-picture>
                                 
                                   <div class="p-6">
                                     <!-- Doctor's name -->

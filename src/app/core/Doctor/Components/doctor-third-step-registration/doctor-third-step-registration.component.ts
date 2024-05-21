@@ -43,9 +43,9 @@ export class DoctorRegisterThreeComponent {
         this.createConsultationFeeFormGroup('chat'), // chat
         this.createConsultationFeeFormGroup('clinic') // clinic
       ]),
-      availability: this.fb.array([
-        this.createAvailabilityFormGroup()
-      ]),
+      // availability: this.fb.array([
+      //   this.createAvailabilityFormGroup()
+      // ]),
       bio: ['', [Validators.required, Validators.minLength(20)]],
       maxPatientsPerDay: [10, [Validators.required, Validators.min(0), Validators.max(13)]],
     });
@@ -70,15 +70,18 @@ export class DoctorRegisterThreeComponent {
   }
   updateConsultationFees(value: boolean[]): void {
     value.forEach((isChecked, index) => {
-      const type = isChecked ? this.typesOfConsultation.at(index)?.get('type')?.value : '';
+      const type = this.typesOfConsultation.at(index)?.get('type')?.value;
       const feeControl = this.consultationForm.get('consultationFee')?.get(type);
-     if (isChecked && feeControl) {
-        feeControl.enable();
-      } else if (!isChecked && feeControl) {
-        feeControl.disable();
+      if (feeControl) {
+        if (isChecked) {
+          feeControl.enable();
+        } else {
+          feeControl.disable();
+        }
       }
     });
   }
+  
 
   get typesOfConsultation(): FormArray {
     return this.consultationForm.get('typesOfConsultation') as FormArray;
@@ -96,17 +99,6 @@ export class DoctorRegisterThreeComponent {
   }
   
 
-  createAvailabilityFormGroup(): FormGroup {
-    return this.fb.group({
-      dayOfWeek: ['', [Validators.required, Validators.pattern(/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)$/)]],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required]
-    });
-  }
-
-  get availabilityControls(): FormArray {
-    return this.consultationForm.get('availability') as FormArray;
-  }
 
   validateTypesOfConsultation(controls: AbstractControl): ValidationErrors | null {
     const selectedTypes = controls.value.filter((isChecked: boolean) => isChecked);
@@ -114,20 +106,7 @@ export class DoctorRegisterThreeComponent {
   }
 
   
-  addAvailability(): void {
-    const availabilityArray = this.consultationForm.get('availability') as FormArray;
-    if (availabilityArray.length === 5) {
-        this.toastr.warning('Adding more than 5 slots are not Allowed')
-    } else {
-      availabilityArray.push(this.createAvailabilityFormGroup());
-    }
-  }
-
-  removeAvailability(index: number): void {
-    const availabilityArray = this.consultationForm.get('availability') as FormArray;
-    availabilityArray.removeAt(index);
-  }
-
+ 
   get profilePicControl() {
     return this.consultationForm.get('profilePic');
   }
@@ -204,8 +183,6 @@ console.log('Types of consultation errors:', this.typesOfConsultation.errors);
 console.log('Consultation fee validity:', this.consultationForm.get('consultationFee')?.valid);
 console.log('Consultation fee errors:', this.consultationForm.get('consultationFee')?.errors);
 
-console.log('Availability validity:', this.availabilityControls.valid);
-console.log('Availability errors:', this.availabilityControls.errors);
 
 console.log('Bio validity:', this.bioControl?.valid);
 console.log('Bio errors:', this.bioControl?.errors);

@@ -11,6 +11,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 // import { PhotoService } from '@service/photoservice';
 import { ImageModule } from 'primeng/image';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { DoctorService } from '../../Services/doctor-services/doctor.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-doctor-settings',
   standalone:true,
@@ -26,7 +28,7 @@ export class SettingsPageComponent implements OnInit {
   currentDoctor!:Doctor;
   intialLoading:boolean=false
   isEditGeneralDetails:boolean = false
-  constructor(private fb: FormBuilder,private store:Store<AppState>) { 
+  constructor(private toastr:ToastrService,private fb: FormBuilder,private store:Store<AppState>,private doctorService:DoctorService) { 
     this.intialLoading=true 
   }
 
@@ -104,5 +106,24 @@ initializeGeneralDetailsForm() {
       country: [this.currentDoctor.address?.country || '', Validators.required]
     })
   });
+}
+onImageSelected(file: any) {
+  console.log('Selected image:', file);
+  if (file) {
+    this.ChangeProfileImage(file);
+  }
+  // Assuming you have a method to handle the upload
+  // this.uploadProfilePicture(file);
+}
+
+ChangeProfileImage(imageFile: File) {
+  this.doctorService.changeProfilePic(imageFile).subscribe({
+    next:(res) => {
+      this.currentDoctor.profilePic = res.data;
+    },
+   error:(error) => {
+      this.toastr.error(error)
+    }
+});
 }
 }

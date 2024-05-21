@@ -3,6 +3,7 @@ import { CheckLoggedInService } from '../../shared/Services/auth-service/check-i
 import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.service';
 import { DoctorMainComponent } from './doctor-main-page/doctor-main.component';
 import { DoctorFeedMainComponent } from './Components/Doctor-Feed/doctor-feed-main/doctor-feed-main.component';
+import { checkProfileIsCompleteGuard } from './Services/Guards/check-profile-is-complete.guard';
 
 
 
@@ -84,7 +85,7 @@ export const doctorRoutes: Routes = [
       {
         path:'',
         data: { expectedRole: 'Doctor' },
-        canActivate:[RoleGuardService],
+        canActivate:[checkProfileIsCompleteGuard,RoleGuardService],
         loadComponent: () => import('./Components/doctor-dashboard/doctor-dashboard.component').then(m=>m.DoctorDashboardComponent)
        },
       {

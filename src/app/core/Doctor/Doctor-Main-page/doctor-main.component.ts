@@ -15,6 +15,7 @@ import { loadDoctor } from '../../../store/Doctor/doctor.action';
 import { GetCurrentdoctor } from '../../../store/Doctor/doctor.selectors';
 import { NotificationPopupComponent } from '../../../shared/Components/notification-popup/notification-popup.component';
 import { INotification } from '../../../shared/Models/notification.models';
+import { CheckIsAuthenticatedService } from '../Services/check-is-authenticated.service';
 
 @Component({
   selector: 'app-doctor-main',
@@ -30,7 +31,7 @@ import { INotification } from '../../../shared/Models/notification.models';
   styleUrl: './doctor-main.component.css'
 })
 export class DoctorMainComponent  implements OnInit{
-
+  isAuthenticated = false;
   showNotification: boolean = false;
   notificationTitle: string = '';
   notificationMessage: string = '';
@@ -69,12 +70,15 @@ export class DoctorMainComponent  implements OnInit{
         this.showTooltip = false;
     }
 }
-isAuthenticated(){
-  return this.authService.isAuthenticated()
-}
+
 
 ngOnInit(): void {
-  if(this.isAuthenticated()){
+  this.checkisLoggedInProfileComplete.isAuthenticated$.subscribe(isAuthenticated => {
+    this.isAuthenticated = isAuthenticated;
+  });
+
+  this.checkisLoggedInProfileComplete.getDoctorStatus();
+  if(this.isAuthenticated){
     this.store.dispatch(loadDoctor())
     this.loadCurrentDoctor()
    const token = this.tokenService.getToken();
@@ -85,7 +89,7 @@ ngOnInit(): void {
 }
 
 constructor(
-  private authService:AuthService,
+  private checkisLoggedInProfileComplete:CheckIsAuthenticatedService,
   private notificationService:NotificationService,
   private tokenService:TokenService,
   private store:Store<AppState>

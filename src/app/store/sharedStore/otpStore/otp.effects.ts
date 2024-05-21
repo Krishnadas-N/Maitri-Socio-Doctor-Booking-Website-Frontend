@@ -25,7 +25,7 @@ export class OtpEffects {
           switch (section) {
             case 'admin':
               break;
-            case 'doctor':
+            case 'Doctor':
               this.router.navigate(['/doctor/login']);
               break;
             default:

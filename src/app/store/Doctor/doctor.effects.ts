@@ -46,7 +46,7 @@ export class doctorEffects {
             map((res:any) => {
               localStorage.setItem('AuthToken', res.data.token);
               console.log(res.data.doctor.isVerified, res.data.doctor.isProfileComplete); // Corrected access to isProfileComplete
-              if (res.data.doctor.isVerified === true && res.data.doctor.isProfileComplete === true) {
+              if (res.data.doctor.isVerified && res.data.doctor.isProfileComplete) {
                 this.router.navigate(['/doctor']);
               } else {
                 console.log("redirect to complete ");
