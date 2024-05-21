@@ -44,9 +44,7 @@ export class UserService {
   }
 
   registerWithGoogle(user:UserSocialRegister): Observable<any> {
-      return this.http.post(`${this.baseUrl}/social-register`,user).pipe(
-
-      )
+      return this.http.post(`${this.baseUrl}/social-register`,user)
   }
   getCurrentUser(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/profile`);
@@ -187,5 +185,9 @@ export class UserService {
   
   getWalletBalance():Observable<any>{
     return this.http.get(`${this.baseUrl}/get-wallet-balance`)
+  }
+
+  getDoctorsByCategory():Observable<any>{
+    return this.http.get(`${this.baseUrl}/get-category-doctors`)
   }
 }

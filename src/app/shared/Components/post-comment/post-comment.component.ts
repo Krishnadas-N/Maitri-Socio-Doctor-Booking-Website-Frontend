@@ -6,11 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { AppState } from '../../../store/GlobalStore/app.state';
 import { Store } from '@ngrx/store';
 import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { commentOnPost } from '../../../store/sharedStore/Feed-Store/post.action';
 import { FeedService } from '../../Services/feed.service';
 import { ToastrService } from 'ngx-toastr';
-import { EditPostComponent } from '../../../core/Doctor/Components/Doctor-Feed/edit-post/edit-post.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { EditPostComponent } from '../../../core/Doctor/Components/edit-post/edit-post.component'; 
+import {  Router } from '@angular/router';
 import { TimeDiffPipe } from '../../Pipes/time-diff.pipe';
 @Component({
   selector: 'app-postComment',

@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class InterestedDoctorsComponent implements OnInit {
   intertestedDoctors!:any;
   constructor(private userService:UserService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
   ) { }
 
   ngOnInit() {
@@ -21,7 +21,7 @@ export class InterestedDoctorsComponent implements OnInit {
     this.userService.getInterestedDoctors().subscribe(
       (res:any)=>{
         this.intertestedDoctors=res.data;
-        console.log( this.intertestedDoctors);
+        console.log(this.intertestedDoctors);
       },
       (err)=>{
         this.toastr.error(err)

@@ -1,10 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
-import { UserMainComponentComponent } from './Components/user-main-component/user-main-component.component';
-import { LandingComponent } from './Components/User-Section/landing-page/landing-page.component';
+import { UserMainComponentComponent } from './pages/user-main-component/user-main-component.component'; 
+import { LandingComponent } from './pages/landing-page/landing-page.component'; 
 import { CheckLoggedInService } from '../../shared/Services/auth-service/check-isloggedIn.service';
 import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.service';
-
-
 
 export const userRoutes: Routes = [
   {
@@ -23,7 +21,7 @@ export const userRoutes: Routes = [
         canActivate:[CheckLoggedInService],
         loadComponent: () =>
           import(
-            './Components/user-register/user-register.component'
+            './pages/user-register/user-register.component'
           ).then((m) => m.UserRegisterComponent),
       },
       {
@@ -40,7 +38,7 @@ export const userRoutes: Routes = [
         canActivate:[CheckLoggedInService],
         data: { expectedRole: 'User' },
         loadComponent: () =>
-          import('./Components/user-login/user-login.component').then(
+          import('./pages/user-login/user-login.component').then(
             (m) => m.UserLoginComponent
           ),
       },
@@ -59,7 +57,7 @@ export const userRoutes: Routes = [
         canActivate:[RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent: () =>
-          import('./Components/user-home/user-home.component').then(
+          import('./pages/user-home/user-home.component').then(
             (m) => m.UserHomeComponent
           ),
       },
@@ -78,21 +76,21 @@ export const userRoutes: Routes = [
         canActivate:[RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent: ()=>
-          import('./Components/doctor-listing/doctor-listing.component').then(m=>m.DoctorListingComponent)
+          import('./pages/doctor-listing/doctor-listing.component').then(m=>m.DoctorListingComponent)
       },
       {
         path:'get-doctor/:id',
         canActivate:[RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent: ()=>
-          import('./Components/doctor-profile-page/doctor-profile-page.component').then(m=>m.DoctorProfilePageComponent)
+          import('./pages/doctor-profile-page/doctor-profile-page.component').then(m=>m.DoctorProfilePageComponent)
       },
       {
         path:'book-appoinment/:id',
         canActivate:[RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent :()=>
-          import('./Components/appoinment-slot-booking/appoinment-slot-booking.component').then(m=>m.AppoinmentSlotBookingComponent)
+          import('./pages/appoinment-slot-booking/appoinment-slot-booking.component').then(m=>m.AppoinmentSlotBookingComponent)
       },
 
       {
@@ -100,7 +98,7 @@ export const userRoutes: Routes = [
         canActivate:[RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent: ()=>
-          import('./Components/booking-checkout-page/booking-checkout-page.component').then(m=>m.BookingCheckoutPageComponent)
+          import('./pages/booking-checkout-page/booking-checkout-page.component').then(m=>m.BookingCheckoutPageComponent)
 
       },
       {
@@ -108,7 +106,7 @@ export const userRoutes: Routes = [
         canActivate:[RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent:()=>
-          import('./Components/payment-confirmation/payment-confirmation.component').then(m=>m.PaymentConfirmationComponent)
+          import('./pages/payment-confirmation/payment-confirmation.component').then(m=>m.PaymentConfirmationComponent)
       },
       {
         path:'chats',

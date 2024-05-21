@@ -1,11 +1,9 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { CheckLoggedInService } from '../../shared/Services/auth-service/check-isloggedIn.service';
 import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.service';
-import { DoctorMainComponent } from './doctor-main-page/doctor-main.component';
-import { DoctorFeedMainComponent } from './Components/Doctor-Feed/doctor-feed-main/doctor-feed-main.component';
+import { DoctorMainComponent } from './pages/doctor-main-page/doctor-main.component';
+import { DoctorFeedMainComponent } from './pages/feed-pages/doctor-feed-main/doctor-feed-main.component'; 
 import { checkProfileIsCompleteGuard } from './Services/Guards/check-profile-is-complete.guard';
-
-
 
 export const doctorRoutes: Routes = [
 
@@ -21,7 +19,7 @@ export const doctorRoutes: Routes = [
         canActivate:[CheckLoggedInService],
         loadComponent: () =>
           import(
-            './Components/doctor-basic-register/doctor-register.component'
+            './pages/doctor-basic-register/doctor-register.component'
           ).then((m) => m.DoctorRegisterComponent),
       },
       {
@@ -39,15 +37,16 @@ export const doctorRoutes: Routes = [
         data: { expectedRole: 'Doctor' },
         loadComponent: () =>
           import(
-            './Components/doctor-login/doctor-login.component'
+            './pages/doctor-login/doctor-login.component'
           ).then((m) => m.DoctorLoginComponent),
       },
       {
         path: 'complete-verification', //Wild card route parameter
         data: { expectedRole: 'Doctor' },
+        canActivate:[RoleGuardService],
         loadComponent: () =>
           import(
-            './Components/three-step-register/three-step-register.component'
+            './pages/three-step-register/three-step-register.component'
           ).then((m) => m.ThreeStepRegisterComponent),
       },
       {
@@ -61,7 +60,7 @@ export const doctorRoutes: Routes = [
             data: { expectedRole: 'Doctor' },
             loadComponent: () =>
               import(
-                './Components/Doctor-Feed/doctor-feed-home/doctor-feed-home.component'
+                './pages/feed-pages/doctor-feed-home/doctor-feed-home.component'
               ).then((m) => m.DoctorFeedHomeComponent),
           },
           {
@@ -69,7 +68,7 @@ export const doctorRoutes: Routes = [
             data: { expectedRole: 'Doctor' },
             loadComponent: () =>
               import(
-                './Components/Doctor-Feed/doctor-my-feed/doctor-my-feed.component'
+                './pages/feed-pages/doctor-my-feed/doctor-my-feed.component'
               ).then((m) => m.DoctorMyFeedComponent),
           },
           {
@@ -86,29 +85,29 @@ export const doctorRoutes: Routes = [
         path:'',
         data: { expectedRole: 'Doctor' },
         canActivate:[checkProfileIsCompleteGuard,RoleGuardService],
-        loadComponent: () => import('./Components/doctor-dashboard/doctor-dashboard.component').then(m=>m.DoctorDashboardComponent)
+        loadComponent: () => import('./pages/doctor-dashboard/doctor-dashboard.component').then(m=>m.DoctorDashboardComponent)
        },
       {
         path:'schedule-timings',
         data: { expectedRole: 'Doctor' },
         canActivate:[RoleGuardService],
-        loadComponent :()=> import('./Components/schedule-timings/schedule-timings.component'
+        loadComponent :()=> import('./pages/schedule-timings/schedule-timings.component'
          ).then((m)=>m.ScheduleTimingsComponent)
       },
       {
         path:'profile',
         data: { expectedRole: 'Doctor' },
         canActivate:[RoleGuardService],
-        loadComponent :()=> import('./Components/doctor-settings/doctor-settings.component'
+        loadComponent :()=> import('./pages/doctor-settings/doctor-settings.component'
       ).then((m)=>m.SettingsPageComponent)
       },
      
       {
-        path:'appoinments',
+        path:'appointments',
         data: { expectedRole: 'Doctor' },
         canActivate:[RoleGuardService],
         loadComponent :()=> 
-            import('./Components/appoinment-listing/appoinment-listing.component'
+            import('./pages/appoinment-listing/appoinment-listing.component'
             ).then(m=>m.AppoinmentListingComponent)
       },
       {
@@ -143,7 +142,7 @@ export const doctorRoutes: Routes = [
           path:'payments',
           data: { expectedRole: 'Doctor' },
           canActivate:[RoleGuardService],
-          loadComponent:()=>import('./Components/payment-wallet/payment-wallet.component').then(m=>m.PaymentWalletComponent)
+          loadComponent:()=>import('./pages/payment-wallet/payment-wallet.component').then(m=>m.PaymentWalletComponent)
         },
       
     ],

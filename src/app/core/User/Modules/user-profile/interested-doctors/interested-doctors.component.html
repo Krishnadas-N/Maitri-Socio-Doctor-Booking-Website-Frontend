@@ -1,6 +1,6 @@
 
 
-  <div *ngIf="intertestedDoctors && intertestedDoctors.doctorsInfo && intertestedDoctors.doctorsInfointertestedDoctors.doctorsInfo.length>0;else nouserIntersets" class="bg-white rounded-lg  overflow-hidden">
+  <div *ngIf="intertestedDoctors && intertestedDoctors.doctorsInfo && intertestedDoctors.doctorsInfo.length>0;else nouserIntersets" class="bg-white rounded-lg  overflow-hidden">
     <div class="px-6 py-4 ">
       <h2 class="text-lg font-semibold text-gray-800">Favorite Doctors</h2>
     </div>
@@ -18,7 +18,7 @@
           <img class="h-32 w-32 rounded-full object-cover mx-auto"  [src]="doctor.profilePic"   alt="Doctor 2">
           <div class="mt-4 text-center">
             <p class="text-lg font-semibold text-gray-800">Dr.{{doctor.firstName | titlecase}} {{doctor.lastName}}</p>
-            <p class="text-sm text-gray-600">Pediatrician</p>
+            <p class="text-sm text-gray-600">Psychatrist</p>
           </div>
         </div>
          <div class="flex justify-between mt-auto">

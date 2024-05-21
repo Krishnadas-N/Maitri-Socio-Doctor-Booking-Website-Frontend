@@ -1,0 +1,59 @@
+<!-- <div *ngIf="false">
+    <div class="flex h-screen bg-white">
+        <app-doctor-sidebar></app-doctor-sidebar>
+        <div class="flex flex-col flex-1 h-full">
+            <app-header-component></app-header-component>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="true">
+    <router-outlet></router-outlet>
+</div> -->
+
+<ng-container *ngIf="isAuthenticated">
+<div class="flex h-screen w-full bg-blue-50 " >
+  
+    <app-sidebar  class="w-20 relative z-20 flex-shrink-0  px-2 overflow-y-auto bg-blue-700 sm:block"
+        [backgroundColor]="backgroundColor"
+        [profileImage]="profileImage"
+        [navItems]="navItems"
+        (itemClick)="handleSidebarItemClick($event)"
+        (itemHover)="handleItemHover($event)"
+     ></app-sidebar>
+
+     <div class="flex flex-col flex-1 w-full overflow-y-auto">
+        <app-header-component></app-header-component>
+        <router-outlet></router-outlet>
+       
+    
+    </div>
+
+
+    
+    <div *ngIf="showTooltip" class="absolute z-50 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none"
+        [style.top]="tooltipTop + 'px'"
+        [style.left]="tooltipLeft + 'px'"
+    >
+        {{ tooltipText }}
+    </div>
+
+</div>
+
+<app-notification-popup
+*ngIf="showNotification"
+[title]="notificationTitle" 
+[message]="notificationMessage" 
+(closed)="closeNotificationPopup()"
+></app-notification-popup>
+
+</ng-container>
+
+
+<ng-container *ngIf="!isAuthenticated" #notAuthenticated>
+    <router-outlet></router-outlet>
+</ng-container>
+
+
+

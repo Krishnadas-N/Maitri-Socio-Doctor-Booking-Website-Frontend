@@ -4,11 +4,9 @@ import { Model } from "survey-core";
 import { surveyJson } from './survery';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SurveyModule } from "survey-angular-ui";
-import { themeJson } from './theme';
 import "survey-core/defaultV2.min.css";
 import { UserService } from '../../Services/user.service';
 import { CommonModule } from '@angular/common';
-const SURVEY_ID = 1;
 
 @Component({
   selector: 'app-survey',
