@@ -2,7 +2,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { CheckLoggedInService } from '../../shared/Services/auth-service/check-isloggedIn.service';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.service';
-import { AdminPageComponentComponent } from './pages/admin-page/admin-page.component'; 
 
 
 
@@ -13,12 +12,15 @@ export const adminRoutes: Routes = [
     data: { expectedRole: 'Admin' },
     component: AdminLoginComponent,
   },
-  
+
   {
     path: 'admin',
     canActivate:[RoleGuardService],
     canActivateChild:[RoleGuardService],
-    component: AdminPageComponentComponent,
+    loadComponent: () =>
+      import('./pages/admin-page/admin-page.component').then(
+        (m) => m.AdminPageComponentComponent
+      ),
     data: { expectedRole: 'Admin' },
     children: [
       {

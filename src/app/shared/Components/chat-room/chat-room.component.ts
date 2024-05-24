@@ -1,20 +1,19 @@
 import { afterNextRender, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
+import { WebSocketService } from '../../Services/web-socketService/webSocket.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MessageService } from '../../Services/web-socketService/message.service'; 
+import { MessageService } from '../../Services/web-socketService/message.service';
 import { UserService } from '../../../core/User/Services/user.service';
 import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service';
 import { ToastrService } from 'ngx-toastr';
-import { CheckPlatformService } from '../../Services/check-platform-service/checkPlatform.service'; 
 import { FormsModule } from '@angular/forms';
-import { TokenService } from '../../Services/token-auth-service/Token.service'; 
+import { TokenService } from '../../Services/token-auth-service/Token.service';
 import { Doctor } from '../../../store/Doctor/doctor.model';
 import { User } from '../../../store/User/user.model';
 import { MessageDTO } from '../../Models/message.models';
-import { TimeDiffPipe } from '../../Pipes/time-diff.pipe';
-import { TimeFormatPipe } from '../../Pipes/timeFormat.pipe';
+import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
+import { TimeFormatPipe } from '../../pipes/timeFormat.pipe';
 import { UploadPrescriptionComponent } from '../../../core/Doctor/Components/upload-prescription/upload-prescription.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RatingReviewDialogComponent } from '../../../core/User/Components/rating-review-dialog/rating-review-dialog.component';
@@ -69,14 +68,14 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       if (params['id']) {
         this.conversationId = params['id'];
         console.log('id is ', this.conversationId);
-      
+
         if (this.conversationId === 'inbox') {
           this.isDisplayDummy = true;
           console.log('Display default screen for inbox');
         } else {
           this.isDisplayDummy = false;
           this.fetchCurrentUser();
-        
+
 
           const token = this.tokenService.getToken();
           if (token) {
@@ -222,7 +221,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getUserDetails(userId: string): any {
     if(this.conversationalData){
-      
+
     return this.conversationalData.members.find(
       (x: any) => x.member._id.toString() === userId
     ).member;
@@ -246,7 +245,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.conversationalData.isClosed = !this.conversationalData.isClosed;
                                 this.webSocketService.emitCloseConversation(this.appointmentId!,this.recipientId,this.conversationalData.isClosed)
                                 if (this.conversationalData.isClosed && this.appointmentId) {
-                                 
+
                                     this.webSocketService.emitOpenRatingModal(this.appointmentId,this.recipientId);
                                     this.openUploadPrescription();
                                 }
@@ -279,13 +278,13 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openRatingDialog(appoinmentId:string){
-   
+
       console.log(appoinmentId);
     console.log(appoinmentId);
     this.dialog.open(RatingReviewDialogComponent,{
       width: '50%',
       data: {appoinmentId:appoinmentId}
     });
- 
+
   }
 }

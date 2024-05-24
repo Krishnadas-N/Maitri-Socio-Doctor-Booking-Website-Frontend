@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TableComponent } from '../../../../shared/Components/table/table.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-import { AdminPaginationComponent } from '../../Components/admin-pagination/admin-pagination.component'; 
+import { AdminPaginationComponent } from '../../Components/admin-pagination/admin-pagination.component';
 import { CommonModule } from '@angular/common';
-import { AppState } from '../../../../store/GlobalStore/app.state';
-import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { AdminService } from '../../Services/admin-service/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -27,7 +25,7 @@ export class DoctorListComponent implements OnInit {
 
   currentPage: number = 1;
   totalPages: number = 0;
-  totalCount: number = 0; 
+  totalCount: number = 0;
   pageSize: number = 6;
   searchQuery: string = '';
 
@@ -62,7 +60,7 @@ export class DoctorListComponent implements OnInit {
   selectedTab: string = 'all';
   doctorRows: any = [];
 
- 
+
 
   ngOnInit() {
     this.fetchData();
@@ -89,7 +87,7 @@ export class DoctorListComponent implements OnInit {
     console.log('Block status changed:', event);
     this.adminService.blockDoctor(id).subscribe({
       next: (res)=>{
-        
+
       },
       error:(err)=>{
         this.toastr.error(err)
@@ -124,8 +122,8 @@ export class DoctorListComponent implements OnInit {
     this.route.navigate(['/admin/doctors/', doctorId]);
   }
 
-  
- 
+
+
   onPreviousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;

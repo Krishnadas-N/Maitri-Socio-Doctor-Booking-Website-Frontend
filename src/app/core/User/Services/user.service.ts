@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { User } from '../../../store/User/user.model';
-import { FindDoctorsRequest } from '../../../shared/Models/userSide.model';
+import { FindDoctorsRequest } from '../../../shared/Models/user-side.model';
 import { environment } from '../../../../environments/environment.development';
 
 interface UserSocialRegister{
@@ -142,7 +142,7 @@ export class UserService {
     console.log("request sent to server to get data ", params);
     return this.http.get<any>(`${this.baseUrl}/get-doctors`, { params: params });
   }
-  
+
   getWalletOfUser(page: number, pageSize: number): Observable<any>{
    return this.http.get<any>(`${this.baseUrl}/get-wallet?page=${page}&pageSize=${pageSize}`)
   }
@@ -178,11 +178,11 @@ export class UserService {
    signOut(){
     google.accounts.id.disableAutoSelect();
    }
-   
+
    submitSurvey(surveyData:any):Observable<any>{
     return this.http.post(`${this.baseUrl}/submit-survey`,surveyData)
   }
-  
+
   getWalletBalance():Observable<any>{
     return this.http.get(`${this.baseUrl}/get-wallet-balance`)
   }

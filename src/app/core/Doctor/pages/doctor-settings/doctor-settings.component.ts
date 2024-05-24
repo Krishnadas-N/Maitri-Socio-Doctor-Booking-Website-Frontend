@@ -54,7 +54,7 @@ export class SettingsPageComponent implements OnInit {
     this.isEditGeneralDetails = !this.isEditGeneralDetails;
     this.toggleFormControls(this.isEditGeneralDetails);
   }
-  
+
   initializeGeneralDetailsForm() {
     this.profileForm = this.fb.group({
       firstName: [this.currentDoctor.firstName || '', Validators.required],
@@ -114,7 +114,7 @@ export class SettingsPageComponent implements OnInit {
       }
     });
   }
-  
+
   toggleFormControls(enable: boolean) {
     if (enable) {
       this.profileForm.enable();

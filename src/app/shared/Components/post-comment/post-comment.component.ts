@@ -1,6 +1,5 @@
 import { Component, OnInit ,Input,EventEmitter,Output,Inject } from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
-import { Post } from '../../../store/sharedStore/Feed-Store/post.model';
 import { PostCarouselComponent } from '../post-carousel/post-carousel.component';
 import { FormsModule } from '@angular/forms';
 import { AppState } from '../../../store/GlobalStore/app.state';
@@ -8,9 +7,9 @@ import { Store } from '@ngrx/store';
 import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FeedService } from '../../Services/feed.service';
 import { ToastrService } from 'ngx-toastr';
-import { EditPostComponent } from '../../../core/Doctor/Components/edit-post/edit-post.component'; 
+import { EditPostComponent } from '../../../core/Doctor/Components/edit-post/edit-post.component';
 import {  Router } from '@angular/router';
-import { TimeDiffPipe } from '../../Pipes/time-diff.pipe';
+import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
 @Component({
   selector: 'app-postComment',
   standalone:true,
@@ -24,12 +23,12 @@ export class PostCommentComponent implements OnInit {
  postData!:any;
  isLoading:boolean=false;
  replyAuthor:string='';
- commentText: string = ''; 
+ commentText: string = '';
  targetComment: any;
  commentRepliesVisibility: { [commentId: string]: boolean } = {};
  isOptionsModalOpen:boolean=false;
  isEditPost:boolean=false
- 
+
 
   constructor(private store: Store<AppState>,
     private feedService:FeedService,
@@ -39,11 +38,11 @@ export class PostCommentComponent implements OnInit {
     private router: Router,
     private location: Location
   ) { }
- 
+
   ngOnInit() {
     this.loadPost()
     console.log("Comment Component ",this.data.postId,this.postData);
-   
+
   }
   loadPost(){
     this.feedService.getPostById(this.data.postId).subscribe(
@@ -77,7 +76,7 @@ export class PostCommentComponent implements OnInit {
       next:(res:any)=>{
         this.isLoading=false;
         console.log(res);
-        
+
         console.log( comment);
         this.postData.post.comments.find((c: any) => c._id.toString() === comment._id.toString())!['replies'].push(res.data)
       },
@@ -105,14 +104,14 @@ export class PostCommentComponent implements OnInit {
     }
   }
 
- 
+
   replyToComment(comment: any) {
   this.targetComment = comment;
   this.commentText = `@${comment.userId.firstName} `
   }
 
   closeModal(){
-    
+
     this.dialogRef.close();
     const currentUrl = this.location.path();
     if (currentUrl.includes('/doctor/feed')) {
@@ -149,7 +148,7 @@ export class PostCommentComponent implements OnInit {
     this.postData.post.title = updatedData.title;
     this.postData.post.content = updatedData.content;
     this.postData.post.tags = updatedData.tags;
-  
+
   }
 
   deleteItem() {

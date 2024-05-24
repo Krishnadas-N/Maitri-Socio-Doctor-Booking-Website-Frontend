@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { isJWTToken } from '../../Validators/isJWTToken';
+import { isJWTToken } from '../../validators/isJWTToken';
 import { AppState } from '../../../store/GlobalStore/app.state';
 import { Store, select } from '@ngrx/store';
 import { resendOtpRequest, verifyOTP } from '../../../store/sharedStore/otpStore/otp.action';
@@ -34,7 +34,7 @@ export class OtpComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    
+
     this.section = this.route.snapshot.data['expectedRole'];
 
     this.token = this.route.snapshot.queryParamMap.get('authToken');
@@ -87,14 +87,14 @@ export class OtpComponent implements OnInit {
       if (this.secondsRemaining > 0) {
         this.secondsRemaining--;
       } else {
-        this.showResendButton = true; 
-        this.timerSubscription?.unsubscribe(); 
+        this.showResendButton = true;
+        this.timerSubscription?.unsubscribe();
       }    });
   }
 
   moveToNext(nextInput: HTMLInputElement): void {
     nextInput.focus();
-  }      
+  }
 
   onSubmit(): void {
     console.log('The value is: ', this.digits.join(''));

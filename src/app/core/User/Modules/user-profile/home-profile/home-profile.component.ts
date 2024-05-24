@@ -11,7 +11,7 @@ import {
   selectUserLoading,
 } from '../../../../../store/User/user.selector';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormValidator } from '../../../../../shared/Validators/formValidators';
+import { FormValidator } from '../../../../../shared/validators/formValidators';
 import { UserService } from '../../../Services/user.service';
 
 @Component({

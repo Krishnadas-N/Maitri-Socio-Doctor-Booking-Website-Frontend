@@ -4,7 +4,7 @@ import { Model } from "survey-core";
 import { surveyJson } from './survery';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SurveyModule } from "survey-angular-ui";
-import "survey-core/defaultV2.min.css";
+// import "survey-core/defaultV2.min.css";
 import { UserService } from '../../Services/user.service';
 import { CommonModule } from '@angular/common';
 
@@ -61,7 +61,7 @@ export class SurveyComponent implements OnInit {
   }
   getCompletionMessage(npsScore: number, categories: string[]): string {
     let baseMessage = '';
-  
+
     if (npsScore <= 6) {
       baseMessage = `
         <div class="feedback-message feedback-message-poor">
@@ -84,7 +84,7 @@ export class SurveyComponent implements OnInit {
           <p>If you ever need additional support or guidance, please feel free to reach out. Your well-being is our top priority, and we're here to help in any way we can.</p>
         </div>`;
     }
-  
+
     if (categories.length > 0) {
       baseMessage += `
         <div class="recommended-categories">
@@ -95,10 +95,10 @@ export class SurveyComponent implements OnInit {
       });
       baseMessage += `</ul></div>`;
     }
-  
+
     return baseMessage;
   }
-  
-  
-  
+
+
+
 }

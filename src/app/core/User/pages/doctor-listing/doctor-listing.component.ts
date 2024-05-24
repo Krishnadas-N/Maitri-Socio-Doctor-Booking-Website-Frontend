@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 import { UserPaginationComponent } from '../../../../shared/Components/user-pagination/user-pagination.component';
 import { FormsModule } from '@angular/forms';
 import { SpecializationService } from '../../../../shared/Services/specialization-service/specialization.service';
-import { FindDoctorsRequest } from '../../../../shared/Models/userSide.model';
+import { FindDoctorsRequest } from '../../../../shared/Models/user-side.model';
 import { User } from '../../../../store/User/user.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
@@ -168,7 +168,7 @@ export class DoctorListingComponent implements OnInit {
 
   isInterestedDoctor(doctor: Doctor): boolean {
     if (doctor._id) {
-      return this.InterestedDoctors && this.InterestedDoctors['doctorIds'] && 
+      return this.InterestedDoctors && this.InterestedDoctors['doctorIds'] &&
              this.InterestedDoctors['doctorIds'].some(
                (x: any) => x.doctorId.toString() === doctor._id!.toString()
              );
@@ -373,7 +373,7 @@ export class DoctorListingComponent implements OnInit {
         this.toastr.error(err)
       },
       complete:()=> {
-         
+
 
       },
     })

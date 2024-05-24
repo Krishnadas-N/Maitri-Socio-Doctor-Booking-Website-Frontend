@@ -6,9 +6,8 @@ import { CommonModule } from '@angular/common';
 import { AppState } from '../../../store/GlobalStore/app.state';
 import { Store } from '@ngrx/store';
 import { loadUser } from '../../../store/User/user.action';
-import { User } from '../../../store/User/user.model';
 import { GetCurrentUser } from '../../../store/User/user.selector';
-import { PostCommentComponent } from '../post-comment/post-comment.component'; 
+import { PostCommentComponent } from '../post-comment/post-comment.component';
 import { MatDialog } from '@angular/material/dialog';
 import { loadDoctor } from '../../../store/Doctor/doctor.action';
 import { FeedService } from '../../Services/feed.service';
@@ -38,7 +37,7 @@ export class PostComponent implements OnInit,AfterViewInit {
     this.calculateTimeDifference();
     this.loadCurrentUser();
     this.getCurentUser();
-    
+
   }
   ngAfterViewInit(): void {
   }
@@ -48,7 +47,7 @@ export class PostComponent implements OnInit,AfterViewInit {
       }else{
         this.store.dispatch(loadUser())
       }
-    
+
 
   }
 
@@ -115,7 +114,7 @@ export class PostComponent implements OnInit,AfterViewInit {
       data: { postId:this.post._id }
     });
   }
- 
+
   handleChilLike(event:any){
     this.toggleLike()
   }

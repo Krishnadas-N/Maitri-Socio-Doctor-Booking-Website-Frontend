@@ -16,6 +16,13 @@
             "outputPath": "dist/maitri-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "allowedCommonJsDependencies": [
+              "survey-creator-core",
+              "survey-core",
+              "rfdc",
+              "pdfjs-dist",
+              "@zegocloud/zego-uikit-prebuilt"
+            ],
             "polyfills": [
               "zone.js"
             ],
@@ -41,15 +48,15 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/variable/src/environments/environment.development.ts",
-                  "with": "projects/variable/src/environments/environment.ts"
+                  "replace": "/src/environments/environment.development.ts",
+                  "with": "/src/environments/environment.ts"
                 }
               ],
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -100,7 +107,7 @@
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
-              "node_modules/ngx-toastr/toastr.css" 
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           }

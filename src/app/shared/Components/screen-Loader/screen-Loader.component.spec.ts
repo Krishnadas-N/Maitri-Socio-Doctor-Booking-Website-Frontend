@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { ScreenLoaderComponent } from './screen-loader.component';
-
 describe('ScreenLoaderComponent', () => {
   let component: ScreenLoaderComponent;
   let fixture: ComponentFixture<ScreenLoaderComponent>;

@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
-import { MessageService } from '../../Services/web-socketService/message.service'; 
+import { WebSocketService } from '../../Services/web-socketService/webSocket.service';
+import { MessageService } from '../../Services/web-socketService/message.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { CheckPlatformService } from '../../Services/check-platform-service/checkPlatform.service'; 
-import { TokenService } from '../../Services/token-auth-service/Token.service'; 
+import { TokenService } from '../../Services/token-auth-service/Token.service';
 import { UserService } from '../../../core/User/Services/user.service';
 import { DoctorService } from '../../../core/Doctor/Services/doctor-services/doctor.service';
 import { CommonModule } from '@angular/common';
@@ -44,7 +43,7 @@ export class ChatComponent implements OnInit ,OnDestroy {
         }
 
   }
-  
+
   loadChatsOfUser(){
     this.messagService.getChatsOfUSer().subscribe({
       next:(res)=>{
@@ -80,7 +79,7 @@ export class ChatComponent implements OnInit ,OnDestroy {
          error:(err:any)=>{
           }
      })
-     }  
+     }
   }
   ngOnDestroy(): void {
     // Unsubscribe from messages to prevent memory leaks
@@ -102,5 +101,5 @@ export class ChatComponent implements OnInit ,OnDestroy {
       this.router.navigate(['/chats/',id])
     }
   }
-  
+
 }

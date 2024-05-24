@@ -6,8 +6,8 @@ import { AppState } from '../../../../store/GlobalStore/app.state';
 import { Store } from '@ngrx/store';
 import { registerBasicRequest } from '../../../../store/Doctor/doctor.action';
 import { selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
-import { FormValidator } from '../../../../shared/Validators/formValidators';
-import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service'; 
+import { FormValidator } from '../../../../shared/validators/formValidators';
+import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -46,7 +46,7 @@ export class DoctorRegisterComponent implements OnInit {
   })
   }
   get f() { return this.registrationForm.controls; }
- 
+
   onSubmit() {
     this.registrationForm.markAllAsTouched();
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Doctor } from '../../../../store/Doctor/doctor.model'; 
-import { FindDoctorsRequest } from '../../../../shared/Models/userSide.model';
+import { Doctor } from '../../../../store/Doctor/doctor.model';
+import { FindDoctorsRequest } from '../../../../shared/Models/user-side.model';
 import { environment } from '../../../../../environments/environment.development';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class DoctorService {
   constructor(private http: HttpClient) {}
 
   getDoctors(page: number=1, pageSize: number=10, searchQuery: string=''): Observable<any> {
-    
+
     let url = `${this.apiUrl}/get-doctors`;
     if (page && pageSize) {
       url += `?page=${page}&pageSize=${pageSize}`;
@@ -45,7 +45,7 @@ export class DoctorService {
     console.log(selectedSlots);
     return this.http.post<any>(`${this.apiUrl}/save-slots`,{ selectedSlots });
   }
- 
+
   getDoctorAppoinments(page: number, pageSize: number):Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/get-doctor-appoinments?page=${page}&pageSize=${pageSize}`);
   }
@@ -85,7 +85,7 @@ export class DoctorService {
     return this.http.get(`${this.apiUrl}/get-doctor-cuurentStatus`)
   }
 
-  
+
   changeProfilePic(imageFile: File): Observable<any> {
     const formData = new FormData();
     formData.append('profilePic', imageFile);

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { markAllFormControlsAsTouched } from '../../../../shared/Validators/markFormGroupTouched'; 
+import { markAllFormControlsAsTouched } from '../../../../shared/validators/markFormGroupTouched';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { Store } from '@ngrx/store';
 import { registerUser, } from '../../../../store/User/user.action';
 import { selectUserLoading } from '../../../../store/User/user.selector';
-import { FormValidator } from '../../../../shared/Validators/formValidators'; 
+import { FormValidator } from '../../../../shared/validators/formValidators';
 import { environment } from '../../../../../environments/environment.development';
 import { GoogleLoginButtonComponent } from '../../../../shared/Components/google-login-button/google-login-button.directive';
 import { UserService } from '../../Services/user.service';
@@ -58,7 +58,7 @@ export class UserRegisterComponent implements OnInit {
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
-    
+
     if (password !== confirmPassword) {
       formGroup.get('confirmPassword')?.setErrors({ mismatch: true });
     } else {

@@ -4,8 +4,7 @@ import { UserService } from '../../Services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CheckPlatformService } from '../../../../shared/Services/check-platform-service/checkPlatform.service';
-import { ScreenLoaderComponent } from '../../../../shared/Components/screen-loader/screen-loader.component'; 
+import { ScreenLoaderComponent } from '../../../../shared/Components/screen-loader/screen-loader.component';
 
 @Component({
   selector: 'app-payment-confirmation',
@@ -35,8 +34,8 @@ export class PaymentConfirmationComponent implements OnInit {
     this.isScreenLoading = true;
       console.log('working confrimarion');
       this.getAppoinment();
-     
-    
+
+
   }
   getAppoinment() {
     this.userService.GetAppointmentDetails(this.appoinmentId).subscribe({
