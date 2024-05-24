@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./screen-loader.component.css']
 })
 export class ScreenLoaderComponent implements OnInit {
-
+   title:string='Maitri'
   constructor() { }
 
   ngOnInit() {
