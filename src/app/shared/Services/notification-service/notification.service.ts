@@ -12,16 +12,16 @@ export class NotificationService {
    private readonly URL = environment.SOCKET_URL;
    private webSocket!: Socket;
    private token: string | null =null;
- 
+
    public setToken(token: string): void {
      this.token = token;
      this.connect();
    }
- 
+
    private connect(): void {
      if (this.token) {
        this.webSocket = new Socket({
-         url: `${this.URL}/notification`,
+         url: `${this.URL}/api/notification`,
          options: {
            extraHeaders: {
                     Authorization:  `Bearer ${this.token}`
@@ -29,11 +29,11 @@ export class NotificationService {
          }
        });
 
-   
+
        this.webSocket.on('connect_error', (error:any) => {
          console.error('Error connecting to Socket.IO server:', error);
-         throw new Error('Connection failed'); 
-       });  
+         throw new Error('Connection failed');
+       });
        this.webSocket.on('connect', () => {
         console.log('Connected to Socket.IO server😊🎉🌟👍🏽💡🔥🚀🎈🎊👏🏼🙌🏾👌🏻🌈🌺🌻🍀🍉🍕🍦🍹🎵🎮🎭📚🖋️📸🎥📱💻🖥️🎨🏆⚽🏀🎾🏈🎱🏓🏸🥋🏄‍♂️🚴‍♀️🎬🎤🎸🎭🎪🎡🎢🏰🏖️🏝️🌋🗻🌅🌠🌌🎇🎆🎑🌄🌆🌈🌦️🌧️🌨️🌩️🌪️🌫️🌬️🌊🏞️🏕️🏖️🏜️🏝️🏔️🗻🏘️🏰🏯');
       });

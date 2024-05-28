@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
-  private readonly URL = 'http://localhost:3000';
+  private readonly URL = environment.SOCKET_URL;
   private webSocket!: Socket;
   private token: string | null =null;
 
@@ -21,7 +22,7 @@ export class WebSocketService {
   private connect(): void {
     if (this.token) {
       this.webSocket = new Socket({
-        url: `${this.URL}/chat`,
+        url: `${this.URL}/api/chat`,
         options: {
           transports: ["polling", "websocket", "webtransport"], // Optional: specify transports
           extraHeaders: {
@@ -33,7 +34,7 @@ export class WebSocketService {
       this.webSocket.on('connect_error', (error:any) => {
         console.error('Error connecting to Socket.IO server:', error);
         throw new Error('Connection failed');  // Throw an error for handling
-      });  
+      });
     } else {
       console.error('Missing JWT token for Socket.IO connection');
     }
@@ -44,7 +45,7 @@ export class WebSocketService {
       this.webSocket.on(eventName, callback);
     }
   }
-  
+
   sendMessage(eventName: string, senderId: string, recipientId: string, conversationId: string, message: string, userType: string) {
     const messageData = {
       senderId,
@@ -76,14 +77,14 @@ export class WebSocketService {
       });
     });
   }
-  
+
   getMessages(){
     let observable = new Observable<any[]>(observer => {
       this.webSocket.on('get-messages', (data:any) => {
         console.log('get-messages',data)
         observer.next(data);
       });
-      return () => { this.webSocket.disconnect(); };  
+      return () => { this.webSocket.disconnect(); };
     });
     return observable;
   }
@@ -116,7 +117,7 @@ export class WebSocketService {
   getRatingModalOpen(): Observable<any> {
     return this.webSocket.fromEvent('open_rating_modal');
   }
-  
+
   emitCloseConversation(appointmentId: string,userId:string,status:boolean){
     this.webSocket.emit('toggle consultation',{appointmentId,userId,status})
   }
