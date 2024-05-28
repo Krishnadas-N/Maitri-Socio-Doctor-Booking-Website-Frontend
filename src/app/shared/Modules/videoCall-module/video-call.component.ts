@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, afterNextRender } from '@angular/core';
-import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
-import { SignalService } from '../../Services/web-socketService/signal.service'; 
+import { WebSocketService } from '../../Services/web-socketService/webSocket.service';
+import { SignalService } from '../../Services/web-socketService/signal.service';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -38,24 +38,24 @@ export class VideoCallComponent implements OnInit {
     private userService:UserService,
     private doctorService:DoctorService,
     public dialog: MatDialog,
-    
+
     ) { }
 
    ngOnInit() {
-  this.userType = this.route.snapshot.data['expectedRole']; 
+  this.userType = this.route.snapshot.data['expectedRole'];
   this.route.queryParams.subscribe(params => {
     this.appoinmentId = params['apppoinmentId'] || null;
     console.log('Appointment ID:', this.appoinmentId);
   });
     this.route.params.subscribe(param=>{
-      this.roomID = param['roomId'] 
+      this.roomID = param['roomId']
     })
     this.isLoading = true;
     this.expectedRole = this.route.snapshot.data['expectedRole'];
     this.fetchConversation();
     this.getCurrentUserData();
-  
-  
+
+
   }
   // ngAfterViewInit(): void {
   //   console.log(this.currentUser,this.isInvalidRoomId,this.userDataLoaded, this.conversationDataLoaded);
@@ -102,19 +102,19 @@ export class VideoCallComponent implements OnInit {
        this.isInvalidRoomId = true
       },
         complete() {
-            
+
         },
     })
   }
 
-  
+
   callZegoCloudFunction() {
     const appID = environment.PUBLIC_ZEGO_APP_ID;
     const serverSecret = environment.PUBLIC_ZEGO_SERVER_ID;
     console.log("appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`",appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`);
     this.isLoading = false;
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`);
-   
+
     const zp = ZegoUIKitPrebuilt.create(kitToken);
     zp.joinRoom({
       container: this.root.nativeElement,
@@ -147,15 +147,15 @@ export class VideoCallComponent implements OnInit {
           this.toastr.error(err)
         }
         })
-      
+
     }else{
       this.openRatingDialog()
-     
+
     }
   }
 
   openPrescritptionModal(){
-   
+
     console.log("called by leaving",this.userType,this.appoinmentId);
     if(this.userType==='Doctor' && this.appoinmentId ){
       console.log("called by leavingthis.appoinmentId ");
@@ -166,14 +166,16 @@ export class VideoCallComponent implements OnInit {
   }
 
   openRatingDialog(){
+    if(this.userType==='User' && this.appoinmentId ){
     this.dialog.open(RatingReviewDialogComponent,{
       data: {appoinmentId:this.appoinmentId, }
     });
   }
+  }
   returnToHome(){
     console.log("this.expectedRole",this.expectedRole);
     if(this.expectedRole==='Doctor'){
-      
+
       this.router.navigate(['/doctor'])
     }else{
       this.router.navigate(['/'])
