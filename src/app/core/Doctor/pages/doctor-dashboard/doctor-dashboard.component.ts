@@ -25,7 +25,7 @@ export class DoctorDashboardComponent implements OnInit {
   totalAppointments: number = 0;
   totalPatients:number=0
   constructor(private doctorService: DoctorService) {
-    
+
   }
 
   ngOnInit(): void {
@@ -36,7 +36,7 @@ export class DoctorDashboardComponent implements OnInit {
     this.doctorService.getDashboardDetails().subscribe({
       next: (res) => {
         this.intialLoding = false
-        console.log(res)
+        console.log("Doctor DashboardDetails",res)
         this.dashboardData = res.data.dashboardData;
         this.pieChartData = res.data.typeOfAppointments
         this.intilializeLinearChart();
@@ -44,7 +44,7 @@ export class DoctorDashboardComponent implements OnInit {
         this.totalAppointments = this.calculateTotalAppointments(res.data.dashboardData);
         this.totalPatients = res.data.totalPatients;
 
-        
+
       },
       error: (err) => {
         this.intialLoding = false
@@ -60,7 +60,7 @@ export class DoctorDashboardComponent implements OnInit {
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    const months = Object.keys(this.dashboardData); 
+    const months = Object.keys(this.dashboardData);
     console.log("months",months);
 
     const completedAppointmentsData = months.map(month => this.dashboardData[month].completedAppointments);
@@ -128,7 +128,7 @@ export class DoctorDashboardComponent implements OnInit {
             {
                 label: 'Cancelled Appointments',
                 data: cancelledAppointmentsData,
-                borderColor: documentStyle.getPropertyValue('--blue-500'), 
+                borderColor: documentStyle.getPropertyValue('--blue-500'),
                 tension: 0.4,
                 fill: true
             }

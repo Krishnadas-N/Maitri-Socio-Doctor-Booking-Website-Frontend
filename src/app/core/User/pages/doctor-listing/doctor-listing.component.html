@@ -266,7 +266,7 @@
         <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">Find Doctors</h1>
 
         <div class="flex items-center">
-          <div class="mx-2 flex items-center max-w-lg  bg-white text-black">   
+          <div class="mx-2 flex items-center max-w-lg  bg-white text-black">
             <label for="voice-search" class="sr-only">Search</label>
             <div class="relative w-full">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -282,9 +282,9 @@
                 </button>
             </div>
           </div>
-        
+
           <div class="relative inline-block p-2 text-left border-2 border-black" (click)="toggleMenu()">
-            <a  role="button" class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" 
+            <a  role="button" class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button"
                [attr.aria-expanded]="isMenuOpen" aria-haspopup="true">
               Sort
               <!-- Heroicon name: solid/chevron-down -->
@@ -295,7 +295,7 @@
                       clip-rule="evenodd"/>
               </svg>
             </a>
-          
+
             <!-- Dropdown menu -->
             <div *ngIf="isMenuOpen"
                  class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -317,8 +317,8 @@
               </div>
             </div>
           </div>
-          
-          
+
+
 
           <button type="button" class="p-2 -m-2 ml-5 sm:ml-7 text-gray-400 hover:text-gray-500">
             <span class="sr-only">View grid</span>
@@ -386,7 +386,7 @@
               </button>
             </div>
           </form>
-          
+
 
 
           <div class="lg:col-span-3">
@@ -395,14 +395,14 @@
               <!-- This example requires Tailwind CSS v2.0+ -->
 
               <ul role="list" class="divide-y divide-gray-200">
-             
+
                 <li *ngFor="let doctor of doctors" class="px-4 py-4 border-2 border-gray-500 mb-2  rounded-md  sm:px-0">
                   <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-white text-black">
                     <!-- Left Section: Image and Wishlist -->
                     <div class="flex flex-col gap-2 items-center px-3 pt-3">
                       <!-- Image -->
                       <div class="relative">
-                        <img [routerLink]="'/get-doctor/'+doctor._id" 
+                        <img [routerLink]="'/get-doctor/'+doctor._id"
                           class="w-40 h-40 hover:cursor-pointer rounded-lg overflow-hidden transform translateZ-0 transition-all duration-2000 ease-in-out"
                           [src]="doctor.profilePic"
                           alt="bag" />
@@ -411,15 +411,15 @@
                           <svg (click)="removeInterestDoctor(doctor)" *ngIf="isInterestedDoctor(doctor)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="red">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                           </svg>
-                          
+
                           <svg  (click)="addToInterestDoctor(doctor)" *ngIf="!isInterestedDoctor(doctor)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="black">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                           </svg>
-                          
-                          
-                          
+
+
+
                         </button>
-                       
+
                       </div>
                       @if(!isFollowedByUser(doctor)){
                       <button  (click)="toggleFollowDoctor(doctor._id)" class="bottom-2 px-2 py-1 w-full bg-gray-900 text-white rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
@@ -430,8 +430,8 @@
                         Unfollow
                       </button>
                     }
-                  
-                      
+
+
                     </div>
 
                     <!-- Center Section: Name, Place, Location Details -->
@@ -442,23 +442,28 @@
                       <p class="text-black mb-2">
                         {{ getSpecializationName(doctor.specialization) }}
                       </p>
-                      
-                      
+
+
                       <div class="mt-auto">
                         <p class="text-black">{{doctor.experience}} Years of Experience</p>
                         <p class="text-black">
                           <span class="text-sm inline-flex items-center">
                             <span class="px-2 py-1 bg-yellow-500 text-white rounded">
-                              <i class="fas fa-star mr-1"></i> 
+                              <i class="fas fa-star mr-1"></i>
                               {{doctor.rating}}
                             </span>
                           </span>
                           (0 Reviews)
                         </p>
-                        <p class="text-black mb-2">{{doctor.address.city}}, {{doctor.address.state}} - {{doctor.address.country}}, {{doctor.address.zipcode }}</p>
-                    
-                     
-                        
+                        <p class="text-black mb-2">
+                          {{ doctor?.address?.city || 'N/A' }},
+                          {{ doctor?.address?.state || 'N/A' }} -
+                          {{ doctor?.address?.country || 'N/A' }},
+                          {{ doctor?.address?.zipcode || 'N/A' }}
+                        </p>
+
+
+
                       </div>
                     </div>
 
@@ -485,7 +490,7 @@
                         <p class="text-black">98%</p>
                         <p class="text-black">(252 Votes)</p>
                       </div>
-                      
+
 
                       <!-- Price -->
                       <p class="text-black text-center sm:text-left">
@@ -505,8 +510,8 @@
                           </ng-container>
                         </span>
                       </p>
-                      
-                      
+
+
 
                       <!-- Appointment and Online Booking Buttons -->
                       <div class="flex gap-2 sm:flex-col sm:gap-4 justify-center sm:justify-start mt-2">
@@ -519,7 +524,7 @@
                     </div>
                   </div>
                 </li>
-             
+
               </ul>
               <app-user-Pagination
                 [currentPage]="currentPage"

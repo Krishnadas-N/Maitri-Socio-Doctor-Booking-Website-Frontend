@@ -17,6 +17,7 @@ declare var StripeCheckout: any;
   styleUrls: ['./booking-checkout-page.component.css']
 })
 export class BookingCheckoutPageComponent implements OnInit {
+  isCheckBalance:boolean = false
   isLoading:boolean=false;
   appoinmentId!:string;
   walletBalance!:number;
@@ -29,12 +30,12 @@ export class BookingCheckoutPageComponent implements OnInit {
     private winRef: WindowRefService,
     private router:Router,
     private notificationService:NotificationService
-  ) { 
+  ) {
     this.route.params.subscribe(
       (param)=>{
         console.log("Param", param);
         this.appoinmentId = param['appoinmentId'];
-        
+
       }
     )
   }
@@ -42,12 +43,14 @@ export class BookingCheckoutPageComponent implements OnInit {
   ngOnInit() {
     this.loadStripe();
     this.getAppoinment();
+this.getWalletBalance()
   }
   getAppoinment(){
     this.userService.GetAppointmentDetails(this.appoinmentId).subscribe({
       next:(res:any)=>{
         console.log(res);
         this.appoinmentDetails = res.data;
+
       },
       error:(err)=>{
         this.toastr.error(err|| 'Error while Get Appoinments please try again');
@@ -61,19 +64,22 @@ export class BookingCheckoutPageComponent implements OnInit {
       return;
     }
 
-    if (this.selectedPaymentMethod !== 'Debit Card' && this.selectedPaymentMethod !== 'PayPal' && this.selectedPaymentMethod !== 'Razorpay' && this.selectedPaymentMethod !=='Stripe') {
+    if (this.selectedPaymentMethod !== 'Wallet' && this.selectedPaymentMethod !== 'Debit Card' && this.selectedPaymentMethod !== 'PayPal' && this.selectedPaymentMethod !== 'Razorpay' && this.selectedPaymentMethod !=='Stripe') {
       console.log('Invalid payment method selected.');
       this.toastr.warning( "Invalid payment method selected");
       return;
     }
-  
+
     console.log('Selected payment method:', this.selectedPaymentMethod);
     this.isLoading=true;
     if(this.selectedPaymentMethod==='Stripe'){
       this.stripePaymentHandler()
     }else if(this.selectedPaymentMethod ==='Razorpay'){
       this.processPayment()
-    }else{
+    }else if(this.selectedPaymentMethod ==='Wallet'){
+      this.processPayment()
+    }
+    else{
       return
     }
     // this.http.post('/api/payment', { paymentMethod: this.selectedPaymentMethod }).subscribe(response => {
@@ -90,10 +96,14 @@ export class BookingCheckoutPageComponent implements OnInit {
           this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         }else if(this.selectedPaymentMethod ==='Razorpay'){
           this.payWithRazorpay(res.data)
-        }else{
+        }
+        else if(this.selectedPaymentMethod ==='Wallet'){
+          this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
+        }
+        else{
           return
         }
-       
+
       },
       error:(err)=>{
         this.isLoading=false;
@@ -117,7 +127,7 @@ export class BookingCheckoutPageComponent implements OnInit {
       description: 'Some sample description of product',
       amount: this.appoinmentDetails.amount * 100,
     });
-  } 
+  }
 
   payWithRazorpay(data:any): void {
     const options = {
@@ -150,7 +160,7 @@ export class BookingCheckoutPageComponent implements OnInit {
   verifyPayment(orderId: string, paymentId: string, signature: string){
       this.userService.verifyPayment(orderId,paymentId,signature,this.appoinmentDetails).subscribe({
         next:(res)=>{
-          
+
           console.log("verify payment",res);
           const notificationId = res.data.notificationId;
           this.notificationService.sendNotification(notificationId);
@@ -184,6 +194,10 @@ export class BookingCheckoutPageComponent implements OnInit {
       }
     })
   }
+
+toggleBalance(){
+this.isCheckBalance = !this.isCheckBalance
+}
 }
 
 

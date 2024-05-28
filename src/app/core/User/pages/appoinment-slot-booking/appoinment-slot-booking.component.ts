@@ -6,8 +6,8 @@ import { Doctor, Specialization } from '../../../../store/Doctor/doctor.model';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../Services/user.service';
-import { Subscription } from 'rxjs';
-
+import {  Subscription, interval, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-appoinment-slot-booking',
   standalone: true,
@@ -16,9 +16,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./appoinment-slot-booking.component.css'],
 })
 export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
-  private doctorSubscription: Subscription | undefined;
+  private _doctorSubscription: Subscription | undefined;
   private getBookedSubscription: Subscription | undefined;
-
+  private destroy$ = new Subject<void>();
   doctorId!: string;
   appointmentForm!: FormGroup;
   doctorDetails!: Doctor;
@@ -58,11 +58,16 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
       if (params && params['id']) {
         this.doctorId = params['id'];
           this.findDoctor();
-          
+
       } else {
         this.router.navigate(['/find-doctors']);
       }
     });
+    interval(10000) // 10000 milliseconds = 10 seconds
+      .pipe(takeUntil(this.destroy$)) // Complete the observable when the component is destroyed
+      .subscribe(() => {
+        this.getBookedSlots();
+      });
   }
 
   loadDates() {
@@ -81,7 +86,7 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
   }
 
   findDoctor() {
-    this.doctorSubscription = this.doctorService
+    this._doctorSubscription = this.doctorService
       .getDoctorById(this.doctorId)
       .subscribe({
         next:(res) => {
@@ -236,7 +241,9 @@ export class AppoinmentSlotBookingComponent implements OnInit,OnDestroy {
 }
 
   ngOnDestroy() {
-    this.doctorSubscription?.unsubscribe();
+    this._doctorSubscription?.unsubscribe();
     this.getBookedSubscription?.unsubscribe()
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

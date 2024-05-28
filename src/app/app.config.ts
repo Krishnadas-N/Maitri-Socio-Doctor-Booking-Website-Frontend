@@ -21,7 +21,7 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { reducers } from './store/GlobalStore';
-import { authInterceptor } from './shared/Interceptors/auth.interceptor'; 
+import { authInterceptor } from './shared/Interceptors/auth.interceptor';
 import { UserEffects } from './store/User/user.effects';
 import { doctorEffects } from './store/Doctor/doctor.effects';
 import { OtpEffects } from './store/sharedStore/otpStore/otp.effects';
@@ -38,7 +38,7 @@ import { doctorRoutes } from './core/Doctor/doctor-routes.routing';
 import { adminRoutes } from './core/Admin/admin-routes.routing';
 import { refreshTokenInterceptor } from './shared/Interceptors/refresh-token.interceptor';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-
+import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 export const httpInterceptorProviders = [
@@ -57,7 +57,7 @@ export const appConfig: ApplicationConfig = {
         responseTimerInterceptor,
         refreshTokenInterceptor,
         errorHandlerInterceptor,
-      ])  
+      ])
     ),
     provideClientHydration(
       withHttpTransferCacheOptions({
@@ -88,6 +88,13 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
+    {
+      provide: GALLERY_CONFIG,
+      useValue: {
+        autoHeight: true,
+        imageSize: 'cover'
+      } as GalleryConfig
+    },
     provideEffects([
       UserEffects,
       doctorEffects,

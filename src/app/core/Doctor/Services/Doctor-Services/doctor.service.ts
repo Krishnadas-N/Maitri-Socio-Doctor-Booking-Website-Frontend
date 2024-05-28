@@ -92,4 +92,12 @@ export class DoctorService {
 
     return this.http.patch(`${this.apiUrl}/change-profile-pic`, formData);
   }
+
+
+  editDoctorDetails(doctoData:Partial<Doctor>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/edit-doctor-profile`, doctoData);
+   }
+
+
+
 }

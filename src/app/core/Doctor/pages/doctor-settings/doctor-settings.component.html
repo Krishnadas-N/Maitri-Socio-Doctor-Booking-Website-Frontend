@@ -1,6 +1,6 @@
 
 
-  
+
       <main class="flex-1">
         <div class="relative  max-w-5xl mx-auto md:px-4 xl:px-0">
           <div class="pt-6 pb-16">
@@ -9,21 +9,21 @@
             </div>
             <div class="px-4 sm:px-6 md:px-0">
               <div class="py-3">
-             
-              
+
+
 
                 <!-- Description list with inline editing -->
-             
+
                 <div class="mt-5 divide-y divide-gray-200">
-                  <div class="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div class="max-w-screen-xl mx-auto grid grid-cols-1  lg:grid-cols-3 gap-8">
                     <!-- Left Column -->
                     <div class="bg-white shadow-md rounded-md overflow-hidden lg:col-span-1">
                       <!-- First Content -->
                       <div class="p-4">
-                        <div class="max-w-md mx-auto bg-white shadow-md rounded-md overflow-hidden">
+                        <div class="w-full mx-auto bg-white shadow-md rounded-md overflow-hidden">
                           <p-skeleton class="mx-auto" *ngIf="initialLoading" shape="circle" size="10rem"></p-skeleton>
                           <app-profile-picture  *ngIf="!initialLoading" (imageFile)="onImageSelected($event)" [src]="imageSrc? imageSrc :'' " ></app-profile-picture>
-            
+
                           <div class="p-6" *ngIf="!initialLoading">
                             <!-- Doctor's name -->
                             <h2 class="text-xl font-bold text-gray-800 mb-2">Dr. {{ currentDoctor.firstName | titlecase }} {{ currentDoctor.lastName | titlecase }}</h2>
@@ -34,8 +34,10 @@
                               <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                               </svg>
-                              <p class="text-sm">{{ currentDoctor.email }}</p>
-                            </div>
+                              <p id="doctor-email" class="text-sm">{{ currentDoctor.email }}</p>
+                              <button id="change-email-btn" class="ml-4 text-blue-500 hover:underline">Change Email</button>
+                          </div>
+
                             <div class="flex items-center text-gray-600 mb-4">
                               <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -70,7 +72,7 @@
                         </div>
                       </div>
                     </div>
-                
+
                     <!-- Right Column -->
                     <div class="bg-white shadow-md rounded-md overflow-hidden lg:col-span-2">
                       <!-- First Content -->
@@ -80,13 +82,12 @@
                             <a (click)="changeSection('General')" [ngClass]="{ 'border-purple-500 text-blue-600': section === 'General', 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700': section !== 'General' }" class="hover:cursor-pointer whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"> General </a>
                             <a (click)="changeSection('Certifications')" [ngClass]="{ 'border-purple-500 text-blue-600': section === 'Certifications', 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700': section !== 'Certifications' }" class="hover:cursor-pointer whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"> Certifications </a>
                             <a (click)="changeSection('Education')" [ngClass]="{ 'border-purple-500 text-blue-600': section === 'Education', 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700': section !== 'Education' }" class="hover:cursor-pointer whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"> Education </a>
-                            <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"> Plan </a>
-                            <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"> Billing </a>
-                            <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"> Team Members </a>
+                            <a (click)="changeSection('Fee')" [ngClass]="{ 'border-purple-500 text-blue-600': section === 'Fee', 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700': section !== 'Fee' }" class="hover:cursor-pointer whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Consultation Fee </a>
+                            <a (click)="changeSection('changePassword')" [ngClass]="{ 'border-purple-500 text-blue-600': section === 'changePassword', 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700': section !== 'changePassword' }" class="hover:cursor-pointer whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Change Password </a>
                           </nav>
                         </div>
                       </div>
-                
+
                       <div class="p-2">
                         @switch (section) {
                           @case('General') {
@@ -95,99 +96,253 @@
                             <button *ngIf="!isEditGeneralDetails" (click)="toggleeditGeneralDetails()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                               Edit General details
                             </button>
-                            <button *ngIf="isEditGeneralDetails" (click)="toggleeditGeneralDetails()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                            <button *ngIf="isEditGeneralDetails" (click)="onSubmit()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                               Save General details
                             </button>
                           </div>
                           <!-- List of Details -->
                           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6">
-                              <!-- Column 1 -->
-                              <div class="p-10">
+                                <!-- Column 1 -->
+                                <div class="p-10">
+                                    <dl class="divide-y divide-gray-200">
+                                        <div class="py-4 sm:py-5">
+                                            <dt class="text-sm font-medium text-gray-500">First Name</dt>
+                                            <dd class="mt-1 flex text-sm text-gray-900">
+                                                <div class="group relative w-72 md:w-80 lg:w-96">
+                                                    <input type="text" formControlName="firstName" [readonly]="!isEditGeneralDetails" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                                    <div *ngIf="f && f['firstName'] && f['firstName']?.invalid && f['firstName']?.touched" class="text-red-500 text-sm mt-1">
+                                                      <span *ngIf="f['firstName'].errors?.['required']">First Name is required.</span>
+                                                      <span *ngIf="f['firstName'].errors?.['minlength']">First Name must be at least 2 characters long.</span>
+                                                      <span *ngIf="f['firstName'].errors?.['maxlength']">First Name cannot exceed 50 characters.</span>
+                                                    </div>
+                                                  </div>
+                                            </dd>
+                                        </div>
+                                        <div class="py-4 sm:py-5">
+                                            <dt class="text-sm font-medium text-gray-500">Last Name</dt>
+                                            <dd class="mt-1 flex text-sm text-gray-900">
+                                                <input type="text" formControlName="lastName" [readonly]="!isEditGeneralDetails" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                                <div *ngIf="f && f['lastName'].invalid && f['lastName'].touched" class="text-red-500 text-sm mt-1">
+                                                  <span *ngIf="f['lastName'].errors?.['required']">Last Name is required.</span>
+                                                  <span *ngIf="f['lastName'].errors?.['maxlength']">Last Name cannot exceed 50 characters.</span>
+                                                </div>
+                                              </dd>
+                                        </div>
+                                        <div class="py-4 sm:py-5">
+                                            <dt class="text-sm font-medium text-gray-500">Bio</dt>
+                                            <dd class="mt-1 flex text-sm text-gray-900">
+                                                <textarea rows="7" formControlName="bio" [readonly]="!isEditGeneralDetails" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400">{{currentDoctor.bio}}</textarea>
+                                                <div *ngIf="f && f['bio'].invalid && f['bio'].touched" class="text-red-500 text-sm mt-1">
+                                                  <span *ngIf="f['bio'].errors?.['required']">Bio is required.</span>
+                                                  <span *ngIf="f['bio'].errors?.['minlength']">Bio must be at least 8 characters long.</span>
+                                                </div>
+                                              </dd>
+                                        </div>
+                                        <div class="py-4 sm:py-5">
+                                            <dt class="text-sm font-medium text-gray-500">Gender</dt>
+                                            <dd class="mt-1 flex text-sm text-gray-900">
+                                                <input formControlName="gender" [readonly]="!isEditGeneralDetails" type="text" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                                <div *ngIf="f && f['gender'].invalid &&  f['gender'].touched" class="text-red-500 text-sm mt-1">
+                                                  <span *ngIf=" f['gender'].errors?.['required']">Gender is required.</span>
+                                                </div>
+                                              </dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                                <!-- Column 2 -->
+                                <div class="p-10 ">
                                   <dl class="divide-y divide-gray-200">
+                                    <div class="py-4 sm:py-5">
+                                      <dt class="text-sm font-medium text-gray-500">Date of Birth</dt>
+                                      <dd class="mt-1 text-sm text-gray-900 pt-2">
+                                        <div *ngIf="currentDoctor?.dateOfBirth && !isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400">{{ currentDoctor.dateOfBirth | date }}</div>
+                                        <span *ngIf="!currentDoctor?.dateOfBirth && !isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400">Date of Birth Not available</span>
+                                      </dd>
+                                      <dd *ngIf="isEditGeneralDetails" class="mt-1 text-sm text-gray-900">
+                                        <input type="date" formControlName="dateOfBirth"  [readonly]="!isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                        <div *ngIf="f['dateOfBirth']?.invalid && f['dateOfBirth']?.touched" class="text-red-500 text-sm mt-1">
+                                          <span *ngIf="f['dateOfBirth'].errors?.['required']">Date of Birth is required.</span>
+                                        </div>
+                                      </dd>
+                                    </div>
+                                    <div class="py-4 sm:py-5">
+                                      <dt class="text-sm font-medium text-gray-500">Phone</dt>
+                                      <dd class="mt-1 text-sm text-gray-900">
+                                        <input formControlName="phone"  [readonly]="!isEditGeneralDetails" type="tel" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                        <div *ngIf="f['phone']?.invalid && f['phone']?.touched" class="text-red-500 text-sm mt-1">
+                                          <span *ngIf="f['phone'].errors?.['required']">Phone number is required.</span>
+                                          <span *ngIf="f['phone'].errors?.['invalidPhoneNumber']">Invalid phone number.</span>
+                                        </div>
+                                      </dd>
+                                    </div>
+                                    <div formGroupName="address">
                                       <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">First Name</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                            <div class="group relative w-72 md:w-80 lg:w-96">
-                                              <input  formControlName="firstName" [disabled]="!isEditGeneralDetails" type="text" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
-                                            </div>
-                                          </dd>
+                                        <dt class="text-sm font-medium text-gray-500">City</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">
+                                          <input formControlName="city" type="text"  [readonly]="!isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                          <div *ngIf="f['address.city']?.invalid && f['address.city']?.touched" class="text-red-500 text-sm mt-1">
+                                            <span *ngIf="f['address.city'].errors?.['required']">City is required.</span>
+                                          </div>
+                                        </dd>
                                       </div>
                                       <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">Last Name</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                              <input formControlName="lastName" [disabled]="!isEditGeneralDetails" type="text" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" value="Doe">
-                                          </dd>
+                                        <dt class="text-sm font-medium text-gray-500">State</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">
+                                          <input formControlName="state" type="text"  [readonly]="!isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                          <div *ngIf="f['address.state']?.invalid && f['address.state']?.touched" class="text-red-500 text-sm mt-1">
+                                            <span *ngIf="f['address.state'].errors?.['required']">State is required.</span>
+                                          </div>
+                                        </dd>
                                       </div>
                                       <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">bio</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                              <input formControlName="bio" [disabled]="!isEditGeneralDetails" type="text" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" value="*********">
-                                          </dd>
+                                        <dt class="text-sm font-medium text-gray-500">Zipcode</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">
+                                          <input formControlName="zipcode" type="text"  [readonly]="!isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                          <div *ngIf="f['address.zipcode']?.invalid && f['address.zipcode']?.touched" class="text-red-500 text-sm mt-1">
+                                            <span *ngIf="f['address.zipcode'].errors?.['required']">Zipcode is required.</span>
+                                            <span *ngIf="f['address.zipcode'].errors?.['minlength']">Zipcode must be 6 characters long.</span>
+                                            <span *ngIf="f['address.zipcode'].errors?.['maxlength']">Zipcode cannot exceed 6 characters.</span>
+                                          </div>
+                                        </dd>
                                       </div>
                                       <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">Gender</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                              <input formControlName="gender" [disabled]="!isEditGeneralDetails" type="text" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" value="Male">
-                                          </dd>
+                                        <dt class="text-sm font-medium text-gray-500">Country</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">
+                                          <input formControlName="country" type="text"  [readonly]="!isEditGeneralDetails" class="h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                                          <div *ngIf="f['address.country']?.invalid && f['address.country']?.touched" class="text-red-500 text-sm mt-1">
+                                            <span *ngIf="f['address.country'].errors?.['required']">Country is required.</span>
+                                          </div>
+                                        </dd>
                                       </div>
+                                    </div>
                                   </dl>
-                              </div>
-                          
-                              <!-- Column 2 -->
-                              <div class="p-10">
-                                  <dl class="divide-y divide-gray-200">
-                                      <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">Date of Birth</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                              <input formControlName="dateOfBirth" [disabled]="!isEditGeneralDetails" type="text" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" value="1988-05-25">
-                                          </dd>
-                                      </div>
-                                      <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">Email</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                              <input formControlName="email" [disabled]="!isEditGeneralDetails" type="email" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" value="john.doe@example.com">
-                                          </dd>
-                                      </div>
-                                      <div class="py-4 sm:py-5">
-                                          <dt class="text-sm font-medium text-gray-500">Phone</dt>
-                                          <dd class="mt-1 flex text-sm text-gray-900">
-                                              <input formControlName="phone"  [disabled]="!isEditGeneralDetails" type="tel" class="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" value="1234567890">
-                                          </dd>
-                                      </div>
-                                     
-                                    
-                                    
-                                  </dl>
-                              </div>
-                          </div>
-                          
-                            </form>
-                          
+                                </div>
+
+                            </div>
+                        </form>
+
+
                           }
                           @case('Certifications') {
                           <div class="flex flex-wrap justify-center">
-                            <div class="w-1/2 p-4" *ngFor="let certification of currentDoctor.certifications">
-                              <div class="border border-gray-200 shadow-md">
-                                <pdf-viewer [src]="certification" [render-text]="true" [original-size]="false" style="width: 400px; height: 500px"></pdf-viewer>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                              <div *ngFor="let cert of currentDoctor.certifications" class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                                <div class="relative">
+                                  <ng-container *ngIf="getFileType(cert) === 'image'; else pdfTemplate">
+                                    <img [src]="cert" alt="{{ cert }}" class="w-full h-48 object-cover rounded-t-lg">
+                                  </ng-container>
+                                  <ng-template #pdfTemplate>
+                                    <div class="flex items-center justify-center w-full h-48 bg-gray-200 rounded-t-lg">
+                                      <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM14 2v6h6M16 13H8m0 4h8M8 9h4"></path>
+                                      </svg>
+                                    </div>
+                                  </ng-template>
+                                </div>
+                                <div class="p-4">
+                                  <a [href]="cert" target="_blank" class="mt-2 inline-block text-blue-500 hover:text-blue-700 hover:underline">View Certification</a>
+                                </div>
                               </div>
                             </div>
+
+
+
                           </div>
                           }
+                          @case('Education') {
+                              <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Education</h2>
+                                <div *ngFor="let edu of currentDoctor.education" class="mb-6">
+                                  <div class="p-4 bg-gray-100 rounded-lg">
+                                    <h3 class="text-xl font-bold text-gray-900">{{ edu.degree }}</h3>
+                                    <p class="text-sm text-gray-600">{{ edu.institution }} | {{ edu.year }}</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                            }
+                            @case('Fee') {
+                              <div class="bg-white p-3 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Consultation Fees</h2>
+                                <div *ngFor="let fee of currentDoctor.consultationFee" class="flex items-center mb-2 p-4 bg-gray-100 rounded-lg shadow-sm">
+                                  <div class="flex-shrink-0">
+                                    <svg *ngIf="fee.type === 'video'" class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A2 2 0 0122 9.659v4.682a2 2 0 01-2.447 1.934L15 14m-4-4v4m4 0a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h8a2 2 0 012 2z"></path>
+                                    </svg>
+                                    <svg *ngIf="fee.type === 'chat'" class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8a9 9 0 110-18 9 9 0 010 18zm0 0v-4a3 3 0 00-3-3H7a3 3 0 00-3 3v4h14z"></path>
+                                    </svg>
+                                    <svg *ngIf="fee.type === 'clinic'" class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M4 21h16a1 1 0 001-1V7a1 1 0 00-1-1h-4a2 2 0 01-4 0H8a2 2 0 01-4 0H4a1 1 0 00-1 1v13a1 1 0 001 1zm10-3v-4a2 2 0 10-4 0v4h4z"></path>
+                                    </svg>
+                                  </div>
+                                  <div class="ml-4">
+                                    <h3 class="text-lg font-semibold text-gray-800 capitalize">{{ fee.type }} Consultation</h3>
+                                    <p class="text-gray-600">Fee: ${{ fee.fee }}</p>
+                                  </div>
+                                </div>
+
+                                <div class="mt-8 bg-gray-50 p-6 rounded-lg shadow-md">
+                                  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Guidelines & Policy</h2>
+                                  <ul class="list-disc pl-5 text-gray-700 mb-4">
+                                    <li *ngFor="let guideline of guidelines">{{guideline }}</li>
+                                  </ul>
+                                  <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                                    <p class="font-bold">Appointment Cancellation Policy</p>
+                                    <p>{{ policy }}</p>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                            }
+                            @case('changePassword') {
+                              <div class="w-full mx-auto p-8 bg-white rounded-lg shadow-lg">
+                                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Change Password</h2>
+                                <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
+                                  <div class="mb-4">
+                                    <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+                                    <input type="password" id="currentPassword" formControlName="currentPassword" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" [class.border-red-500]="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched" />
+                                    <div *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched" class="text-red-500 text-sm mt-1">
+                                      Current password is required.
+                                    </div>
+                                  </div>
+                                  <div class="mb-4">
+                                    <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+                                    <input type="password" id="newPassword" formControlName="newPassword" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" [class.border-red-500]="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched" />
+                                    <div *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched" class="text-red-500 text-sm mt-1">
+                                      New password must be at least 6 characters long.
+                                    </div>
+                                  </div>
+                                  <div class="mb-4">
+                                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                                    <input type="password" id="confirmPassword" formControlName="confirmPassword" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" [class.border-red-500]="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched" />
+                                    <div *ngIf="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched" class="text-red-500 text-sm mt-1">
+                                      Passwords must match.
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" [disabled]="changePasswordForm.invalid">Change Password</button>
+                                </form>
+                              </div>
+
+                            }
                           @default {
-                          <div></div>
+                          <div>
+<!-- #region--><p>Don't have a Page for this option !!!</p>
+                          </div>
                           }
                         }
                       </div>
                     </div>
                   </div>
                 </div>
-             
-                
-                
-                  
-    
-                
+
+
+
+
+
+
               </div>
             </div>
           </div>
@@ -221,16 +376,16 @@
         <dd class="mt-1 flex text-sm text-gray-900">
             <div class="flex flex-col w-full">
                 <label for="city" class="text-sm font-medium text-gray-500 mb-1">City</label>
-                <input id="city" name="city" formControlName="city" [disabled]="!isEditGeneralDetails" type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400 mb-2" />
-    
+                <input id="city" name="city" formControlName="city"  [readonly]="!isEditGeneralDetails"  type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400 mb-2" />
+
                 <label for="state" class="text-sm font-medium text-gray-500 mb-1">State</label>
-                <input id="state" name="state" formControlName="state" [disabled]="!isEditGeneralDetails" type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400 mb-2" />
-    
+                <input id="state" name="state" formControlName="state"  [readonly]="!isEditGeneralDetails"  type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400 mb-2" />
+
                 <label for="zipcode" class="text-sm font-medium text-gray-500 mb-1">Zipcode</label>
-                <input id="zipcode" name="zipcode" formControlName="zipcode" [disabled]="!isEditGeneralDetails" type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400 mb-2" />
-    
+                <input id="zipcode" name="zipcode" formControlName="zipcode"  [readonly]="!isEditGeneralDetails"  type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400 mb-2" />
+
                 <label for="country" class="text-sm font-medium text-gray-500 mb-1">Country</label>
-                <input id="country" name="country" formControlName="country" [disabled]="!isEditGeneralDetails" type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
+                <input id="country" name="country" formControlName="country"  [readonly]="!isEditGeneralDetails"  type="text" class="h-10 rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:shadow-lg focus:shadow-blue-400" />
             </div>
         </dd>
     </div> -->
@@ -239,5 +394,4 @@
 
 
 
-                 
-                
+
