@@ -14,3 +14,6 @@ export const routes: Routes = [
     component: WildCardComponent,
   },
 ];
+
+
+// https://play.tailwindcss.com/YhMFBSc4po
