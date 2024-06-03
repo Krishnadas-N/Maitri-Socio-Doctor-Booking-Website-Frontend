@@ -9,18 +9,6 @@ export const routes: Routes = [
         './shared/Components/change-password/change-password.component'
       ).then((m) => m.ChangePasswordComponent),
   },
-    {
-      path: 'reset-password',
-      loadComponent: () =>
-        import(
-          './shared/Components/change-password/change-password.component'
-        ).then((m) => m.ChangePasswordComponent),
-    }
-
-  {
-    path: 'Not-found',
-    component: WildCardComponent,
-  },
   {
     path: '**',
     component: WildCardComponent,
