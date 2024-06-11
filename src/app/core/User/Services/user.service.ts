@@ -5,6 +5,9 @@ import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { User } from '../../../store/User/user.model';
 import { FindDoctorsRequest } from '../../../shared/Models/user-side.model';
 import { environment } from '../../../../environments/environment.development';
+import { GoogleCredentials, LoginData ,registerData} from '../models/authentication.model';
+import { SuccessResponse } from '../../../shared/Models/api-request-response.model';
+import { CategoryOfDoctors, UserData, surveyResponse, } from '../models/user.models';
 
 interface UserSocialRegister{
   firstName:string,
@@ -22,32 +25,32 @@ export class UserService {
   private baseUrl = environment.UserServiceUrl;
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string): Observable<SuccessResponse<LoginData>> {
     const loginData = { email, password };
-    return this.http.post<User>(`${this.baseUrl}/login`, loginData);
+    return this.http.post<SuccessResponse<LoginData>>(`${this.baseUrl}/login`, loginData);
   }
-  loginWithGoogle(credential: string):Observable<any>  {
+  loginWithGoogle(credential: GoogleCredentials):Observable<SuccessResponse<LoginData>>  {
     const url = `${this.baseUrl}/social-login`;
     const body = { credential };
     const headers = new HttpHeaders({ 'X-Social-Login': 'google' });
 
-   return this.http.post(url, body, { headers })
+   return this.http.post<SuccessResponse<LoginData>>(url, body, { headers });
   }
 
   register(
     user: User,
     password: string,
     confirmPassword: string
-  ): Observable<any> {
+  ): Observable<SuccessResponse<registerData>> {
     const userData = { ...user, password, confirmPassword };
-    return this.http.post<any>(`${this.baseUrl}/register`, userData);
+    return this.http.post<SuccessResponse<registerData>>(`${this.baseUrl}/register`, userData)
   }
 
   registerWithGoogle(user:UserSocialRegister): Observable<any> {
-      return this.http.post(`${this.baseUrl}/social-register`,user)
+      return this.http.post(`${this.baseUrl}/social-register`,user).pipe(tap(data=>console.log("Register Data",data)))
   }
-  getCurrentUser(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/profile`);
+  getCurrentUser(): Observable<SuccessResponse<UserData>> {
+    return this.http.get<SuccessResponse<UserData>>(`${this.baseUrl}/profile`);
   }
 
 
@@ -56,12 +59,12 @@ export class UserService {
     return this.http.patch(`${this.baseUrl}/change-status/${id}`, {});
   }
 
-  getUserById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/get-byId/${id}`);
+  getUserById(id: string): Observable<SuccessResponse<UserData>> {
+    return this.http.get<SuccessResponse<UserData>>(`${this.baseUrl}/get-byId/${id}`);
   }
 
-  editUserProfile(userProfile: Partial<User>): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/edit-profile`, userProfile);
+  editUserProfile(userProfile: Partial<User>): Observable<SuccessResponse<UserData>> {
+    return this.http.put<SuccessResponse<UserData>>(`${this.baseUrl}/edit-profile`, userProfile);
   }
 
   changeProfilePic(formData: FormData): Observable<any> {
@@ -69,8 +72,8 @@ export class UserService {
     return this.http.patch<any>(`${this.baseUrl}/change-profilePic`, formData);
   }
 
-  changePassword() {
-    return this.http.get<any>(`${this.baseUrl}/change-password`, {});
+  changePassword():Observable<void> {
+    return this.http.get<void>(`${this.baseUrl}/change-password`, {});
   }
 
   saveNewPassword(token: string, password: string, confirmPassword: string) {
@@ -179,15 +182,15 @@ export class UserService {
     google.accounts.id.disableAutoSelect();
    }
 
-   submitSurvey(surveyData:any):Observable<any>{
-    return this.http.post(`${this.baseUrl}/submit-survey`,surveyData)
+   submitSurvey(surveyData:any):Observable<SuccessResponse<surveyResponse>>{
+    return this.http.post<SuccessResponse<surveyResponse>>(`${this.baseUrl}/submit-survey`,surveyData).pipe(tap(data=>console.log("Data from submit surevy",data)))
   }
 
   getWalletBalance():Observable<any>{
     return this.http.get(`${this.baseUrl}/get-wallet-balance`)
   }
 
-  getDoctorsByCategory():Observable<any>{
-    return this.http.get(`${this.baseUrl}/get-category-doctors`)
+  getDoctorsByCategory():Observable<SuccessResponse<CategoryOfDoctors>>{
+    return this.http.get<SuccessResponse<CategoryOfDoctors>>(`${this.baseUrl}/get-category-doctors`);
   }
 }

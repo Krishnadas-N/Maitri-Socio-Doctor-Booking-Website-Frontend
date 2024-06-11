@@ -4,9 +4,9 @@ import { catchError, delay, map, mergeMap, switchMap, tap } from 'rxjs/operators
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { OtpServiceService } from '../../shared/Services/otp.service';
-import { AuthService } from '../../core/Doctor/Services/auth-service/auth.service'; 
+import { AuthService } from '../../core/Doctor/Services/auth-service/auth.service';
 import * as DoctorActions from './doctor.action';
-import { DoctorService } from '../../core/Doctor/Services/doctor-services/doctor.service'; 
+import { DoctorService } from '../../core/Doctor/Services/doctor-services/doctor.service';
 @Injectable()
 export class doctorEffects {
 
@@ -47,10 +47,12 @@ export class doctorEffects {
               localStorage.setItem('AuthToken', res.data.token);
               console.log(res.data.doctor.isVerified, res.data.doctor.isProfileComplete); // Corrected access to isProfileComplete
               if (res.data.doctor.isVerified && res.data.doctor.isProfileComplete) {
-                this.router.navigate(['/doctor']);
+                // this.router.navigate(['/doctor']);
+                location.href = '/doctor';
               } else {
                 console.log("redirect to complete ");
-                this.router.navigate(['/doctor/complete-verification']);
+                location.href = '/doctor/complete-verification';
+                // this.router.navigate(['/doctor/complete-verification']);
               }
               return DoctorActions.loginDoctorSuccess({ token: res.data.token, doctor: res.data.doctor });
             }),
@@ -75,8 +77,8 @@ export class doctorEffects {
         )
       )
     )
-  );   
-  
+  );
+
   registerAdditionalInfo$ = createEffect(() =>
   this.actions$.pipe(
     ofType(DoctorActions.registerAdditionalRequest),
@@ -90,7 +92,7 @@ export class doctorEffects {
     )
     );
 
-    
+
   loadDoctor$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DoctorActions.loadDoctor),

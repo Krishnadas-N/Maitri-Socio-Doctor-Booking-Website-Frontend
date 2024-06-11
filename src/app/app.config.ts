@@ -4,7 +4,7 @@ import {
   isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import {provideNgxStripe } from 'ngx-stripe';
 import { routes } from './app.routes';
 import {
   provideClientHydration,
@@ -39,6 +39,7 @@ import { adminRoutes } from './core/Admin/admin-routes.routing';
 import { refreshTokenInterceptor } from './shared/Interceptors/refresh-token.interceptor';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
+import { environment } from '../environments/environment.development';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 export const httpInterceptorProviders = [
@@ -101,5 +102,6 @@ export const appConfig: ApplicationConfig = {
       OtpEffects,
       postEffects,
     ]), provideCharts(withDefaultRegisterables()),
+    provideNgxStripe(environment.Stripe_Publishable_key)
   ],
 };

@@ -6,7 +6,7 @@ import { isPlatformBrowser } from '@angular/common';
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
   console.log('Request URL: ' + req.url);
-  
+
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -15,16 +15,16 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.error instanceof ErrorEvent) {
         // Client-side error
         errorMessage = `Error: ${error.message}`;
-      } 
+      }
     else {
         // Server-side error
         if (error.error && error.error.error && error.error.error.message) {
-          errorMessage = `Error: ${error.status}\t ${ error.error.error.message}`;
+          errorMessage = `${ error.error.error.message}`;
         } else {
-          errorMessage = `Error Code: ${error.status}Message: ${error.message}`;
+          errorMessage = ` ${error.message}`;
         }
       }
-      console.error(errorMessage);
+      console.warn(errorMessage);
       return throwError(()=>new Error(errorMessage)) ;
     })
   );

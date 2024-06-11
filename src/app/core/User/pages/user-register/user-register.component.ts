@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service';
+import { GoogleCredentials } from '../../models/authentication.model';
 
 
 @Component({
@@ -82,7 +83,7 @@ export class UserRegisterComponent implements OnInit {
   onClickHandler(res:any){
     console.log("Sign in with Google button clicked...")
   }
-  SignupUsingGoogle = (credential: any) => {
+  SignupUsingGoogle = (credential: GoogleCredentials) => {
     this.initiateGoogleSignupForm()
     this.signUpWithGoogle = true;
     console.log("Crenditail get from register",credential);
@@ -129,24 +130,3 @@ showLifeDefault() {
   this.messageService.add({ severity: 'info', summary: 'Provide more Details', detail: 'Please Fill the Addiional Details' });
 }
 }
-// {
-//   "clientId": "447977348117-hdalhj00m1mv9el3av0b9ehcvo1t595i.apps.googleusercontent.com",
-//   "client_id": "447977348117-hdalhj00m1mv9el3av0b9ehcvo1t595i.apps.googleusercontent.com",
-//   "credential": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImEzYjc2MmY4NzFjZGIzYmFlMDA0NGM2NDk2MjJmYzEzOTZlZGEzZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0NDc5NzczNDgxMTctaGRhbGhqMDBtMW12OWVsM2F2MGI5ZWhjdm8xdDU5NWkuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0NDc5NzczNDgxMTctaGRhbGhqMDBtMW12OWVsM2F2MGI5ZWhjdm8xdDU5NWkuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTcyNTM0NDY1MTk0ODI5MzQxNDkiLCJlbWFpbCI6Im1rLmtkLjAwOEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmJmIjoxNzE1MzUzNjc1LCJuYW1lIjoia3Jpc2huYWRhcyBOIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0wxTC1peHlfMFF5VDhlaTZIRUVZeF9OSXU2cm5WMkFjbExham5BQkg1d2VlRTR1UT1zOTYtYyIsImdpdmVuX25hbWUiOiJrcmlzaG5hZGFzIiwiZmFtaWx5X25hbWUiOiJOIiwiaWF0IjoxNzE1MzUzOTc1LCJleHAiOjE3MTUzNTc1NzUsImp0aSI6IjhkMjNjNTY2MDdmZGI5MWJlZjhhNjg2ZTc4MTRiM2M4MjJmYWI3MWUifQ.NsqCLfUyywjVJ4cEIJeoM7hxyxweis_LQWLqsy-O7uhH0E8rHrvhKRmph_Sp3TgiDBr0-hcvoAF-4jSyw9aSWm39xyUenUCjOBScjGWu0M_oWFCtqc6pvkBuef_xEvvpCcMYcjqyIyuV6a-yegnGKPGmWHdoMPHzZ57fo9MRHoZBr_XCnhnU0LQoXP7ZK-hiU5oZlsL-djJR7O6fFdwLzJn-q0alCiGNszz6pvq8IpZJEmw12gCzYFWDrR3X0agEQ3UiO0rxlixPmz-NF0iVNjPhYEOUgKGaNSuxpZq-CQ_iBedxalxZUwCsg-mS_koTWQK6Et-QKEiwEoDnxnz1cg",
-//   "select_by": "btn_confirm"
-// }{
-//   "iss": "https://accounts.google.com",
-//   "azp": "447977348117-hdalhj00m1mv9el3av0b9ehcvo1t595i.apps.googleusercontent.com",
-//   "aud": "447977348117-hdalhj00m1mv9el3av0b9ehcvo1t595i.apps.googleusercontent.com",
-//   "sub": "117253446519482934149",
-//   "email": "mk.kd.008@gmail.com",
-//   "email_verified": true,
-//   "nbf": 1716139664,
-//   "name": "krishnadas N",
-//   "picture": "https://lh3.googleusercontent.com/a/ACg8ocL1L-ixy_0QyT8ei6HEEYx_NIu6rnV2AclLajnABH5weeE4uQ=s96-c",
-//   "given_name": "krishnadas",
-//   "family_name": "N",
-//   "iat": 1716139964,
-//   "exp": 1716143564,
-//   "jti": "6bb9cf898ce906c24e316103a781fc28a31a9cf3"
-// }

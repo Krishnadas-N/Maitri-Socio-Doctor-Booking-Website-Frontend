@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { TokenService } from '../../Services/token-auth-service/Token.service'; 
+import { TokenService } from '../../Services/token-auth-service/Token.service';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
   handleItemClick(item: any) {
     this.itemClick.emit(item);
   }
-  
+
   showTooltip(item: any, index: number) {
     this.itemHover.emit({ item, index });
 }
@@ -37,6 +37,7 @@ export class SidebarComponent implements OnInit {
     }
     logout(){
       this.TokenService.logout();
-      this.router.navigate([`${this.navItems[0].link}/login`]);
+      location.href = `${this.navItems[0].link}/login`;
+      // this.router.navigate([`${this.navItems[0].link}/login`]);
     }
 }

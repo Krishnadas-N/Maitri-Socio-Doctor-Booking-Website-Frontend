@@ -1,35 +1,63 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../Services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WindowRefService } from '../../../../shared/Services/window-ref.service';
 import { NotificationService } from '../../../../shared/Services/notification-service/notification.service';
 import { environment } from '../../../../../environments/environment.development';
-
-declare var StripeCheckout: any;
+import { StripeService, StripeCardComponent, NgxStripeModule } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions,
+} from '@stripe/stripe-js';
+import { Appointment } from '../../../../shared/Models/appoinment.model';
+import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-booking-checkout-page',
   standalone:true,
-  imports:[CommonModule,FormsModule ],
+  imports:[NgxStripeModule,CommonModule,FormsModule ,MatInputModule ,ReactiveFormsModule,StripeCardComponent],
   templateUrl: './booking-checkout-page.component.html',
-  styleUrls: ['./booking-checkout-page.component.css']
+  styleUrls: ['./booking-checkout-page.component.css'],
+  providers:[StripeService]
 })
 export class BookingCheckoutPageComponent implements OnInit {
   isCheckBalance:boolean = false
   isLoading:boolean=false;
   appoinmentId!:string;
   walletBalance!:number;
-  appoinmentDetails!:any;
+  appoinmentDetails!:Appointment;
   selectedPaymentMethod: string = '';
+  @ViewChild(StripeCardComponent) card!: StripeCardComponent;
+  cardOptions: StripeCardElementOptions = {
+    style: {
+      base: {
+        fontWeight: 400,
+        fontFamily: 'Circular',
+        fontSize: '14px',
+        iconColor: '#666EE8',
+        color: '#002333',
+        '::placeholder': {
+          color: '#919191',
+        },
+      },
+    },
+  };
+  elementsOptions: StripeElementsOptions = {
+    locale: 'en',
+    clientSecret:environment.STRIPE_SECRET_KEY
+  };
+
+  stripeTest!: FormGroup;
   constructor(
     private route:ActivatedRoute,
     private userService:UserService,
     private toastr:ToastrService,
     private winRef: WindowRefService,
     private router:Router,
-    private notificationService:NotificationService
+    private notificationService:NotificationService,
+    private fb: FormBuilder, private stripeService: StripeService
   ) {
     this.route.params.subscribe(
       (param)=>{
@@ -41,16 +69,17 @@ export class BookingCheckoutPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadStripe();
+
     this.getAppoinment();
+
 this.getWalletBalance()
   }
   getAppoinment(){
     this.userService.GetAppointmentDetails(this.appoinmentId).subscribe({
       next:(res:any)=>{
-        console.log(res);
+        console.log("AppointmentDetails",res);
         this.appoinmentDetails = res.data;
-
+        this.loadStripePayment()
       },
       error:(err)=>{
         this.toastr.error(err|| 'Error while Get Appoinments please try again');
@@ -72,16 +101,7 @@ this.getWalletBalance()
 
     console.log('Selected payment method:', this.selectedPaymentMethod);
     this.isLoading=true;
-    if(this.selectedPaymentMethod==='Stripe'){
-      this.stripePaymentHandler()
-    }else if(this.selectedPaymentMethod ==='Razorpay'){
-      this.processPayment()
-    }else if(this.selectedPaymentMethod ==='Wallet'){
-      this.processPayment()
-    }
-    else{
-      return
-    }
+    this.processPayment()
     // this.http.post('/api/payment', { paymentMethod: this.selectedPaymentMethod }).subscribe(response => {
     //   console.log('Backend response:', response);
     // });
@@ -90,15 +110,17 @@ this.getWalletBalance()
   processPayment(stripeToken?: any) {
     this.userService.makePayment(this.selectedPaymentMethod,this.appoinmentId,stripeToken).subscribe({
       next:(res)=>{
-        console.log(res);
+        console.log("After Payment",res);
         this.isLoading=false;
         if(this.selectedPaymentMethod==='Stripe'){
-          this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
+          // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
+          location.href = `/booking-confirmation/${res.data.appointmentId}`;
         }else if(this.selectedPaymentMethod ==='Razorpay'){
           this.payWithRazorpay(res.data)
         }
         else if(this.selectedPaymentMethod ==='Wallet'){
-          this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
+          location.href = `/booking-confirmation/${res.data.appointmentId}`;
+          // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         }
         else{
           return
@@ -113,20 +135,7 @@ this.getWalletBalance()
   }
 
   stripePaymentHandler(){
-    const paymentHandler = StripeCheckout.configure({
-      key: environment.Stripe_Publishable_key,
-      locale: 'auto',
-      token: (stripeToken: any) => {
-        console.log(stripeToken);
-        this.processPayment(stripeToken)
-      }
-    });
 
-    paymentHandler.open({
-      name: 'Edopedia.com Payment',
-      description: 'Some sample description of product',
-      amount: this.appoinmentDetails.amount * 100,
-    });
   }
 
   payWithRazorpay(data:any): void {
@@ -158,13 +167,14 @@ this.getWalletBalance()
   }
 
   verifyPayment(orderId: string, paymentId: string, signature: string){
-      this.userService.verifyPayment(orderId,paymentId,signature,this.appoinmentDetails).subscribe({
+      this.userService.verifyPayment(orderId,paymentId,signature,this.appoinmentId).subscribe({
         next:(res)=>{
 
           console.log("verify payment",res);
           const notificationId = res.data.notificationId;
           this.notificationService.sendNotification(notificationId);
-          this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
+          location.href = `/booking-confirmation/${res.data.appointmentId}`;
+          // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         },
         error:(err)=>{
           this.toastr.error(err)
@@ -172,17 +182,6 @@ this.getWalletBalance()
   })
   }
 
-  loadStripe() {
-    if (!window.document.getElementById('stripe-script')) {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.stripe.com/checkout.js';
-    script.async = true;
-    script.onload = () => {
-      console.log('Stripe script loaded');
-    };
-    document.body.appendChild(script);
-  }
-  }
 
   getWalletBalance(){
     this.userService.getWalletBalance().subscribe({
@@ -198,177 +197,12 @@ this.getWalletBalance()
 toggleBalance(){
 this.isCheckBalance = !this.isCheckBalance
 }
+loadStripePayment(){
+    this.stripeTest = this.fb.group({
+      name: [`${this.appoinmentDetails.user[0].firstName} ${this.appoinmentDetails.user[0].lastName}`, [Validators.required]],
+      email: [this.appoinmentDetails.user[0].email, [Validators.required]],
+      amount: [this.appoinmentDetails.amount, [Validators.required, Validators.pattern(/\d+/)]],
+    });
+}
 }
 
-
-
-// 'Credit Card', 'Debit Card', 'PayPal', 'Stripe','Razorpay
-
-// {
-//   "_id": "662a2ab911a27cde7ce5cf18",
-//   "patient": "66163617d65f573cdefa9200",
-//   "doctor": "66250e4e41436e8f0cd9c3f1",
-//   "typeOfAppointment": "video",
-//   "date": "2024-04-25T10:01:51.903Z",
-//   "slot": "10 AM",
-//   "amount": 500,
-//   "duration": 60,
-//   "status": "Pending",
-//   "paymentStatus": "Pending",
-//   "createdAt": "2024-04-25T10:04:41.099Z",
-//   "updatedAt": "2024-04-25T10:04:41.099Z",
-//   "__v": 0,
-//   "doctorInfo": [
-//       {
-//           "_id": "66250e4e41436e8f0cd9c3f1",
-//           "firstName": "Rakesh",
-//           "lastName": "Kumar",
-//           "password": "$2a$10$qLLulffoAV4hdoQBnmI.fuFshfKmW0z23spe27ptvLeatoCwwjMze",
-//           "gender": "Male",
-//           "dateOfBirth": "2016-04-11T18:30:00.000Z",
-//           "email": "rakeshkumar@email.com",
-//           "phone": 1234567890,
-//           "certifications": [
-//               "https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713705732/Maitri-Project/ws4jbzzlc79kgjpvmupb.pdf"
-//           ],
-//           "languages": [
-//               "English",
-//               "Malayalam",
-//               "Hindi",
-//               "Telugu",
-//               "Kannada"
-//           ],
-//           "followers": [],
-//           "isVerified": true,
-//           "typesOfConsultation": [
-//               "video",
-//               "chat",
-//               "clinic"
-//           ],
-//           "maxPatientsPerDay": 10,
-//           "rating": 0,
-//           "isProfileComplete": true,
-//           "isBlocked": false,
-//           "roles": [
-//               "66141503f83ac04df8392561"
-//           ],
-//           "education": [
-//               {
-//                   "degree": "MBBS",
-//                   "institution": "Medical College Thrissur",
-//                   "year": "2015",
-//                   "_id": "6625130310775bbfad516fb4"
-//               },
-//               {
-//                   "degree": "Degree",
-//                   "institution": "Nss College Ottpaalam",
-//                   "year": "2013",
-//                   "_id": "6625130310775bbfad516fb5"
-//               }
-//           ],
-//           "consultationFee": [
-//               {
-//                   "type": "video",
-//                   "fee": 500,
-//                   "_id": "6625fa913c689baccf578a96"
-//               },
-//               {
-//                   "type": "chat",
-//                   "fee": 500,
-//                   "_id": "6625fa913c689baccf578a97"
-//               },
-//               {
-//                   "type": "clinic",
-//                   "fee": 500,
-//                   "_id": "6625fa913c689baccf578a98"
-//               }
-//           ],
-//           "availability": [
-//               {
-//                   "dayOfWeek": "Saturday",
-//                   "startTime": "10:00",
-//                   "endTime": "14:00",
-//                   "isAvailable": true
-//               }
-//           ],
-//           "createdAt": "2024-04-21T13:02:07.548Z",
-//           "updatedAt": "2024-04-24T17:15:59.308Z",
-//           "__v": 2,
-//           "address": {
-//               "city": "THIRUVILWAMALA",
-//               "zipcode": 680588,
-//               "country": "India"
-//           },
-//           "experience": "1",
-//           "specialization": "660427e945db1184cb2d92b8",
-//           "registrationStepsCompleted": 3,
-//           "bio": "Dr. Rakesh Kumar is a dedicated physician with 15+ years of experience in internal medicine. Specializing in cardiac care, he combines clinical expertise with compassion to provide personalized treatment. Committed to patient well-being, Dr. Kumar stays updated with the latest medical advancements to deliver optimal healthcare outcomes.",
-//           "profilePic": "https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713761708/Maitri-Project/u9ohjkem5zm0vgt47gzo.webp",
-//           "selectedSlots": [
-//               {
-//                   "date": "2024-04-24T17:08:34.026Z",
-//                   "slots": [
-//                       "6 AM",
-//                       "7 AM",
-//                       "8 AM",
-//                       "9 AM",
-//                       "10 AM",
-//                       "11 AM",
-//                       "12 PM",
-//                       "1 PM",
-//                       "2 PM"
-//                   ],
-//                   "_id": "66293cb7c78a7a5df0b1b45d"
-//               },
-//               {
-//                   "date": "2024-04-25T17:15:45.249Z",
-//                   "slots": [
-//                       "6 AM",
-//                       "7 AM",
-//                       "8 AM",
-//                       "9 AM",
-//                       "10 AM",
-//                       "11 AM"
-//                   ],
-//                   "_id": "66293e4fc78a7a5df0b1b580"
-//               }
-//           ]
-//       }
-//   ],
-//   "doctorSpecialization": [
-//       {
-//           "_id": "660427e945db1184cb2d92b8",
-//           "name": "Psychology",
-//           "description": "Study of mind and behavior, including therapy and counseling",
-//           "isBlocked": false,
-//           "__v": 0
-//       }
-//   ],
-//   "user": [
-//       {
-//           "_id": "66163617d65f573cdefa9200",
-//           "profilePic": "https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713450837/Maitri-Project/dii8rhwkqi4gta3z5whn.webp",
-//           "firstName": "Xera",
-//           "lastName": "Mon",
-//           "username": "sera",
-//           "gender": "male",
-//           "email": "x@mail.com",
-//           "password": "$2a$10$IseMKc5WhSbn/J96rzfF2.KlSO6aFnvMnyp6gDGZ8qPk9KWiAZzay",
-//           "isBlocked": false,
-//           "role": "0x01",
-//           "dateOfBirth": "1999-10-25T00:00:00.000Z",
-//           "isVerified": true,
-//           "roles": [
-//               "6612457293c66989fc111447"
-//           ],
-//           "createdAt": "2024-04-10T06:47:51.299Z",
-//           "updatedAt": "2024-04-19T07:32:51.974Z",
-//           "__v": 0,
-//           "resetToken": null
-//       }
-//   ]
-// }
-
-
-// https://medium.com/@yaseen_nadaf/integrate-razorpay-with-angular-1a7080cf8e79
-// https://medium.com/@mayur.mathurkar7/integrating-payment-gateways-with-angular-app-831072167855

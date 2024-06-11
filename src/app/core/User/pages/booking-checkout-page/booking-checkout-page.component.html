@@ -3,12 +3,7 @@
     <p class="text-xl font-medium">Payment Methods</p>
     <p class="text-gray-400">Check your Appoinment. And select a suitable payment Method.</p>
     <div class="grid gap-4  mt-10">
-      <!-- <div class="flex items-center justify-center bg-gray-100 rounded px-4 py-8">
-        <input type="radio" class="w-6 h-6 cursor-pointer" id="Stripe" [(ngModel)]="selectedPaymentMethod" value="Stripe" />
-        <label for="Stripe" class="ml-4 flex gap-2 cursor-pointer">
-          <img src=" https://logos-world.net/wp-content/uploads/2021/03/Stripe-Logo.png" class="w-28" alt="StripeCard" />
-        </label>
-      </div> -->
+
       <div class="flex relative items-center justify-center bg-gray-100 rounded px-4 py-8">
         <span *ngIf="!isCheckBalance" (click)="toggleBalance()" class="absolute  top-1 right-1 hover:cursor-pointer inline-flex items-center justify-center px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded-full ">Check Balance</span>
         <span *ngIf="isCheckBalance" (click)="toggleBalance()"  class="absolute top-1 right-1 hover:cursor-pointer inline-flex items-center justify-center px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded-full ">INR {{walletBalance}}</span>
@@ -31,6 +26,39 @@
             <img src="https://www.vcbay.news/wp-content/uploads/2020/10/image-15.png" class="w-28" alt="Razorpay" />
         </label>
     </div>
+    <!-- <div class="flex items-center justify-center bg-gray-100 rounded px-4 py-8">
+      <input type="radio" class="w-6 h-6 cursor-pointer" id="Stripe" [(ngModel)]="selectedPaymentMethod" value="Stripe" />
+      <label for="Stripe" class="ml-4 flex gap-2 cursor-pointer">
+        <img src=" https://logos-world.net/wp-content/uploads/2021/03/Stripe-Logo.png" class="w-28" alt="StripeCard" />
+      </label>
+    </div>
+    <div *ngIf="selectedPaymentMethod==='Stripe'" class="flex items-center justify-center bg-gray-100 rounded px-4 py-8">
+    <div   ngxStripeCardGroup [formGroup]="stripeTest"  [elementsOptions]="elementsOptions">
+
+      <div class="flex flex-row gap-4">
+        <div class="flex-1">
+          <mat-form-field appearance="outline"  class="w-full flex-1">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+        <div class="flex-1">
+          <mat-form-field appearance="outline" class="w-full flex-1">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" />
+          </mat-form-field>
+        </div>
+      </div>
+        <div class="stripe-card" ngxStripeCardGroup [elementsOptions]="elementsOptions">
+          <h4>Enter payment details</h4>
+          <ngx-stripe-card-number [options]="cardOptions"></ngx-stripe-card-number>
+          <ngx-stripe-card-expiry [options]="cardOptions"></ngx-stripe-card-expiry>
+          <ngx-stripe-card-cvc [options]="cardOptions"></ngx-stripe-card-cvc>
+        </div>
+
+
+    </div>
+  </div> -->
     </div>
 
   </div>

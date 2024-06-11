@@ -12,6 +12,7 @@ import { environment } from '../../../../../environments/environment.development
 import { UserService } from '../../Services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service';
+import { GoogleCredentials } from '../../models/authentication.model';
 @Component({
   selector: 'app-user-login',
   standalone: true,
@@ -54,13 +55,14 @@ export class UserLoginComponent implements OnInit{
     console.log("User Data : ",UserData);
     this.store.dispatch(loginUser(UserData));
   }
-    loginWithGoogle = (credential: any) => {
+
+    loginWithGoogle = (credential: GoogleCredentials) => {
         console.log("Crenditail",credential);
         this.userService.loginWithGoogle(credential).subscribe({
           next:(res)=>{
             this.tokenService.setToken(res.data.token);
-        this.isLoading= false;
-                      this.tokenService.setAccessToken(res.data.revokeAcessToken)
+           this.isLoading= false;
+                      this.tokenService.setAccessToken(res.data.revokeAccessToken)
                         this.router.navigate(['/'])
           },
           error:(err)=>{
