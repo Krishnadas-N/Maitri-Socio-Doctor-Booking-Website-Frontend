@@ -40,6 +40,8 @@ import { refreshTokenInterceptor } from './shared/Interceptors/refresh-token.int
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 import { environment } from '../environments/environment.development';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 export const httpInterceptorProviders = [
@@ -102,6 +104,10 @@ export const appConfig: ApplicationConfig = {
       OtpEffects,
       postEffects,
     ]), provideCharts(withDefaultRegisterables()),
-    provideNgxStripe(environment.Stripe_Publishable_key)
+    provideNgxStripe(environment.Stripe_Publishable_key),
+
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
   ],
+
 };

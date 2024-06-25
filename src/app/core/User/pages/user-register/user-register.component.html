@@ -20,16 +20,15 @@
         Read our <a href="#" class="underline">terms</a> and <a href="#" class="underline">conditions</a>
       </p>
     </div>
-    <ng-container *ngIf="!signUpWithGoogle; else addAddtionalData">
     <div class="p-5 bg-white md:flex-1">
       <h3 class="my-4 text-2xl font-semibold text-gray-700">Account Login</h3>
-     
+
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="flex flex-col space-y-5">
         <div class="flex flex-col space-y-1">
           <label for="fristname" class="text-sm font-semibold text-gray-500">First Name</label>
           <input
             type="firstName"
-            formControlName="firstName" 
+            formControlName="firstName"
             id="firstName"
             autofocus
             class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
@@ -119,7 +118,7 @@
             />
             <p *ngIf="registrationForm.get('confirmPassword')?.errors?.['mismatch'] && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)" class="text-red-500">Passwords do not match.</p>
           </div>
-        
+
         <!-- <div class="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -134,38 +133,31 @@
           class="w-full px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-blue-200 focus:ring-4 relative"
           [disabled]="isLoading"
         >
-          <span class="flex gap-2 justify-center"> 
+          <span class="flex gap-2 justify-center">
             <svg *ngIf="isLoading"  class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.001 8.001 0 0112 4.472v3.998a.5.5 0 001 0V4.472c3.027 0 5.562 2.138 6.181 5H18c0-3.859-3.141-7-7-7s-7 3.141-7 7h-2c0 4.97 4.03 9 9 9v-2c-3.584 0-6.743-1.99-8.366-5zM12 18.528V14.53a.5.5 0 00-1 0v3.998a7.998 7.998 0 01-3.619-1.529C6.243 20.176 8.777 22 12 22v-2c-1.556 0-2.979-.64-4.005-1.672A8.013 8.013 0 014 12.528h2a6.008 6.008 0 006 6v-2h-2z"></path>
             </svg>Register
             </span>
-          
+
         </button>
-        
+
         </div>
 
-       
+
         <div class="flex flex-col space-y-5">
           <span class="flex items-center justify-center space-x-2">
             <!-- <span class="h-px bg-gray-400 w-14"></span> -->
             <!-- <span class="font-normal text-gray-500">or sign up with</span> -->
-            <google-login-button [callback]="SignupUsingGoogle"
-            [clientId]="clientId"
-            [width]="250"
-            locale="en"
-            shape="pill"
-            size="large"
-            text="signin_with"
-            theme="outline"
-            type="standard"
-            [displayOneTapDialog]="true"
-        ></google-login-button>
+              <button (click)="loginWithGoogle()" class="flex items-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                  <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="-0.5 0 48 48" version="1.1"> <title>Google-color</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Color-" transform="translate(-401.000000, -860.000000)"> <g id="Google" transform="translate(401.000000, 860.000000)"> <path d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24" id="Fill-1" fill="#FBBC05"> </path> <path d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333" id="Fill-2" fill="#EB4335"> </path> <path d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667" id="Fill-3" fill="#34A853"> </path> <path d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24" id="Fill-4" fill="#4285F4"> </path> </g> </g> </g> </svg>
+                  <span>Continue with Google</span>
+              </button>
 
           </span>
           <div class="flex flex-col  space-y-4">
 
-            
+
             <a
             [routerLink]="'/doctor/register'"
               class="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-500 rounded-md group hover:bg-blue-500 focus:outline-none"
@@ -183,82 +175,10 @@
         </div>
       </form>
     </div>
-  </ng-container>
   </div>
 </div>
-  
 
-<ng-template #addAddtionalData>
-  <div class="p-5 bg-white md:flex-1">
-    <h3 class="my-4 text-2xl font-semibold text-gray-700">Additonal Data</h3>
 
-    <form [formGroup]="GoogleRegistrationForm" (ngSubmit)="SignupWithGoogle()" class="flex flex-col space-y-5">
-      <div class="flex flex-col space-y-1">
-        <label for="username" class="text-sm font-semibold text-gray-500">User Name</label>
-        <input
-          type="username"
-          formControlName="username"
-          id="username"
-          autofocus
-          class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-        />
-        <p  *ngIf="GoogleRegistrationForm.get('username')?.invalid && (GoogleRegistrationForm.get('username')?.dirty || GoogleRegistrationForm.get('username')?.touched)" class="text-red-500">Username is required (up to 25 characters, letters, numbers, and underscores only).</p>
-      </div>
-      <div class="flex flex-col space-y-1">
-        <div class="flex items-center justify-between">
-          <label for="gender" class="text-sm font-semibold text-gray-500">Gender</label>
-        </div>
-        <select
-        formControlName="gender"
-          id="gender"
-          class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-        >
-        <option value="" disabled selected>Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-              <p  *ngIf="GoogleRegistrationForm.get('gender')?.invalid && (GoogleRegistrationForm.get('gender')?.dirty || GoogleRegistrationForm.get('gender')?.touched)" class="text-red-500">Gender is required.</p>
-      </div>
-      <div class="flex flex-col space-y-1">
-        <div class="flex items-center justify-between">
-          <label for="dateOfBirth" class="text-sm font-semibold text-gray-500">Enter Your D.O.B</label>
-        </div>
-        <input
-        formControlName="dateOfBirth"
-          type="date"
-          id="dateOfBirth"
-          class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-        />
-        <p  *ngIf="GoogleRegistrationForm.get('dateOfBirth')?.invalid && (GoogleRegistrationForm.get('dateOfBirth')?.dirty || GoogleRegistrationForm.get('dateOfBirth')?.touched)" class="text-red-500">Please enter a valid date of birth (must be less than 6 years before).</p>
-      </div>
-      
-      <!-- <div class="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          id="remember"
-          class="w-4 h-4 transition duration-300 rounded focus:ring-2 focus:ring-offset-0 focus:outline-none focus:ring-blue-200"
-        />
-        <label for="remember" class="text-sm font-semibold text-gray-500">Remember me</label>
-      </div> -->
-      <div>
-        <button
-        type="submit"
-        class="w-full px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-blue-200 focus:ring-4 relative"
-        [disabled]="isLoading"
-      >
-        <span class="flex gap-2 justify-center"> 
-          <svg *ngIf="isLoading"  class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.001 8.001 0 0112 4.472v3.998a.5.5 0 001 0V4.472c3.027 0 5.562 2.138 6.181 5H18c0-3.859-3.141-7-7-7s-7 3.141-7 7h-2c0 4.97 4.03 9 9 9v-2c-3.584 0-6.743-1.99-8.366-5zM12 18.528V14.53a.5.5 0 00-1 0v3.998a7.998 7.998 0 01-3.619-1.529C6.243 20.176 8.777 22 12 22v-2c-1.556 0-2.979-.64-4.005-1.672A8.013 8.013 0 014 12.528h2a6.008 6.008 0 006 6v-2h-2z"></path>
-          </svg> Confirm Register
-          </span>
-        
-      </button>
-      
-      </div>
-    </form>
-   </div>
-</ng-template>
+
 
 <p-toast [life]="10000" />

@@ -16,7 +16,8 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service';
 import { GoogleCredentials } from '../../models/authentication.model';
-
+import { GoogleAuthProvider } from '@firebase/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-user-register',
@@ -24,7 +25,7 @@ import { GoogleCredentials } from '../../models/authentication.model';
   imports: [ReactiveFormsModule,ToastModule,CommonModule,RouterLink,GoogleLoginButtonComponent],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css',
-  providers: [MessageService]
+  providers: [MessageService,AngularFireAuth]
 })
 export class UserRegisterComponent implements OnInit {
   signUpWithGoogle: boolean = false;
@@ -37,6 +38,7 @@ export class UserRegisterComponent implements OnInit {
     private messageService: MessageService,
     private router:Router,
     private tokenService:TokenService,
+    private angularFireAuth: AngularFireAuth,
     private toastr:ToastrService,
     private store:Store<AppState>){}
   ngOnInit() {
@@ -83,47 +85,28 @@ export class UserRegisterComponent implements OnInit {
   onClickHandler(res:any){
     console.log("Sign in with Google button clicked...")
   }
-  SignupUsingGoogle = (credential: GoogleCredentials) => {
-    this.initiateGoogleSignupForm()
-    this.signUpWithGoogle = true;
-    console.log("Crenditail get from register",credential);
-    this.GoogleRegistrationForm.patchValue({
-      firstName:credential.given_name,
-      lastName:credential.family_name,
-      email:credential.email,
-      profilePic:credential.picture
-    });
-    this.showLifeDefault()
-}
+  async loginWithGoogle() {
+    const creds = await this.angularFireAuth.signInWithPopup(
+      new GoogleAuthProvider()
+    );
+    console.log('credentials from firbaser', creds.user);
+    if (creds.user) {
+      this.userService
+        .loginWithGoogle(creds.user as unknown as GoogleCredentials)
+        .subscribe({
+          next: (res) => {
 
-SignupWithGoogle(){
-  alert("Golfe")
-  this.isLoading  =true
-    this.userService.registerWithGoogle(this.GoogleRegistrationForm.value).subscribe({
-      next:(res)=>{
-        this.tokenService.setToken(res.data.token);
-        this.isLoading= false;
-                      this.tokenService.setAccessToken(res.data.revokeAcessToken)
-                        this.router.navigate(['/'])
-      },
-      error:(err)=>{
-        this.isLoading= false;
-        this.toastr.error(err)
-      }
-    })
-}
-
-initiateGoogleSignupForm() {
-  this.GoogleRegistrationForm = this.formBuilder.group({
-    firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
-    lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(25)]],
-    username: ['', [Validators.required, Validators.maxLength(25), Validators.pattern(/^[a-z0-9_]+$/)]],
-    email: ['', [Validators.required, Validators.email]],
-    gender: ['', Validators.required],
-    dateOfBirth: ['', [Validators.required, FormValidator.checkSixYaersBefore]],
-    profilePic:['']
-  });
-}
+            this.tokenService.setToken(res.data.token);
+            this.isLoading = false;
+            this.tokenService.setAccessToken(res.data.revokeAccessToken);
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            this.toastr.error(err);
+          },
+        });
+    }
+  }
 
 
 showLifeDefault() {

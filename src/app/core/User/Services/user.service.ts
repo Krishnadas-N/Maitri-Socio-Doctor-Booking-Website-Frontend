@@ -7,7 +7,7 @@ import { FindDoctorsRequest } from '../../../shared/Models/user-side.model';
 import { environment } from '../../../../environments/environment.development';
 import { GoogleCredentials, LoginData ,registerData} from '../models/authentication.model';
 import { SuccessResponse } from '../../../shared/Models/api-request-response.model';
-import { CategoryOfDoctors, UserData, surveyResponse, } from '../models/user.models';
+import { CategoryOfDoctors,MedicalRecordModel, WalletDetails,UserData, AppointMentList,surveyResponse, InterestedDoctors,ListInterestedDoctors} from '../models/user.models';
 
 interface UserSocialRegister{
   firstName:string,
@@ -30,11 +30,8 @@ export class UserService {
     return this.http.post<SuccessResponse<LoginData>>(`${this.baseUrl}/login`, loginData);
   }
   loginWithGoogle(credential: GoogleCredentials):Observable<SuccessResponse<LoginData>>  {
-    const url = `${this.baseUrl}/social-login`;
-    const body = { credential };
-    const headers = new HttpHeaders({ 'X-Social-Login': 'google' });
-
-   return this.http.post<SuccessResponse<LoginData>>(url, body, { headers });
+   const headers = new HttpHeaders({ 'X-Social-Login': 'google' });
+   return this.http.post<SuccessResponse<LoginData>>(`${this.baseUrl}/social-login`, credential, { headers });
   }
 
   register(
@@ -46,9 +43,6 @@ export class UserService {
     return this.http.post<SuccessResponse<registerData>>(`${this.baseUrl}/register`, userData)
   }
 
-  registerWithGoogle(user:UserSocialRegister): Observable<any> {
-      return this.http.post(`${this.baseUrl}/social-register`,user).pipe(tap(data=>console.log("Register Data",data)))
-  }
   getCurrentUser(): Observable<SuccessResponse<UserData>> {
     return this.http.get<SuccessResponse<UserData>>(`${this.baseUrl}/profile`);
   }
@@ -67,13 +61,13 @@ export class UserService {
     return this.http.put<SuccessResponse<UserData>>(`${this.baseUrl}/edit-profile`, userProfile);
   }
 
-  changeProfilePic(formData: FormData): Observable<any> {
+  changeProfilePic(formData: FormData): Observable<SuccessResponse<string>> {
     console.log(formData.get('profilePic'));
-    return this.http.patch<any>(`${this.baseUrl}/change-profilePic`, formData);
+    return this.http.patch<SuccessResponse<string>>(`${this.baseUrl}/change-profilePic`, formData);
   }
 
-  changePassword():Observable<void> {
-    return this.http.get<void>(`${this.baseUrl}/change-password`, {});
+  changePassword():Observable<SuccessResponse<void>> {
+    return this.http.get<SuccessResponse<void>>(`${this.baseUrl}/change-password`, {});
   }
 
   saveNewPassword(token: string, password: string, confirmPassword: string) {
@@ -83,15 +77,15 @@ export class UserService {
     });
   }
 
-  addInterestedDoctor(doctorId: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/addToInterest/${doctorId}`, {});
+  addInterestedDoctor(doctorId: string): Observable<SuccessResponse<InterestedDoctors>> {
+    return this.http.post<SuccessResponse<InterestedDoctors>>(`${this.baseUrl}/addToInterest/${doctorId}`, {})
   }
 
-  getInterestedDoctors(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/get-doctor-interests`);
+  getInterestedDoctors(): Observable<SuccessResponse<ListInterestedDoctors>> {
+    return this.http.get<SuccessResponse<ListInterestedDoctors>>(`${this.baseUrl}/get-doctor-interests`)
   }
-  removeFromInterestedDoctors(doctorId: string): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/removeInterest/${doctorId}`);
+  removeFromInterestedDoctors(doctorId: string): Observable<SuccessResponse<void>> {
+    return this.http.delete<SuccessResponse<void>>(`${this.baseUrl}/removeInterest/${doctorId}`);
   }
   saveAppointment(appointmentDetails: any, doctorId: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/make-appointment/${doctorId}`, {
@@ -100,7 +94,7 @@ export class UserService {
   }
 
   GetAppointmentDetails(appoinmentId: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/get-appoinment/${appoinmentId}`);
+    return this.http.get<any>(`${this.baseUrl}/get-appoinment/${appoinmentId}`)
   }
   makePayment(paymentMethod: string, appoinmentId: string,token?:any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/make-payment/${appoinmentId}`, {
@@ -126,8 +120,8 @@ export class UserService {
     );
   }
 
-  getUserAppoinments(page: number, pageSize: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/get-appoinments?page=${page}&pageSize=${pageSize}`);
+  getUserAppoinments(page: number, pageSize: number): Observable<SuccessResponse<AppointMentList>> {
+    return this.http.get<SuccessResponse<AppointMentList>>(`${this.baseUrl}/get-appoinments?page=${page}&pageSize=${pageSize}`);
   }
 
   requestTochangeAppoinmentStatus(id: string,reason:string,status: string): Observable<any> {
@@ -146,20 +140,20 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/get-doctors`, { params: params });
   }
 
-  getWalletOfUser(page: number, pageSize: number): Observable<any>{
-   return this.http.get<any>(`${this.baseUrl}/get-wallet?page=${page}&pageSize=${pageSize}`)
+  getWalletOfUser(page: number, pageSize: number): Observable<SuccessResponse<WalletDetails>>{
+   return this.http.get<SuccessResponse<WalletDetails>>(`${this.baseUrl}/get-wallet?page=${page}&pageSize=${pageSize}`)
   }
 
-  uploadMedicalRecords(file: File,title:string,description: string):Observable<any>{
+  uploadMedicalRecords(file: File,title:string,description: string):Observable<SuccessResponse<MedicalRecordModel>>{
     const formData = new FormData();
     formData.append('file', file);
     formData.append('title', title);
     formData.append('description', description);
-    return this.http.post<any>(`${this.baseUrl}/medical-records`,formData)
+    return this.http.post<SuccessResponse<MedicalRecordModel>>(`${this.baseUrl}/medical-records`,formData)
    }
 
-   getMedicalRecords():Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}/medical-records`)
+   getMedicalRecords():Observable<SuccessResponse<MedicalRecordModel[]>>{
+    return this.http.get<SuccessResponse<MedicalRecordModel[]>>(`${this.baseUrl}/medical-records`)
    }
 
    revokeRefreshToken(token:string):Observable<any>{
@@ -167,7 +161,9 @@ export class UserService {
    }
 
    getNotifications():Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}/get-notifications`)
+    return this.http.get<any>(`${this.baseUrl}/get-notifications`).pipe(
+      tap((data)=>console.log(data))
+    )
    }
 
    deleteMedicalRecord(medicalrecordId: string): Observable<void> {
