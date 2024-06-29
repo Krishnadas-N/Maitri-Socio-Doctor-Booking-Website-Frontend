@@ -5,8 +5,14 @@ import { CommonModule } from '@angular/common';
 import { isJWTToken } from '../../validators/isJWTToken';
 import { AppState } from '../../../store/GlobalStore/app.state';
 import { Store, select } from '@ngrx/store';
-import { resendOtpRequest, verifyOTP } from '../../../store/sharedStore/otpStore/otp.action';
-import { selectOtpError, selectOtpLoading } from '../../../store/sharedStore/otpStore/otp.selector';
+import {
+  resendOtpRequest,
+  verifyOTP,
+} from '../../../store/sharedStore/otpStore/otp.action';
+import {
+  selectOtpError,
+  selectOtpLoading,
+} from '../../../store/sharedStore/otpStore/otp.selector';
 import { Subscription, interval } from 'rxjs';
 
 @Component({
@@ -14,7 +20,7 @@ import { Subscription, interval } from 'rxjs';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './otp.component.html',
-  styleUrl: './otp.component.css'
+  styleUrl: './otp.component.css',
 })
 export class OtpComponent implements OnInit {
   section!: string;
@@ -23,18 +29,17 @@ export class OtpComponent implements OnInit {
   showResendButton = false;
   secondsRemaining = 60;
   errorMessage!: string;
-  isLoading:boolean = false;
+  isLoading: boolean = false;
   resendLoading: boolean = false;
-  timerSubscription: Subscription | undefined
+  timerSubscription: Subscription | undefined;
 
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-
     this.section = this.route.snapshot.data['expectedRole'];
 
     this.token = this.route.snapshot.queryParamMap.get('authToken');
@@ -44,13 +49,13 @@ export class OtpComponent implements OnInit {
       this.startCountdown();
     }
 
-    this.store.pipe(select(selectOtpError)).subscribe(error => {
+    this.store.pipe(select(selectOtpError)).subscribe((error) => {
       if (error) {
         this.errorMessage = error.message;
       }
     });
 
-    this.loadingGetFromStore()
+    this.loadingGetFromStore();
   }
 
   ngOnDestroy(): void {
@@ -59,15 +64,14 @@ export class OtpComponent implements OnInit {
     }
   }
 
-  loadingGetFromStore(isFrom:string='normal'){
+  loadingGetFromStore(isFrom: string = 'normal') {
     this.store.select(selectOtpLoading).subscribe((isLoading) => {
       this.isLoading = isLoading;
-      if(isFrom==='resend' && !isLoading){
-        this.resendLoading=false
+      if (isFrom === 'resend' && !isLoading) {
+        this.resendLoading = false;
       }
     });
   }
-
 
   startCountdown(): void {
     const currentTime = new Date().getTime();
@@ -89,7 +93,8 @@ export class OtpComponent implements OnInit {
       } else {
         this.showResendButton = true;
         this.timerSubscription?.unsubscribe();
-      }    });
+      }
+    });
   }
 
   moveToNext(nextInput: HTMLInputElement): void {
@@ -101,7 +106,9 @@ export class OtpComponent implements OnInit {
     if (this.digits.join('').length === 6) {
       if (this.section) {
         console.log('The value is: ', this.digits.join(''));
-        this.store.dispatch(verifyOTP({ otp: this.digits.join(''), section: this.section }));
+        this.store.dispatch(
+          verifyOTP({ otp: this.digits.join(''), section: this.section })
+        );
       }
     }
   }
@@ -112,42 +119,40 @@ export class OtpComponent implements OnInit {
       console.log('Resend called');
       this.resendLoading = true;
       this.store.dispatch(resendOtpRequest({ token: this.token }));
-      this.loadingGetFromStore('resend')
+      this.loadingGetFromStore('resend');
     } else {
       alert('Please register again');
     }
   }
 
+  timerSeconds!: number;
+  timerMintes!: number;
+  showOtpTimer: boolean = true;
 
-
-  timerSeconds!:number;
-  timerMintes!:number;
-  showOtpTimer:boolean=true;
-
-  otpTimer(seconds:number){
-    if(seconds<=0){
+  otpTimer(seconds: number) {
+    if (seconds <= 0) {
       this.timerSeconds = 0;
       this.timerMintes = 0;
-      return ;
+      return;
     }
-    this.timerSeconds =0;
-    this.timerMintes = Math.floor(seconds/60)
+    this.timerSeconds = 0;
+    this.timerMintes = Math.floor(seconds / 60);
     let reminderSeconds = seconds % 60;
-    if(reminderSeconds !== 0) {
-      this.timerSeconds =reminderSeconds
+    if (reminderSeconds !== 0) {
+      this.timerSeconds = reminderSeconds;
     }
-    if(this.timerMintes <1){
-      this.timerSeconds = seconds
+    if (this.timerMintes < 1) {
+      this.timerSeconds = seconds;
     }
-    let interval = setInterval(()=>{
-      this.timerSeconds -=1;
-      if(this.timerMintes >0 && this.timerSeconds<0){
+    let interval = setInterval(() => {
+      this.timerSeconds -= 1;
+      if (this.timerMintes > 0 && this.timerSeconds < 0) {
         this.timerSeconds = 59;
-        this.timerMintes-=1;
+        this.timerMintes -= 1;
       }
-      if(this.timerSeconds === 0 && this.timerMintes ===0){
-        clearInterval(interval)
+      if (this.timerSeconds === 0 && this.timerMintes === 0) {
+        clearInterval(interval);
       }
-    })
+    });
   }
 }

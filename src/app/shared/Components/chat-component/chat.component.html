@@ -6,11 +6,11 @@
       <div class="flex flex-col w-full border-r-2  overflow-y-hidden">
         <!-- search compt -->
         <div class="border-b-2 py-4 px-2">
-          <input
+          <!-- <input
             type="text"
             placeholder="search chatting"
             class="py-2 px-2 border-2 border-gray-200 rounded-2xl w-full"
-          />
+          /> -->
         </div>
         <!-- end search compt -->
         <!-- user list -->
@@ -20,7 +20,7 @@
           </div>
           <div class="w-full">
             <div class="text-lg font-semibold">{{ getOtherMember(conversation).firstName }}</div>
-            <span class="text-gray-500">{{ getOtherMember(conversation).username }} - {{ conversation.lastUpdate | date }}</span>
+            <span class="text-gray-500">{{ conversation.lastUpdate | date }}</span>
           </div>
         </div>
         

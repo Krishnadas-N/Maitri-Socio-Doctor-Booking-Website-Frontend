@@ -4,16 +4,18 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { TokenService } from '../token-auth-service/Token.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
- 
-  constructor(public jwtHelper: JwtHelperService,private tokenService:TokenService) {}
+  constructor(
+    public jwtHelper: JwtHelperService,
+    private tokenService: TokenService
+  ) {}
   public isAuthenticated(): boolean {
-    const token = this.tokenService.getToken()
+    const token = this.tokenService.getToken();
     return !this.jwtHelper.isTokenExpired(token);
   }
-  
+
   public hasRole(role: string): boolean {
     const token = this.tokenService.getToken();
     if (token) {
@@ -24,6 +26,4 @@ export class AuthService {
     }
     return false;
   }
-
-  
 }

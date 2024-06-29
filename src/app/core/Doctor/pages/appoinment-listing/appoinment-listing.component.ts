@@ -6,9 +6,9 @@ import { MatInputModule } from '@angular/material/input'
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DoctorService } from '../../Services/doctor-services/doctor.service'; 
+import { DoctorService } from '../../Services/doctor-services/doctor.service';
 import { ToastrService } from 'ngx-toastr';
-import { AppoinmentListComponent } from '../../../../shared/Components/appoinment-list/appoinment-list.component'; 
+import { AppoinmentListComponent } from '../../../../shared/Components/appoinment-list/appoinment-list.component';
 import { PatientProfileComponent } from '../../Components/patient-profile/patient-profile.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserPaginationComponent } from '../../../../shared/Components/user-pagination/user-pagination.component';
@@ -27,17 +27,18 @@ import { UserPaginationComponent } from '../../../../shared/Components/user-pagi
   ],
 })
 export class AppoinmentListingComponent implements OnInit {
+  isLoading = true;
   currentPage: number = 1;
   totalPages: number = 0;
-  totalCount: number = 0; 
+  totalCount: number = 0;
   pageSize: number = 6;
-
-
+  searchAppointment:string='';
+  skeletons = Array(5);
   userType:"doctor" | "user" = 'doctor';
   rangePicker!: MatDateRangePicker<Date>;
   doctorAppoinments!:any;
   startDate!: Date;
-  endDate!: Date; 
+  endDate!: Date;
   countsObject!: { [key: string]: number };
   constructor(
   private doctorService:DoctorService,
@@ -55,9 +56,10 @@ export class AppoinmentListingComponent implements OnInit {
     this.getDoctorAppoinments()
   }
   getDoctorAppoinments(){
-    this.doctorService.getDoctorAppoinments(this.currentPage, this.pageSize).subscribe({
+    this.doctorService.getDoctorAppoinments(this.currentPage,this.searchAppointment, this.pageSize).subscribe({
       next:(res:any)=>{
         console.log("response",res);
+
         this.doctorAppoinments = res.data.appointments;
         this.countsObject =   this.doctorAppoinments.counts.counts;
         console.log( this.countsObject );
@@ -65,6 +67,7 @@ export class AppoinmentListingComponent implements OnInit {
         this.pageSize = res.data.pageSize;
         this.totalCount = res.data.totalCount;
         this.totalPages = res.data.totalPages;
+        this.isLoading = false;
       },
       error:(err)=>{
         this.toastr.error(err)
@@ -78,7 +81,7 @@ export class AppoinmentListingComponent implements OnInit {
   viewDetail(event:any){
     const appoinments = this.doctorAppoinments.appointments.find((ele:any)=> ele._id.toString() == event);
     const dialogRef = this.dialog.open(UserSidebardetailsListingComponent, {
-      data: { 
+      data: {
         appoinments
         // Add more data as needed
       },
@@ -88,7 +91,7 @@ export class AppoinmentListingComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-  
+
   onPreviousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;

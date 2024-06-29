@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserProfileMainComponent } from './user-profile-main-page/user-profile-main-page.component';
-import {  RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { profileRoutes } from './profile.routing';
 import { HomeProfileComponent } from './home-profile/home-profile.component';
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfilePictureComponent } from '../../../../shared/Components/profile-picture/profile-picture.component';
 import { AppoinmentListComponent } from '../../../../shared/Components/appoinment-list/appoinment-list.component';
 import { UserSideAppoinmentListingComponent } from './user-side-appoinment-listing/user-side-appoinment-listing.component';
@@ -16,16 +16,16 @@ import { MediaModalComponent } from '../../../../shared/Components/media-modal/m
 import { SavedPostComponent } from './saved-post/saved-post.component';
 import { ImageModule } from 'primeng/image';
 
-
-
 @NgModule({
-  declarations: [UserSideAppoinmentListingComponent,
+  declarations: [
+    UserSideAppoinmentListingComponent,
     UserProfileMainComponent,
     HomeProfileComponent,
-    InterestedDoctorsComponent
-    ,MedicalRecordComponent,
+    InterestedDoctorsComponent,
+    MedicalRecordComponent,
     SavedPostComponent,
-    WalletComponent],
+    WalletComponent,
+  ],
   imports: [
     ImageModule,
     MediaModalComponent,
@@ -37,7 +37,7 @@ import { ImageModule } from 'primeng/image';
     ReactiveFormsModule,
     ProfilePictureComponent,
     ReactiveFormsModule,
-    RouterModule.forChild(profileRoutes)
-  ]
+    RouterModule.forChild(profileRoutes),
+  ],
 })
-export class UserProfileModule { }
+export class UserProfileModule {}

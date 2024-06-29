@@ -1,15 +1,23 @@
 <div class="container mx-auto py-6">
   <h2 class="text-3xl font-bold mb-6">My Wallet</h2>
-  
+
   <!-- Wallet Balance -->
   <div class="bg-gray-100 shadow-md rounded-lg p-6 mb-8">
     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Wallet Balance</h3>
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <span class="text-4xl font-bold text-gray-900 mr-2">&#8377;{{ currentUserWallet.balance }}</span> <!-- Display balance from fetched wallet data -->
-        <span class="text-lg font-medium text-gray-600">INR</span> <!-- Display currency from fetched wallet data -->
+        <span class="text-4xl font-bold text-gray-900 mr-2"
+          >&#8377;{{ currentUserWallet.balance }}</span
+        >
+        <!-- Display balance from fetched wallet data -->
+        <span class="text-lg font-medium text-gray-600">INR</span>
+        <!-- Display currency from fetched wallet data -->
       </div>
-      <button class="bg-gradient-to-r from-blue-500 to-sky-500 hover:from-blue-600 hover:to-sky-600 text-white py-2 px-6 rounded-md transition duration-300 transform hover:scale-105">Add Funds</button>
+      <button
+        class="bg-gradient-to-r from-blue-500 to-sky-500 hover:from-blue-600 hover:to-sky-600 text-white py-2 px-6 rounded-md transition duration-300 transform hover:scale-105"
+      >
+        Add Funds
+      </button>
     </div>
   </div>
 
@@ -22,7 +30,9 @@
       <div class="overflow-x-auto">
         <table class="w-full border-collapse">
           <thead>
-            <tr class="bg-gray-200 text-sm text-gray-700 font-semibold uppercase border-b">
+            <tr
+              class="bg-gray-200 text-sm text-gray-700 font-semibold uppercase border-b"
+            >
               <th class="px-4 py-3">Date</th>
               <th class="px-4 py-3">Description</th>
               <th class="px-4 py-3">Amount</th>
@@ -30,12 +40,25 @@
           </thead>
           <tbody>
             <ng-container *ngIf="currentUserWallet.transactions.length > 0">
-              <tr *ngFor="let transaction of currentUserWallet.transactions" class="hover:bg-gray-100 transition duration-300">
-                <td class="px-4 py-3 whitespace-nowrap">{{ transaction.date | date}}</td>
+              <tr
+                *ngFor="let transaction of currentUserWallet.transactions"
+                class="hover:bg-gray-100 transition duration-300"
+              >
+                <td class="px-4 py-3 whitespace-nowrap">
+                  {{ transaction.date | date }}
+                </td>
                 <td class="px-4 py-3">{{ transaction.description }}</td>
-                <td class="px-4 py-3" [ngClass]="{'text-green-500': transaction.type === 'credit', 'text-red-500': transaction.type === 'debit'}">
-                  <span>{{ transaction.type === 'credit' ? '+' : '-' }}</span>&#8377;{{ transaction.amount }}
-                </td> </tr>
+                <td
+                  class="px-4 py-3"
+                  [ngClass]="{
+                    'text-green-500': transaction.type === 'credit',
+                    'text-red-500': transaction.type === 'debit'
+                  }"
+                >
+                  <span>{{ transaction.type === "credit" ? "+" : "-" }}</span
+                  >&#8377;{{ transaction.amount }}
+                </td>
+              </tr>
             </ng-container>
             <tr *ngIf="currentUserWallet.transactions.length === 0">
               <td colspan="3" class="text-center py-8 text-gray-600">
@@ -47,10 +70,6 @@
       </div>
     </div>
   </div>
-
-  
-
 </div>
-
 
 <!-- https://play.tailwindcss.com/xSaRY1ZRy1 -->

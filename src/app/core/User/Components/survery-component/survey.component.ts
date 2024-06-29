@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SurveyCreatorModel } from "survey-creator-core";
-import { Model } from "survey-core";
+import { SurveyCreatorModel } from 'survey-creator-core';
+import { Model } from 'survey-core';
 import { surveyJson } from './survery';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SurveyModule } from "survey-angular-ui";
+import { SurveyModule } from 'survey-angular-ui';
 // import "survey-core/defaultV2.min.css";
 import { UserService } from '../../Services/user.service';
 import { CommonModule } from '@angular/common';
@@ -12,8 +12,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-survey',
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.css'],
-  standalone:true,
-  imports:[SurveyModule,CommonModule]
+  standalone: true,
+  imports: [SurveyModule, CommonModule],
 })
 export class SurveyComponent implements OnInit {
   creator!: SurveyCreatorModel;
@@ -24,8 +24,8 @@ export class SurveyComponent implements OnInit {
   loading = false;
   constructor(
     private dialogRef: MatDialogRef<SurveyComponent>,
-    private userService:UserService
-  ) { }
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.creator = new SurveyCreatorModel({ showLogicTab: false });
@@ -33,30 +33,36 @@ export class SurveyComponent implements OnInit {
     // survey.applyTheme(themeJson);
     survey.onComplete.add((sender, options) => {
       console.log(JSON.stringify(sender.data, null, 3));
-  });
+    });
     this.surveyModel = survey;
     this.surveyModel.onComplete.add(this.sendDataToServer.bind(this));
     // Survey.SurveyNG.render('surveyElement', { model: surveyModel });
   }
 
-  closeSurvey(){
-    this.dialogRef.close()
+  closeSurvey() {
+    this.dialogRef.close();
   }
   sendDataToServer(sender: Model) {
     const surveyData = sender.data;
     this.loading = true;
     this.userService.submitSurvey(surveyData).subscribe({
       next: (response) => {
-        console.log("responses from surevry",response)
+        console.log('responses from surevry', response);
         this.recommendedCategories = response.data.recommendedCategories;
         this.npsScore = response.data.npsScore;
         this.loading = false;
-        this.surveyModel.completedHtml = this.getCompletionMessage(this.npsScore, this.recommendedCategories);
+        this.surveyModel.completedHtml = this.getCompletionMessage(
+          this.npsScore,
+          this.recommendedCategories
+        );
       },
       error: (err) => {
-        console.error('An error occurred while submitting the survey data', err);
+        console.error(
+          'An error occurred while submitting the survey data',
+          err
+        );
         this.loading = false;
-      }
+      },
     });
   }
   getCompletionMessage(npsScore: number, categories: string[]): string {
@@ -90,7 +96,7 @@ export class SurveyComponent implements OnInit {
         <div class="recommended-categories">
           <p>Based on your responses, we recommend the following categories of specialists for you to consult:</p>
           <ul>`;
-      categories.forEach(category => {
+      categories.forEach((category) => {
         baseMessage += `<li class="recommended-category">${category}</li>`;
       });
       baseMessage += `</ul></div>`;
@@ -98,7 +104,4 @@ export class SurveyComponent implements OnInit {
 
     return baseMessage;
   }
-
-
-
 }

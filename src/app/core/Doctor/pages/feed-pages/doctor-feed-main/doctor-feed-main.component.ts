@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { PostComponent } from '../../../../../shared/Components/post/post.component'; 
+import { PostComponent } from '../../../../../shared/Components/post/post.component';
 import { AddPostComponent } from '../../../../../shared/Components/add-post/add-post.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../store/GlobalStore/app.state';
@@ -8,7 +8,7 @@ import { ProfileCardComponent } from '../../../../../shared/Components/profile-c
 import { loadDoctor } from '../../../../../store/Doctor/doctor.action';
 import { Doctor } from '../../../../../store/Doctor/doctor.model';
 import { GetCurrentdoctor } from '../../../../../store/Doctor/doctor.selectors';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router,IsActiveMatchOptions, UrlTree ,RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-feed-main',
@@ -19,7 +19,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 })
 export class DoctorFeedMainComponent implements OnInit {
   doctorDetail:Doctor | null = null;
- 
+
   ngOnInit(): void {
     if(isPlatformBrowser(this.platformId)){
     this.loadCurrentDoctor();
@@ -37,7 +37,14 @@ export class DoctorFeedMainComponent implements OnInit {
 
 
   isActive(route: string): boolean {
-    return this.router.isActive(route, true);
+    const urlTree: UrlTree = this.router.createUrlTree([route]);
+    const matchOptions: IsActiveMatchOptions = {
+      paths: 'exact',
+      queryParams: 'exact',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    };
+    return this.router.isActive(urlTree, matchOptions);
   }
 
   constructor(private store:Store<AppState>,

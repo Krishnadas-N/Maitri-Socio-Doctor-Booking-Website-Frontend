@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
-import { UserMainComponentComponent } from './pages/user-main-component/user-main-component.component'; 
-import { LandingComponent } from './pages/landing-page/landing-page.component'; 
+import { UserMainComponentComponent } from './pages/user-main-component/user-main-component.component';
+import { LandingComponent } from './pages/landing-page/landing-page.component';
 import { CheckLoggedInService } from '../../shared/Services/auth-service/check-isloggedIn.service';
 import { RoleGuardService } from '../../shared/Services/auth-service/role-guard.service';
 
@@ -18,24 +18,24 @@ export const userRoutes: Routes = [
       {
         path: 'register',
         data: { expectedRole: 'User' },
-        canActivate:[CheckLoggedInService],
+        canActivate: [CheckLoggedInService],
         loadComponent: () =>
-          import(
-            './pages/user-register/user-register.component'
-          ).then((m) => m.UserRegisterComponent),
+          import('./pages/user-register/user-register.component').then(
+            (m) => m.UserRegisterComponent
+          ),
       },
       {
         path: 'verify',
-        data: { expectedRole: 'User',section:'user' },
-        canActivate:[CheckLoggedInService],
+        data: { expectedRole: 'User', section: 'user' },
+        canActivate: [CheckLoggedInService],
         loadComponent: () =>
-          import(
-            '../../shared/Components/otp-component/otp.component'
-          ).then((m) => m.OtpComponent),
+          import('../../shared/Components/otp-component/otp.component').then(
+            (m) => m.OtpComponent
+          ),
       },
       {
         path: 'login',
-        canActivate:[CheckLoggedInService],
+        canActivate: [CheckLoggedInService],
         data: { expectedRole: 'User' },
         loadComponent: () =>
           import('./pages/user-login/user-login.component').then(
@@ -43,28 +43,28 @@ export const userRoutes: Routes = [
           ),
       },
       {
-        path:'survey',
-        canActivate:[RoleGuardService],
+        path: 'survey',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent: () =>
           import('./Components/survery-component/survey.component').then(
             (m) => m.SurveyComponent
           ),
       },
-      
+
       {
         path: '',
-        canActivate:[RoleGuardService],
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
         loadComponent: () =>
           import('./pages/user-home/user-home.component').then(
             (m) => m.UserHomeComponent
           ),
       },
-      
+
       {
         path: 'profile',
-        canActivate:[RoleGuardService],
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
         loadChildren: () =>
           import('./Modules/user-profile/user-profile.module').then(
@@ -72,65 +72,80 @@ export const userRoutes: Routes = [
           ),
       },
       {
-        path:'find-doctors',
-        canActivate:[RoleGuardService],
+        path: 'find-doctors',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
-        loadComponent: ()=>
-          import('./pages/doctor-listing/doctor-listing.component').then(m=>m.DoctorListingComponent)
+        loadComponent: () =>
+          import('./pages/doctor-listing/doctor-listing.component').then(
+            (m) => m.DoctorListingComponent
+          ),
       },
       {
-        path:'get-doctor/:id',
-        canActivate:[RoleGuardService],
+        path: 'get-doctor/:id',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
-        loadComponent: ()=>
-          import('./pages/doctor-profile-page/doctor-profile-page.component').then(m=>m.DoctorProfilePageComponent)
+        loadComponent: () =>
+          import(
+            './pages/doctor-profile-page/doctor-profile-page.component'
+          ).then((m) => m.DoctorProfilePageComponent),
       },
       {
-        path:'book-appoinment/:id',
-        canActivate:[RoleGuardService],
+        path: 'book-appoinment/:id',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
-        loadComponent :()=>
-          import('./pages/appoinment-slot-booking/appoinment-slot-booking.component').then(m=>m.AppoinmentSlotBookingComponent)
+        loadComponent: () =>
+          import(
+            './pages/appoinment-slot-booking/appoinment-slot-booking.component'
+          ).then((m) => m.AppoinmentSlotBookingComponent),
       },
 
       {
-        path:'checkout/:appoinmentId',
-        canActivate:[RoleGuardService],
+        path: 'checkout/:appoinmentId',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
-        loadComponent: ()=>
-          import('./pages/booking-checkout-page/booking-checkout-page.component').then(m=>m.BookingCheckoutPageComponent)
-
+        loadComponent: () =>
+          import(
+            './pages/booking-checkout-page/booking-checkout-page.component'
+          ).then((m) => m.BookingCheckoutPageComponent),
       },
       {
-        path:'booking-confirmation/:id',
-        canActivate:[RoleGuardService],
+        path: 'booking-confirmation/:id',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
-        loadComponent:()=>
-          import('./pages/payment-confirmation/payment-confirmation.component').then(m=>m.PaymentConfirmationComponent)
+        loadComponent: () =>
+          import(
+            './pages/payment-confirmation/payment-confirmation.component'
+          ).then((m) => m.PaymentConfirmationComponent),
       },
       {
-        path:'chats',
-        canActivate:[RoleGuardService],
+        path: 'chats',
+        canActivate: [RoleGuardService],
         data: { expectedRole: 'User' },
-        loadComponent:()=>
-          import('../../shared/Components/chat-component/chat.component').then(m=>m.ChatComponent),
-        children:[
+        loadComponent: () =>
+          import('../../shared/Components/chat-component/chat.component').then(
+            (m) => m.ChatComponent
+          ),
+        children: [
           {
-            path:':id',
+            path: ':id',
             data: { expectedRole: 'User' },
-            loadComponent:()=>import('../../shared/Components/chat-room/chat-room.component').then(mod=>mod.ChatRoomComponent),
-          }
-        ]
+            loadComponent: () =>
+              import(
+                '../../shared/Components/chat-room/chat-room.component'
+              ).then((mod) => mod.ChatRoomComponent),
+          },
+        ],
       },
       {
-      path:'video-consult',
-      canActivate:[RoleGuardService],
-      canActivateChild:[RoleGuardService],
-      data: { expectedRole: 'User' },
-      loadChildren:()=>import( '../../shared/Modules/videoCall-module/video-call.module').then(m=>m.VideoCallModule)
+        path: 'video-consult',
+        canActivate: [RoleGuardService],
+        canActivateChild: [RoleGuardService],
+        data: { expectedRole: 'User' },
+        loadChildren: () =>
+          import(
+            '../../shared/Modules/videoCall-module/video-call.module'
+          ).then((m) => m.VideoCallModule),
       },
-      
     ],
   },
 ];
-

@@ -5,52 +5,53 @@ import { Socket } from 'ngx-socket-io';
 import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
-   constructor() { }
-   private readonly URL = environment.SOCKET_URL;
-   private webSocket!: Socket;
-   private token: string | null =null;
+  constructor() {}
+  private readonly URL = environment.SOCKET_URL;
+  private webSocket!: Socket;
+  private token: string | null = null;
 
-   public setToken(token: string): void {
-     this.token = token;
-     this.connect();
-   }
+  public setToken(token: string): void {
+    this.token = token;
+    this.connect();
+  }
 
-   private connect(): void {
-     if (this.token) {
-       this.webSocket = new Socket({
-         url: `${this.URL}/api/notifications`,
-         options: {
-           extraHeaders: {
-                    Authorization:  `Bearer ${this.token}`
-         },
-         }
-       });
-
-
-       this.webSocket.on('connect_error', (error:any) => {
-         console.error('Error connecting to Socket.IO server:', error);
-         throw new Error('Connection failed');
-       });
-       this.webSocket.on('connect', () => {
-        console.log('Connected to Socket.IO server😊🎉🌟👍🏽💡🔥🚀🎈🎊👏🏼🙌🏾👌🏻🌈🌺🌻🍀🍉🍕🍦🍹🎵🎮🎭📚🖋️📸🎥📱💻🖥️🎨🏆⚽🏀🎾🏈🎱🏓🏸🥋🏄‍♂️🚴‍♀️🎬🎤🎸🎭🎪🎡🎢🏰🏖️🏝️🌋🗻🌅🌠🌌🎇🎆🎑🌄🌆🌈🌦️🌧️🌨️🌩️🌪️🌫️🌬️🌊🏞️🏕️🏖️🏜️🏝️🏔️🗻🏘️🏰🏯');
+  private connect(): void {
+    if (this.token) {
+      this.webSocket = new Socket({
+        url: `${this.URL}/api/notifications`,
+        options: {
+          extraHeaders: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        },
       });
-     } else {
-       console.error('Missing JWT token for Socket.IO connection');
-     }
-   }
 
-    addUsers(userId: string): void {
-      this.webSocket.emit('add users', userId);
+      this.webSocket.on('connect_error', (error: any) => {
+        console.error('Error connecting to Socket.IO server:', error);
+        throw new Error('Connection failed');
+      });
+      this.webSocket.on('connect', () => {
+        console.log(
+          'Connected to Socket.IO server😊🎉🌟👍🏽💡🔥🚀🎈🎊👏🏼🙌🏾👌🏻🌈🌺🌻🍀🍉🍕🍦🍹🎵🎮🎭📚🖋️📸🎥📱💻🖥️🎨🏆⚽🏀🎾🏈🎱🏓🏸🥋🏄‍♂️🚴‍♀️🎬🎤🎸🎭🎪🎡🎢🏰🏖️🏝️🌋🗻🌅🌠🌌🎇🎆🎑🌄🌆🌈🌦️🌧️🌨️🌩️🌪️🌫️🌬️🌊🏞️🏕️🏖️🏜️🏝️🏔️🗻🏘️🏰🏯'
+        );
+      });
+    } else {
+      console.error('Missing JWT token for Socket.IO connection');
     }
+  }
 
-    sendNotification(notificationId:string){
-      this.webSocket.emit('notify',notificationId)
-    }
+  addUsers(userId: string): void {
+    this.webSocket.emit('add users', userId);
+  }
 
-    listenForNotifications(): Observable<any> {
-      return this.webSocket.fromEvent<any>('notification');
-    }
+  sendNotification(notificationId: string) {
+    this.webSocket.emit('notify', notificationId);
+  }
+
+  listenForNotifications(): Observable<any> {
+    return this.webSocket.fromEvent<any>('notification');
+  }
 }

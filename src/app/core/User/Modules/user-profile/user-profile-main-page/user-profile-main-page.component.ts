@@ -16,7 +16,7 @@ export class UserProfileMainComponent implements OnInit {
   previewUrl: string | ArrayBuffer | null = null;
   imageSrc: string = '';
   UserDetails!: User;
-  loading:boolean=true;
+  loading: boolean = true;
   constructor(
     private store: Store<AppState>,
     private userService: UserService
@@ -57,12 +57,12 @@ export class UserProfileMainComponent implements OnInit {
     const fd = new FormData();
     fd.append('profilePic', imageFile, imageFile.name);
     this.userService.changeProfilePic(fd).subscribe({
-      next:(res) => {
+      next: (res) => {
         this.imageSrc = res.data;
       },
-     error:(error) => {
+      error: (error) => {
         alert(error);
-      }
-  });
+      },
+    });
   }
 }

@@ -109,3 +109,18 @@ export interface MedicalRecordModel {
 }
 
 
+
+
+export interface doctorsResponseModel{
+  doctors: Doctor[];
+  currentPage: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+}
+
+
+export interface CancelAppointmentResponse{
+  appointment:Appointment,
+  notificationId:string
+}

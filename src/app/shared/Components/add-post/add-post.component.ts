@@ -26,7 +26,7 @@ import { ChipsModule } from 'primeng/chips';
     ReactiveFormsModule,
     FormsModule,
     MediaModalComponent,
-    ChipsModule
+    ChipsModule,
   ],
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.css'],
@@ -67,7 +67,7 @@ export class AddPostComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3)]],
       content: ['', [Validators.required, Validators.minLength(3)]],
       media: this.formBuilder.array([]),
-      tags: new FormControl<string[]>([])
+      tags: new FormControl<string[]>([]),
     });
   }
 
@@ -109,7 +109,7 @@ export class AddPostComponent implements OnInit {
       console.log(this.addPostForm.value);
       this.isModalOpen = true;
       this.store.dispatch(addPost({ post: this.addPostForm.value }));
-      this.addPostForm.reset()
+      this.addPostForm.reset();
     } else {
       this.addPostForm.markAllAsTouched();
     }
@@ -193,6 +193,4 @@ export class AddPostComponent implements OnInit {
       this.videofilenames.splice(index - this.imageUrls.length, 1);
     }
   }
-
-  
 }

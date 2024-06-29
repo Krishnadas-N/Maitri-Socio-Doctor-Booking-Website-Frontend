@@ -9,72 +9,70 @@ import { AdminService } from '../../../core/Admin/Services/admin-service/auth.se
 
 @Component({
   selector: 'app-notification',
-  standalone:true,
-  imports:[CommonModule],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css']
+  styleUrls: ['./notification.component.css'],
 })
 export class NotificationComponent implements OnInit {
   expectedRole!: string;
-  notifications:AppointmentNotificationDTO[]=[]
+  notifications: AppointmentNotificationDTO[] = [];
   constructor(
     private route: ActivatedRoute,
-    private userService:UserService,
-    private toastr:ToastrService,
-    private doctorService:DoctorService,
-    private adminService:AdminService
-  ) { }
+    private userService: UserService,
+    private toastr: ToastrService,
+    private doctorService: DoctorService,
+    private adminService: AdminService
+  ) {}
 
   ngOnInit() {
     this.expectedRole = this.route.snapshot.data['expectedRole'];
     console.log('Expected Role:', this.expectedRole);
     this.getNotiifcations();
   }
-  getNotiifcations(){
-
-    if( this.expectedRole==='User'){
-    this.userService.getNotifications().subscribe({
-      next:(res)=>{
+  getNotiifcations() {
+    if (this.expectedRole === 'User') {
+      this.userService.getNotifications().subscribe({
+        next: (res) => {
           console.log(res);
           this.notifications = res.data;
 
           console.log(this.notifications);
-      },
-      error:(err)=>{
-       
-      }
-    })
-   }else if(this.expectedRole === 'Doctor'){
-    this.doctorService.getNotificationsOfDoctor().subscribe({
-      next:(res)=>{
-        console.log(res);
-        this.notifications = res.data;
+        },
+        error: (err) => {},
+      });
+    } else if (this.expectedRole === 'Doctor') {
+      this.doctorService.getNotificationsOfDoctor().subscribe({
+        next: (res) => {
+          console.log(res);
+          this.notifications = res.data;
 
-        console.log(this.notifications);
-      },
-      error:(err)=>{
-        this.toastr.error(err)
-      }
-    })
-   }else if(this.expectedRole === 'Admin'){
-    
-    this.adminService.getNotification().subscribe({
-      next:(res)=>{
-        console.log(res);
-        this.notifications = res.data;
+          console.log(this.notifications);
+        },
+        error: (err) => {
+          this.toastr.error(err);
+        },
+      });
+    } else if (this.expectedRole === 'Admin') {
+      this.adminService.getNotification().subscribe({
+        next: (res) => {
+          console.log(res);
+          this.notifications = res.data;
 
-        console.log(this.notifications);
-      },
-      error:(err)=>{
-        this.toastr.error(err)
-      }
-    })
-   }
+          console.log(this.notifications);
+        },
+        error: (err) => {
+          this.toastr.error(err);
+        },
+      });
+    }
   }
 
   groupNotificationsByDay(): { [key: string]: AppointmentNotificationDTO[] } {
-    const groupedNotifications: { [key: string]: AppointmentNotificationDTO[] } = {};
-    this.notifications.forEach(notification => {
+    const groupedNotifications: {
+      [key: string]: AppointmentNotificationDTO[];
+    } = {};
+    this.notifications.forEach((notification) => {
       const date = new Date(notification.createdAt);
       const formattedDate = date.toLocaleDateString();
       if (!groupedNotifications[formattedDate]) {

@@ -22,7 +22,7 @@ export class PaymentConfirmationComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private toastr: ToastrService,
-    private router: Router,
+    private router: Router
   ) {
     this.route.params.subscribe((param) => {
       console.log('Param', param);
@@ -32,24 +32,22 @@ export class PaymentConfirmationComponent implements OnInit {
 
   ngOnInit() {
     this.isScreenLoading = true;
-      console.log('working confrimarion');
-      this.getAppoinment();
-
-
+    console.log('working confrimarion');
+    this.getAppoinment();
   }
   getAppoinment() {
     this.userService.GetAppointmentDetails(this.appoinmentId).subscribe({
-      next:(res: any) => {
+      next: (res: any) => {
         console.log(res);
         this.appoinmentDetails = res.data;
         this.isScreenLoading = false;
       },
-      error:(err) => {
+      error: (err) => {
         this.toastr.error(
           err || 'Error while Get Appoinments please try again'
         );
-      }
-  });
+      },
+    });
   }
   viewBookings() {
     this.router.navigate(['/profile/appoinments']);

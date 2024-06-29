@@ -39,7 +39,7 @@ export interface Doctor {
     typesOfConsultation?: string[];
     maxPatientsPerDay?: number;
     rating?: number;
-    isProfileComplete?: boolean;
+    isProfileComplete: boolean;
     isBlocked?:boolean
   }
   

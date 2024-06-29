@@ -6,12 +6,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { WindowRefService } from '../../../../shared/Services/window-ref.service';
 import { NotificationService } from '../../../../shared/Services/notification-service/notification.service';
-import { environment } from '../../../../../environments/environment.development';
 import { StripeService, StripeCardComponent, NgxStripeModule } from 'ngx-stripe';
-import {
-  StripeCardElementOptions,
-  StripeElementsOptions,
-} from '@stripe/stripe-js';
 import { Appointment } from '../../../../shared/Models/appoinment.model';
 import { MatInputModule } from '@angular/material/input';
 @Component({
@@ -29,27 +24,8 @@ export class BookingCheckoutPageComponent implements OnInit {
   walletBalance!:number;
   appoinmentDetails!:Appointment;
   selectedPaymentMethod: string = '';
-  @ViewChild(StripeCardComponent) card!: StripeCardComponent;
-  cardOptions: StripeCardElementOptions = {
-    style: {
-      base: {
-        fontWeight: 400,
-        fontFamily: 'Circular',
-        fontSize: '14px',
-        iconColor: '#666EE8',
-        color: '#002333',
-        '::placeholder': {
-          color: '#919191',
-        },
-      },
-    },
-  };
-  elementsOptions: StripeElementsOptions = {
-    locale: 'en',
-    clientSecret:environment.STRIPE_SECRET_KEY
-  };
-
-  stripeTest!: FormGroup;
+  loading: boolean = true;
+  // stripePromise: Promise<Stripe | null>;
   constructor(
     private route:ActivatedRoute,
     private userService:UserService,
@@ -57,8 +33,8 @@ export class BookingCheckoutPageComponent implements OnInit {
     private winRef: WindowRefService,
     private router:Router,
     private notificationService:NotificationService,
-    private fb: FormBuilder, private stripeService: StripeService
   ) {
+    // this.stripePromise = loadStripe(environment.Stripe_Publishable_key);
     this.route.params.subscribe(
       (param)=>{
         console.log("Param", param);
@@ -79,7 +55,7 @@ this.getWalletBalance()
       next:(res:any)=>{
         console.log("AppointmentDetails",res);
         this.appoinmentDetails = res.data;
-        this.loadStripePayment()
+        this.loading = false;
       },
       error:(err)=>{
         this.toastr.error(err|| 'Error while Get Appoinments please try again');
@@ -102,41 +78,35 @@ this.getWalletBalance()
     console.log('Selected payment method:', this.selectedPaymentMethod);
     this.isLoading=true;
     this.processPayment()
-    // this.http.post('/api/payment', { paymentMethod: this.selectedPaymentMethod }).subscribe(response => {
-    //   console.log('Backend response:', response);
-    // });
   }
+  processPayment(stripeToken?: string) {
+    this.userService.makePayment(this.selectedPaymentMethod, this.appoinmentId, stripeToken).subscribe({
+      next: (res: any) => {
+        console.log("After Payment", res);
+        this.isLoading = false;
 
-  processPayment(stripeToken?: any) {
-    this.userService.makePayment(this.selectedPaymentMethod,this.appoinmentId,stripeToken).subscribe({
-      next:(res)=>{
-        console.log("After Payment",res);
-        this.isLoading=false;
-        if(this.selectedPaymentMethod==='Stripe'){
-          // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
-          location.href = `/booking-confirmation/${res.data.appointmentId}`;
-        }else if(this.selectedPaymentMethod ==='Razorpay'){
-          this.payWithRazorpay(res.data)
+        switch (this.selectedPaymentMethod) {
+          case 'Razorpay':
+            // Handle Razorpay payment success
+            this.payWithRazorpay(res.data);
+            break;
+          case 'Wallet':
+            // Handle wallet payment success
+            location.href = `/booking-confirmation/${res.data.appointmentId}`;
+            break;
+          default:
+            // Handle other cases or do nothing
+            break;
         }
-        else if(this.selectedPaymentMethod ==='Wallet'){
-          location.href = `/booking-confirmation/${res.data.appointmentId}`;
-          // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
-        }
-        else{
-          return
-        }
-
       },
-      error:(err)=>{
-        this.isLoading=false;
-        this.toastr.error(err)
+      error: (err: any) => {
+        this.isLoading = false;
+        this.toastr.error(err);
       }
-  })
+    });
   }
 
-  stripePaymentHandler(){
 
-  }
 
   payWithRazorpay(data:any): void {
     const options = {
@@ -173,7 +143,7 @@ this.getWalletBalance()
           console.log("verify payment",res);
           const notificationId = res.data.notificationId;
           this.notificationService.sendNotification(notificationId);
-          location.href = `/booking-confirmation/${res.data.appointmentId}`;
+          location.href = `/booking-confirmation/${res.data.appoinmentId}`;
           // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         },
         error:(err)=>{
@@ -197,12 +167,6 @@ this.getWalletBalance()
 toggleBalance(){
 this.isCheckBalance = !this.isCheckBalance
 }
-loadStripePayment(){
-    this.stripeTest = this.fb.group({
-      name: [`${this.appoinmentDetails.user[0].firstName} ${this.appoinmentDetails.user[0].lastName}`, [Validators.required]],
-      email: [this.appoinmentDetails.user[0].email, [Validators.required]],
-      amount: [this.appoinmentDetails.amount, [Validators.required, Validators.pattern(/\d+/)]],
-    });
-}
+
 }
 

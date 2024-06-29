@@ -25,14 +25,15 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
               return next(updatedReq);
             } else {
               tokenService.logout();
-              return throwError(()=>new Error('Failed to refresh access token'));
+              return throwError(
+                () => new Error('Failed to refresh access token')
+              );
             }
-          }),
+          })
         );
       } else {
-       
-        return throwError(()=>error)
+        return throwError(() => error);
       }
-    }),
+    })
   );
 };

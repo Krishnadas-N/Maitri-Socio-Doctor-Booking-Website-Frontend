@@ -8,7 +8,7 @@ interface IReadBy {
 
 export interface INotification {
     _id: string;
-    sender: string; 
+    sender: string;
     senderModel: 'User' | 'Doctor';
     receivers: string[];
     title:string;
@@ -28,8 +28,9 @@ export interface AppointmentNotificationDTO {
     }[];
     title: string;
     message: string;
-    readBy: any[]; 
+    readBy: any[];
     createdAt: Date;
     __v: number;
   }
-  
+
+

@@ -1,5 +1,5 @@
 export const themeJson = {
-  
+
       "themeName": "default",
       "colorPalette": "light",
       "isPanelless": false,

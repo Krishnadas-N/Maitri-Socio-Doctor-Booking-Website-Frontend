@@ -4,13 +4,8 @@ import { SkeltonModuleComponent } from './skelton-module.component';
 import { SkeletonDirective } from '../Directives/skelton.directive';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [SkeltonModuleComponent,SkeletonDirective],
-  exports: [
-    SkeltonModuleComponent,
-    SkeletonDirective
-  ]
+  imports: [CommonModule],
+  declarations: [SkeltonModuleComponent, SkeletonDirective],
+  exports: [SkeltonModuleComponent, SkeletonDirective],
 })
-export class SkeltonModuleModule { }
+export class SkeltonModuleModule {}

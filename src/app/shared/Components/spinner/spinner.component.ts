@@ -6,10 +6,10 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './spinner.component.html',
-  styleUrl: './spinner.component.css'
+  styleUrl: './spinner.component.css',
 })
 export class SpinnerComponent {
-  @Input() spinnername=''
+  @Input() spinnername = '';
   @Input() name: string = 'Loading...';
   @Input() color: string = '#007bff'; // Default color is blue
   @Input() width: string = '50px';

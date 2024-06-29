@@ -1,6 +1,6 @@
 // interfaces.ts
 
-export interface SuccessResponse<T> {
+export interface SuccessResponse<T = any> {
   success: true;
   data: T;
   message: string;

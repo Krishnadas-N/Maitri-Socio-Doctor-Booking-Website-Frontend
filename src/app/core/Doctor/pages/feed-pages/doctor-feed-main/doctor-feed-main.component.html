@@ -1,8 +1,8 @@
 
 <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-7 mb-12  mx-12 w-2xl container px-2 mx-auto">
-    
+
     <div class="">
-    
+
         <app-profile-card
         [profileImageSrc]="doctorDetail?.profilePic || ''"
         [name]="(doctorDetail?.firstName || '') + ' ' + (doctorDetail?.lastName || '')"
@@ -11,12 +11,12 @@
         [followersCount]="(doctorDetail?.followers?.length || 0)"
         [followingCount]="102"
     ></app-profile-card>
-    
+
     <div class="card mt-6 rounded-lg ">
         <div class="card-body bg-white">
             <ul class="flex flex-col w-full gap-2 mb-4 text-sm font-medium shrink-0 nav-tabs">
                 <li>
-                    <a [routerLink]="'/doctor/feed'" 
+                    <a [routerLink]="'/doctor/feed'"
                     routerLinkActive="active-link"
                     [ngClass]="{
                         'text-white bg-blue-100 dark:bg-blue-500': isActive('/doctor/feed'),
@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="group grow">
-                    <a [routerLink]="'/doctor/feed/my-feed'" 
+                    <a [routerLink]="'/doctor/feed/my-feed'"
                        routerLinkActive="active-link"
                        [ngClass]="{
                            'text-white bg-blue-100 dark:bg-blue-500': isActive('/doctor/feed/my-feed'),
@@ -39,8 +39,8 @@
                         My Feed
                     </a>
                 </li>
-                <li class="group grow">
-                    <a [routerLink]="'/doctor/feed/add-story'" 
+                <!-- <li class="group grow">
+                    <a [routerLink]="'/doctor/feed/add-story'"
                     routerLinkActive="active-link"
                     [ngClass]="{
                         'text-white bg-blue-100 dark:bg-blue-500': isActive('/doctor/feed/add-story'),
@@ -53,7 +53,7 @@
                 </li>
 
                 <li class="group grow">
-                    <a [routerLink]="'/doctor/feed/notifications'" 
+                    <a [routerLink]="'/doctor/feed/notifications'"
                     routerLinkActive="active-link"
                     [ngClass]="{
                         'text-white bg-blue-100 dark:bg-blue-500': isActive('/doctor/feed/notifications'),
@@ -64,21 +64,21 @@
                         Notifications
                     </a>
                 </li>
-              
+
                 <li class="group grow">
                     <a  class="flex gap-2 items-center px-4 w-full py-2 text-base transition-all duration-300 ease-linear rounded-md text-slate-500 dark:text-zink-200 border border-transparent group-[.active]:bg-custom-500 dark:group-[.active]:bg-custom-500 group-[.active]:text-white dark:group-[.active]:text-white hover:bg-blue-100 dark:hover:text-white dark:hover:bg-blue-500 hover:text-white active:text-custom-500 dark:active:text-custom-500 -mb-[1px]">
                         <i data-lucide="settings" class="inline-block align-middle size-4 ltr:mr-1 rtl:ml-1"></i>
                         Settings
                     </a>
-                </li>
+                </li> -->
             </ul>
-            
+
         </div>
      </div><!--end card-->
 
-    
 
-        
+
+
 
         <div class="bg-white shadow mt-6  rounded-lg p-6">
             <h3 class="text-gray-600 text-sm font-semibold mb-4">Following</h3>
@@ -101,7 +101,7 @@
                     <a class="block bg-white p-1 rounded-full" href="#">
                         <img class="w-16 rounded-full" src="https://images.unsplash.com/photo-1638649602320-450b717fa622?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80">
                     </a>
-     
+
 
                     <!-- Username -->
                     <span class="text-xs text-gray-500">
@@ -130,7 +130,7 @@
                         <!-- Thumbnail -->
                         <img class="w-16 rounded-full" src="https://images.unsplash.com/photo-1638691899851-0e955bceba1f?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80">
                     </a>
-        
+
                     <!-- Username -->
                     <span class="text-xs text-gray-500">
                         Olivia
@@ -143,7 +143,7 @@
                     <a class="block bg-white p-1 rounded-full" href="#">
                         <img class="w-16 rounded-full" src="https://images.unsplash.com/photo-1638612913771-8f00622b96fb?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80">
                     </a>
-        
+
 
                     <!-- Username -->
                     <span class="text-xs text-gray-500">
@@ -157,7 +157,7 @@
                         <!-- Thumbnail -->
                         <img class="w-16 rounded-full" src="https://images.unsplash.com/photo-1638649602320-450b717fa622?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80">
                     </a>
-                
+
 
                     <!-- Username -->
                     <span class="text-xs text-gray-500">
@@ -169,11 +169,11 @@
         </div>
 
 
-        
+
     </div>
 
     <div class="col-span-2">
         <router-outlet></router-outlet>
     </div>
-    
+
 </main>

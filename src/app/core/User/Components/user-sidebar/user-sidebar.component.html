@@ -1,40 +1,89 @@
 <!-- xs:w-88 xl:w-270 -->
 <div
-class="flex flex-col h-screen xl:pr-3 ps-5 dark:bg-white left-0 top-0 fixed overflow-y-auto overflow-x-hidden ">
-<!-- Logo -->
-<a class="flex my-2 justify-center mt-2" href="#">
-  <img src="https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg" class="w-10 h-10 rounded-full lg:w-16 lg:h-16" alt="Maitri_Logo">
-  
-</a>
-<!-- /Logo -->
-
-<!-- Nav -->
-<nav class="mt-5">
-  <a [routerLink]="['/']" 
-  routerLinkActive="active-link" [ngClass]="{'text-blue-400': isActive('/'), 'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400': !isActive('/')}"
-    class="flex items-center justify-center xl:justify-start  mb-8 transition duration-350 ease-in-out">
-    <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M22.58 7.35L12.475 1.897c-.297-.16-.654-.16-.95 0L1.425 7.35c-.486.264-.667.87-.405 1.356.18.335.525.525.88.525.16 0 .324-.038.475-.12l.734-.396 1.59 11.25c.216 1.214 1.31 2.062 2.66 2.062h9.282c1.35 0 2.444-.848 2.662-2.088l1.588-11.225.737.398c.485.263 1.092.082 1.354-.404.263-.486.08-1.093-.404-1.355zM12 15.435c-1.795 0-3.25-1.455-3.25-3.25s1.455-3.25 3.25-3.25 3.25 1.455 3.25 3.25-1.455 3.25-3.25 3.25z">
-      </path>
-    </svg>
-    <span class="hidden xl:block ml-4 font-bold text-md">Home</span>
+  class="flex flex-col h-screen xl:pr-3 ps-5 dark:bg-white left-0 top-0 fixed overflow-y-auto overflow-x-hidden"
+>
+  <!-- Logo -->
+  <a class="flex my-2 justify-center mt-2" href="#">
+    <img
+      src="https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg"
+      class="w-10 h-10 rounded-full lg:w-16 lg:h-16"
+      alt="Maitri_Logo"
+    />
   </a>
+  <!-- /Logo -->
 
-  <a [routerLink]="['/profile/appoinments']" routerLinkActive="active-link" [ngClass]="{'text-blue-400': isActive('/profile/appoinments'), 'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400': !isActive('/profile/appoinments')}"
-    class="flex items-center justify-center xl:justify-start  mb-8 transition duration-350 ease-in-out">
-    <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM329 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-95 95-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L329 305z"/></svg>
-    <span class="hidden xl:block ml-4 font-bold text-md">Appoinments</span>
-  </a>
+  <!-- Nav -->
+  <nav class="mt-5">
+    <a
+      [routerLink]="['/']"
+      routerLinkActive="active-link"
+      [ngClass]="{
+        'text-blue-400': isActive('/'),
+        'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400':
+          !isActive('/')
+      }"
+      class="flex items-center justify-center xl:justify-start mb-8 transition duration-350 ease-in-out"
+    >
+      <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M22.58 7.35L12.475 1.897c-.297-.16-.654-.16-.95 0L1.425 7.35c-.486.264-.667.87-.405 1.356.18.335.525.525.88.525.16 0 .324-.038.475-.12l.734-.396 1.59 11.25c.216 1.214 1.31 2.062 2.66 2.062h9.282c1.35 0 2.444-.848 2.662-2.088l1.588-11.225.737.398c.485.263 1.092.082 1.354-.404.263-.486.08-1.093-.404-1.355zM12 15.435c-1.795 0-3.25-1.455-3.25-3.25s1.455-3.25 3.25-3.25 3.25 1.455 3.25 3.25-1.455 3.25-3.25 3.25z"
+        ></path>
+      </svg>
+      <span class="hidden xl:block ml-4 font-bold text-md">Home</span>
+    </a>
 
-  <a [routerLink]="['/chats/inbox']" 
-  routerLinkActive="active-link" [ngClass]="{'text-blue-400': isActive('/chats/inbox'), 'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400': !isActive('/chats/inbox')}"
-    class="flex items-center justify-center xl:justify-start  mb-8 transition duration-350 ease-in-out">
-    <svg fill="currentColor" viewBox="0 0 512 512" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" ><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path  d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"/></svg>
-    <span class="hidden xl:block ml-4 font-bold text-md">Chats Consult</span>
-  </a>
-  
-  <!-- <a [routerLink]="['/video-consult']" 
+    <a
+      [routerLink]="['/profile/appoinments']"
+      routerLinkActive="active-link"
+      [ngClass]="{
+        'text-blue-400': isActive('/profile/appoinments'),
+        'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400':
+          !isActive('/profile/appoinments')
+      }"
+      class="flex items-center justify-center xl:justify-start mb-8 transition duration-350 ease-in-out"
+    >
+      <svg
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        viewBox="0 0 448 512"
+      >
+        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+        <path
+          d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM329 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-95 95-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L329 305z"
+        />
+      </svg>
+      <span class="hidden xl:block ml-4 font-bold text-md">Appoinments</span>
+    </a>
+
+    <a
+      [routerLink]="['/chats/inbox']"
+      routerLinkActive="active-link"
+      [ngClass]="{
+        'text-blue-400': isActive('/chats/inbox'),
+        'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400':
+          !isActive('/chats/inbox')
+      }"
+      class="flex items-center justify-center xl:justify-start mb-8 transition duration-350 ease-in-out"
+    >
+      <svg
+        fill="currentColor"
+        viewBox="0 0 512 512"
+        class="h-6 w-6"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+        <path
+          d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"
+        />
+      </svg>
+      <span class="hidden xl:block ml-4 font-bold text-md">Chats Consult</span>
+    </a>
+
+    <!-- <a [routerLink]="['/video-consult']"
   routerLinkActive="active-link" [ngClass]="{'text-blue-400': isActive('/chats'), 'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400': !isActive('/chats')}"
     class="flex items-center justify-center xl:justify-start  mb-8 transition duration-350 ease-in-out">
      <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
@@ -45,40 +94,69 @@ class="flex flex-col h-screen xl:pr-3 ps-5 dark:bg-white left-0 top-0 fixed over
     <span class="hidden xl:block ml-4 font-bold text-md">Video Consult</span>
   </a> -->
 
-  <a [routerLink]="['/find-doctors']" 
-  routerLinkActive="active-link" [ngClass]="{'text-blue-400': isActive('/find-doctors'), 'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400': !isActive('/find-doctors')}"
-    class="flex items-center justify-center xl:justify-start  mb-8 transition duration-350 ease-in-out">
-    <svg  fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path  d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-    <span class="hidden xl:block ml-4 font-bold text-md">Find Doctors</span>
-  </a>
-
-  <a href="#"
-    class="flex items-center justify-center xl:justify-start text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400 mb-8 transition duration-350 ease-in-out">
-    <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
-      <g>
+    <a
+      [routerLink]="['/find-doctors']"
+      routerLinkActive="active-link"
+      [ngClass]="{
+        'text-blue-400': isActive('/find-doctors'),
+        'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400':
+          !isActive('/find-doctors')
+      }"
+      class="flex items-center justify-center xl:justify-start mb-8 transition duration-350 ease-in-out"
+    >
+      <svg
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        viewBox="0 0 512 512"
+      >
+        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
         <path
-          d="M19.75 22H4.25C3.01 22 2 20.99 2 19.75V4.25C2 3.01 3.01 2 4.25 2h15.5C20.99 2 22 3.01 22 4.25v15.5c0 1.24-1.01 2.25-2.25 2.25zM4.25 3.5c-.414 0-.75.337-.75.75v15.5c0 .413.336.75.75.75h15.5c.414 0 .75-.337.75-.75V4.25c0-.413-.336-.75-.75-.75H4.25z">
-        </path>
+          d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+        />
+      </svg>
+      <span class="hidden xl:block ml-4 font-bold text-md">Find Doctors</span>
+    </a>
+
+    <a
+      href="#"
+      class="flex items-center justify-center xl:justify-start text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400 mb-8 transition duration-350 ease-in-out"
+    >
+      <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
+        <g>
+          <path
+            d="M19.75 22H4.25C3.01 22 2 20.99 2 19.75V4.25C2 3.01 3.01 2 4.25 2h15.5C20.99 2 22 3.01 22 4.25v15.5c0 1.24-1.01 2.25-2.25 2.25zM4.25 3.5c-.414 0-.75.337-.75.75v15.5c0 .413.336.75.75.75h15.5c.414 0 .75-.337.75-.75V4.25c0-.413-.336-.75-.75-.75H4.25z"
+          ></path>
+          <path
+            d="M17 8.64H7c-.414 0-.75-.337-.75-.75s.336-.75.75-.75h10c.414 0 .75.335.75.75s-.336.75-.75.75zm0 4.11H7c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75zm-5 4.11H7c-.414 0-.75-.335-.75-.75s.336-.75.75-.75h5c.414 0 .75.337.75.75s-.336.75-.75.75z"
+          ></path>
+        </g>
+      </svg>
+      <span class="hidden xl:block ml-4 font-bold text-md">Lists</span>
+    </a>
+
+    <a
+      [routerLink]="'/profile'"
+      routerLinkActive="active-link"
+      [ngClass]="{
+        'text-blue-400': isActive('/profile'),
+        'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400':
+          !isActive('/profile')
+      }"
+      class="flex items-center justify-center xl:justify-start mb-8 transition duration-350 ease-in-out"
+    >
+      <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
         <path
-          d="M17 8.64H7c-.414 0-.75-.337-.75-.75s.336-.75.75-.75h10c.414 0 .75.335.75.75s-.336.75-.75.75zm0 4.11H7c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75zm-5 4.11H7c-.414 0-.75-.335-.75-.75s.336-.75.75-.75h5c.414 0 .75.337.75.75s-.336.75-.75.75z">
-        </path>
-      </g>
-    </svg>
-    <span class="hidden xl:block ml-4 font-bold text-md">Lists</span>
-  </a>
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 11.816c1.355 0 2.872-.15 3.84-1.256.814-.93 1.078-2.368.806-4.392-.38-2.825-2.117-4.512-4.646-4.512S7.734 3.343 7.354 6.17c-.272 2.022-.008 3.46.806 4.39.968 1.107 2.485 1.256 3.84 1.256zM8.84 6.368c.162-1.2.787-3.212 3.16-3.212s2.998 2.013 3.16 3.212c.207 1.55.057 2.627-.45 3.205-.455.52-1.266.743-2.71.743s-2.255-.223-2.71-.743c-.507-.578-.657-1.656-.45-3.205zm11.44 12.868c-.877-3.526-4.282-5.99-8.28-5.99s-7.403 2.464-8.28 5.99c-.172.692-.028 1.4.395 1.94.408.52 1.04.82 1.733.82h12.304c.693 0 1.325-.3 1.733-.82.424-.54.567-1.247.394-1.94zm-1.576 1.016c-.126.16-.316.246-.552.246H5.848c-.235 0-.426-.085-.552-.246-.137-.174-.18-.412-.12-.654.71-2.855 3.517-4.85 6.824-4.85s6.114 1.994 6.824 4.85c.06.242.017.48-.12.654z"
+        ></path>
+      </svg>
+      <span class="hidden xl:block ml-4 font-bold text-md">Profile</span>
+    </a>
 
-  <a [routerLink]="'/profile'"
-  routerLinkActive="active-link" [ngClass]="{'text-blue-400': isActive('/profile'), 'text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400': !isActive('/profile')}"
-  class="flex items-center justify-center xl:justify-start  mb-8 transition duration-350 ease-in-out">
-    <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M12 11.816c1.355 0 2.872-.15 3.84-1.256.814-.93 1.078-2.368.806-4.392-.38-2.825-2.117-4.512-4.646-4.512S7.734 3.343 7.354 6.17c-.272 2.022-.008 3.46.806 4.39.968 1.107 2.485 1.256 3.84 1.256zM8.84 6.368c.162-1.2.787-3.212 3.16-3.212s2.998 2.013 3.16 3.212c.207 1.55.057 2.627-.45 3.205-.455.52-1.266.743-2.71.743s-2.255-.223-2.71-.743c-.507-.578-.657-1.656-.45-3.205zm11.44 12.868c-.877-3.526-4.282-5.99-8.28-5.99s-7.403 2.464-8.28 5.99c-.172.692-.028 1.4.395 1.94.408.52 1.04.82 1.733.82h12.304c.693 0 1.325-.3 1.733-.82.424-.54.567-1.247.394-1.94zm-1.576 1.016c-.126.16-.316.246-.552.246H5.848c-.235 0-.426-.085-.552-.246-.137-.174-.18-.412-.12-.654.71-2.855 3.517-4.85 6.824-4.85s6.114 1.994 6.824 4.85c.06.242.017.48-.12.654z">
-      </path>
-    </svg>
-    <span class="hidden xl:block ml-4 font-bold text-md">Profile</span>
-  </a>
-
-  <!-- <a href="#"
+    <!-- <a href="#"
     class="flex items-center justify-center xl:justify-start text-gray-800 dark:text-black hover:text-blue-400 dark:hover:text-blue-400 mb-8 transition duration-350 ease-in-out">
     <svg fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
       <g>
@@ -92,44 +170,56 @@ class="flex flex-col h-screen xl:pr-3 ps-5 dark:bg-white left-0 top-0 fixed over
     </svg>
     <span class="hidden xl:block ml-4 font-bold text-md">More</span>
   </a> -->
+  </nav>
+  <!-- /Nav -->
 
-
-</nav>
-<!-- /Nav -->
-
-<!-- User Menu -->
-<div class="mt-auto align-bottom items-baseline">  <a href="#"
-  class="mx-auto w-11 bottom-0 h-11 xl:w-auto flex items-center justify-center bg-sky-500 hover:bg-sky-500 py-3 rounded-full text-black font-bold font-sm transition duration-350 ease-in-out mb-10">
-  <svg fill="currentColor" viewBox="0 0 24 24" class="block xl:hidden h-6 w-6">
-    <path
-      d="M8.8 7.2H5.6V3.9c0-.4-.3-.8-.8-.8s-.7.4-.7.8v3.3H.8c-.4 0-.8.3-.8.8s.3.8.8.8h3.3v3.3c0 .4.3.8.8.8s.8-.3.8-.8V8.7H9c.4 0 .8-.3.8-.8s-.5-.7-1-.7zm15-4.9v-.1h-.1c-.1 0-9.2 1.2-14.4 11.7-3.8 7.6-3.6 9.9-3.3 9.9.3.1 3.4-6.5 6.7-9.2 5.2-1.1 6.6-3.6 6.6-3.6s-1.5.2-2.1.2c-.8 0-1.4-.2-1.7-.3 1.3-1.2 2.4-1.5 3.5-1.7.9-.2 1.8-.4 3-1.2 2.2-1.6 1.9-5.5 1.8-5.7z">
-    </path>
-  </svg>
-  <span class="hidden xl:block font-bold text-md p-3">Make an appoinment</span>
-</a></div>
-<div
-  class="w-14 xl:w-full mx-auto mt-auto flex flex-row justify-between  rounded-full hover:bg-sky-50 dark:hover:bg-dim-800 p-2 cursor-pointer transition duration-350 ease-in-out mb-2">
-  <div class="flex flex-row">
-    <img class="w-10 h-10 rounded-full"
-      src="https://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7_normal.jpg" alt="Joe Biden" />
-    <div class=" xl:block flex flex-col ml-2">
-      <h1 class="text-gray-800 dark:text-black font-bold text-sm">
-        <!-- Joe Biden -->
-      </h1>
-      <p (click)="logout()" class="text-gray-400 text-sm">Logout</p>
-    </div>
-  </div>
-  <div class="hidden xl:block">
-    <div class="flex items-center h-full text-gray-800 dark:text-black">
-      <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 mr-2">
-        <g>
-          <path
-            d="M20.207 8.147c-.39-.39-1.023-.39-1.414 0L12 14.94 5.207 8.147c-.39-.39-1.023-.39-1.414 0-.39.39-.39 1.023 0 1.414l7.5 7.5c.195.196.45.294.707.294s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.022 0-1.413z">
-          </path>
-        </g>
+  <!-- User Menu -->
+  <div class="mt-auto align-bottom items-baseline">
+    <a
+      href="#"
+      class="mx-auto w-11 bottom-0 h-11 xl:w-auto flex items-center justify-center bg-sky-500 hover:bg-sky-500 py-3 rounded-full text-black font-bold font-sm transition duration-350 ease-in-out mb-10"
+    >
+      <svg
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        class="block xl:hidden h-6 w-6"
+      >
+        <path
+          d="M8.8 7.2H5.6V3.9c0-.4-.3-.8-.8-.8s-.7.4-.7.8v3.3H.8c-.4 0-.8.3-.8.8s.3.8.8.8h3.3v3.3c0 .4.3.8.8.8s.8-.3.8-.8V8.7H9c.4 0 .8-.3.8-.8s-.5-.7-1-.7zm15-4.9v-.1h-.1c-.1 0-9.2 1.2-14.4 11.7-3.8 7.6-3.6 9.9-3.3 9.9.3.1 3.4-6.5 6.7-9.2 5.2-1.1 6.6-3.6 6.6-3.6s-1.5.2-2.1.2c-.8 0-1.4-.2-1.7-.3 1.3-1.2 2.4-1.5 3.5-1.7.9-.2 1.8-.4 3-1.2 2.2-1.6 1.9-5.5 1.8-5.7z"
+        ></path>
       </svg>
+      <span class="hidden xl:block font-bold text-md p-3"
+        >Make an appoinment</span
+      >
+    </a>
+  </div>
+  <div
+    class="w-14 xl:w-full mx-auto mt-auto flex flex-row justify-between rounded-full hover:bg-sky-50 dark:hover:bg-dim-800 p-2 cursor-pointer transition duration-350 ease-in-out mb-2"
+  >
+    <div class="flex flex-row">
+      <img
+        class="w-10 h-10 rounded-full"
+        src="https://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7_normal.jpg"
+        alt="Joe Biden"
+      />
+      <div class="xl:block flex flex-col ml-2">
+        <h1 class="text-gray-800 dark:text-black font-bold text-sm">
+          <!-- Joe Biden -->
+        </h1>
+        <p (click)="logout()" class="text-gray-400 text-sm">Logout</p>
+      </div>
+    </div>
+    <div class="hidden xl:block">
+      <div class="flex items-center h-full text-gray-800 dark:text-black">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 mr-2">
+          <g>
+            <path
+              d="M20.207 8.147c-.39-.39-1.023-.39-1.414 0L12 14.94 5.207 8.147c-.39-.39-1.023-.39-1.414 0-.39.39-.39 1.023 0 1.414l7.5 7.5c.195.196.45.294.707.294s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.022 0-1.413z"
+            ></path>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
-</div>
-<!-- /User Menu -->
+  <!-- /User Menu -->
 </div>

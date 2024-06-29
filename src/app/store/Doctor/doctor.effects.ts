@@ -72,7 +72,7 @@ export class doctorEffects {
       switchMap(({ formData }) =>
         this.doctorAuthService.registerProfessional(formData).pipe(
           tap(data=>console.log("log from  registerProfessional info succces",data)),
-          map((res) => DoctorActions.registerProfessionalSuccess(res.data)),
+          map((res) => DoctorActions.registerProfessionalSuccess({ doctor: res.data })),
           catchError(error => of(DoctorActions.registerProfessionalFailure({ error })))
         )
       )
@@ -85,7 +85,7 @@ export class doctorEffects {
     switchMap(({ doctorData }) =>
       this.doctorAuthService.registerAdditional(doctorData).pipe(
         tap(data=>console.log("log from additional info succces",data)),
-        map((res) => DoctorActions.registerAdditionalSuccess(res.data)),
+        map((res) => DoctorActions.registerAdditionalSuccess({ doctor: res.data })),
         catchError(error => of(DoctorActions.registerAdditionalFailure({ error })))
       )
     )

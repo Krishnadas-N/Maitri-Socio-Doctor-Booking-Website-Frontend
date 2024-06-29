@@ -3,27 +3,33 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable, Observer } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { SuccessResponse } from '../../Models/api-request-response.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageService {
   private apiUrl = environment.ChatService;
-  constructor(private http:HttpClient){}
+  constructor(private http: HttpClient) {}
 
-  getConversationId(userId:string,appoinmentId:string):Observable<any>{
-   return this.http.get<any>(`${this.apiUrl}/get-conversationId/${userId}/${appoinmentId}`)
+  getConversationId(userId: string, appoinmentId: string): Observable<SuccessResponse> {
+    return this.http.get<SuccessResponse>(
+      `${this.apiUrl}/get-conversationId/${userId}/${appoinmentId}`
+    );
   }
 
-  getConversationDetails(convId:string):Observable<any> {
-      return this.http.get<any>(`${this.apiUrl}/get-conversation/${convId}`);
-   }
+  getConversationDetails(convId: string): Observable<SuccessResponse> {
+    return this.http.get<SuccessResponse>(`${this.apiUrl}/get-conversation/${convId}`);
+  }
 
-  getChatsOfUSer():Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/chats`);
- }
+  getChatsOfUSer(): Observable<SuccessResponse> {
+    return this.http.get<SuccessResponse>(`${this.apiUrl}/chats`);
+  }
 
- toggleConsultation(conversationId:string):Observable<any>{
-   return this.http.put(`${this.apiUrl}/toggle-conversation/${conversationId}`,{})
- }
+  toggleConsultation(conversationId: string): Observable<SuccessResponse> {
+    return this.http.put<SuccessResponse>(
+      `${this.apiUrl}/toggle-conversation/${conversationId}`,
+      {}
+    );
+  }
 }

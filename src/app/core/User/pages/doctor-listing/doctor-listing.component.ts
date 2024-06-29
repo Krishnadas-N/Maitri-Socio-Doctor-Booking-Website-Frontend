@@ -29,7 +29,7 @@ export class DoctorListingComponent implements OnInit {
   pageSize: number = 6;
   doctors!: Doctor[];
   InterestedDoctors!: any;
-  currentUser!:User;
+  currentUser!: User;
 
   filterCategories = [
     {
@@ -118,18 +118,17 @@ export class DoctorListingComponent implements OnInit {
     private specializationService: SpecializationService,
     private toastr: ToastrService,
     private userService: UserService,
-    private store:Store<AppState>,
-    private commonService:CommonService
+    private store: Store<AppState>,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
-
     this.store.dispatch(loadUser());
-    this.store.select(GetCurrentUser).subscribe((res)=>{
-      if(res){
-      this.currentUser = res
+    this.store.select(GetCurrentUser).subscribe((res) => {
+      if (res) {
+        this.currentUser = res;
       }
-    })
+    });
     this.totalPages = Math.ceil(this.totalCount / this.pageSize);
     this.filterCategories.forEach((category) => {
       this.openSections[category.id] = false;
@@ -156,22 +155,25 @@ export class DoctorListingComponent implements OnInit {
 
   getInterestedDoctors() {
     this.userService.getInterestedDoctors().subscribe({
-      next:(res) => {
+      next: (res) => {
         console.log('interested doctors', res.data);
         this.InterestedDoctors = res.data;
       },
-      error:(err) => {
+      error: (err) => {
         this.toastr.error(err.message, 'Error');
-      }
-  });
+      },
+    });
   }
 
   isInterestedDoctor(doctor: Doctor): boolean {
     if (doctor._id) {
-      return this.InterestedDoctors && this.InterestedDoctors['doctorIds'] &&
-             this.InterestedDoctors['doctorIds'].some(
-               (x: any) => x.doctorId.toString() === doctor._id!.toString()
-             );
+      return (
+        this.InterestedDoctors &&
+        this.InterestedDoctors['doctorIds'] &&
+        this.InterestedDoctors['doctorIds'].some(
+          (x: any) => x.doctorId.toString() === doctor._id!.toString()
+        )
+      );
     } else {
       return false;
     }
@@ -240,10 +242,10 @@ export class DoctorListingComponent implements OnInit {
         this.menuOptions.find((x) => x.selected === true)?.label || '',
       filters: this.selectedFilters,
     };
-    const queryParams = this.constructQueryParams(request)
+    const queryParams = this.constructQueryParams(request);
     console.log(request);
     this.userService.getAvailableDoctors(queryParams).subscribe({
-      next:(res: any) => {
+      next: (res: any) => {
         console.log('response from server', res);
         this.doctors = res.data.doctors;
         this.currentPage = res.data.currentPage;
@@ -251,23 +253,23 @@ export class DoctorListingComponent implements OnInit {
         this.totalCount = res.data.totalCount;
         this.totalPages = res.data.totalPages;
       },
-    error: (err) => {
+      error: (err) => {
         console.log(err);
-      }
-  });
+      },
+    });
   }
 
   addToInterestDoctor(doctor: Doctor) {
     if (doctor && doctor._id) {
       this.userService.addInterestedDoctor(doctor._id).subscribe({
-       next: (res: any) => {
+        next: (res: any) => {
           console.log(res.data);
           this.InterestedDoctors.doctorIds = res.data.doctorIds;
         },
-        error:(err) => {
+        error: (err) => {
           this.toastr.error(err);
-        }
-    });
+        },
+      });
     }
   }
 
@@ -281,7 +283,7 @@ export class DoctorListingComponent implements OnInit {
   removeInterestDoctor(doctor: Doctor) {
     if (doctor && doctor._id) {
       this.userService.removeFromInterestedDoctors(doctor._id).subscribe({
-        next:(res: any) => {
+        next: (res: any) => {
           console.log(this.InterestedDoctors['doctorIds']);
           const index = this.InterestedDoctors['doctorIds'].findIndex(
             (item: any) => item.doctorId === doctor._id?.toString()
@@ -294,10 +296,10 @@ export class DoctorListingComponent implements OnInit {
             console.log('Doctor not found in interested doctors list');
           }
         },
-        error:(err) => {
+        error: (err) => {
           this.toastr.error(err); // Display error message
-        }
-    });
+        },
+      });
     }
   }
 
@@ -349,37 +351,41 @@ export class DoctorListingComponent implements OnInit {
       searchQuery: request.searchQuery,
       currentPage: request.currentPage.toString(),
       pageSize: request.pageSize.toString(),
-      sortOption: request.sortOption
+      sortOption: request.sortOption,
     };
-    if(request.filters){
-    for (const category of Object.keys(request.filters)) {
-      queryParams[category] = request.filters[category].join(',');
+    if (request.filters) {
+      for (const category of Object.keys(request.filters)) {
+        queryParams[category] = request.filters[category].join(',');
+      }
     }
-    }
-    console.log("queryParams",queryParams)
+    console.log('queryParams', queryParams);
     return queryParams;
   }
 
-  toggleFollowDoctor(doctorId:string|undefined){
-    if(!doctorId){
-      return
+  toggleFollowDoctor(doctorId: string | undefined) {
+    if (!doctorId) {
+      return;
     }
     this.commonService.toggleFollowDoctors(doctorId).subscribe({
-      next:(res)=>{
-       const doctor =  this.doctors.find((doctor)=>doctor._id?.toString() === doctorId);
-       doctor!.followers=res.data
+      next: (res) => {
+        const doctor = this.doctors.find(
+          (doctor) => doctor._id?.toString() === doctorId
+        );
+        doctor!.followers = res.data;
       },
-      error:(err)=>{
-        this.toastr.error(err)
+      error: (err) => {
+        this.toastr.error(err);
       },
-      complete:()=> {
-
-
-      },
-    })
+      complete: () => {},
+    });
   }
 
-  isFollowedByUser(doctor:Doctor):boolean{
-    return doctor.followers?.some(follower => follower.userId.toString() === this.currentUser._id?.toString()) || false;
+  isFollowedByUser(doctor: Doctor): boolean {
+    return (
+      doctor.followers?.some(
+        (follower) =>
+          follower.userId.toString() === this.currentUser._id?.toString()
+      ) || false
+    );
   }
 }

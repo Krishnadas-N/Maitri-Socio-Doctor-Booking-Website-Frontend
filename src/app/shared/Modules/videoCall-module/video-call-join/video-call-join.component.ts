@@ -4,26 +4,27 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-video-call-join',
   templateUrl: './video-call-join.component.html',
-  styleUrls: ['./video-call-join.component.css']
+  styleUrls: ['./video-call-join.component.css'],
 })
 export class VideoCallJoinComponent implements OnInit {
   @ViewChild('localVideo') localVideo: any;
   private stream!: MediaStream;
   videoEnabled: boolean = false;
   audioEnabled: boolean = false;
-  roomId:string=''
-  constructor(private route:ActivatedRoute,
-    private router:Router
-  ) { }
+  roomId: string = '';
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   async ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.roomId = params['roomId'];
       console.log('Room ID:', this.roomId);
     });
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        this.stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
         const videoElement = this.localVideo.nativeElement;
         videoElement.srcObject = this.stream;
         videoElement.play(); // Start playing the video
@@ -36,20 +37,19 @@ export class VideoCallJoinComponent implements OnInit {
       console.error('getUserMedia is not supported in this browser.');
     }
   }
-  
-  
+
   toggleCamera() {
-    console.log( this.videoEnabled);
+    console.log(this.videoEnabled);
     const videoElement = this.localVideo.nativeElement;
     if (this.stream && this.stream.getVideoTracks().length > 0) {
-       const videoTrack = this.stream.getVideoTracks()[0];
+      const videoTrack = this.stream.getVideoTracks()[0];
       videoTrack.enabled = !videoTrack.enabled;
       this.videoEnabled = videoTrack.enabled;
     }
   }
 
   toggleMicrophone() {
-    console.log( this.audioEnabled);
+    console.log(this.audioEnabled);
     const videoElement = this.localVideo.nativeElement;
     if (this.stream && this.stream.getAudioTracks().length > 0) {
       const audioTrack = this.stream.getAudioTracks()[0];
@@ -57,12 +57,12 @@ export class VideoCallJoinComponent implements OnInit {
       this.audioEnabled = audioTrack.enabled;
     }
   }
-  enterRoom(){
+  enterRoom() {
     console.log(this.roomId);
-    if(!this.roomId){
-      return 
+    if (!this.roomId) {
+      return;
     }
-    this.router.navigate(['/',this.roomId])
+    this.router.navigate(['/', this.roomId]);
   }
 }
 // https://play.tailwindcss.com/qx6nYMMbzA

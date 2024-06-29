@@ -1,7 +1,7 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { WebSocketService } from './webSocket.service';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SignalService {
   configuration: RTCConfiguration = {
@@ -16,91 +16,89 @@ export class SignalService {
     iceCandidatePoolSize: 10,
   };
 
-  connection!: RTCPeerConnection
-constructor(private socketService:WebSocketService) { }
+  connection!: RTCPeerConnection;
+  constructor(private socketService: WebSocketService) {}
 
-private async _initConnection(remoteVideo: ElementRef): Promise<void> {
-  this.connection = new RTCPeerConnection(this.configuration);
+  private async _initConnection(remoteVideo: ElementRef): Promise<void> {
+    this.connection = new RTCPeerConnection(this.configuration);
 
-  await this._getStreams(remoteVideo);
+    await this._getStreams(remoteVideo);
 
-  this._registerConnectionListeners();
-}
+    this._registerConnectionListeners();
+  }
 
+  public async makeCall(remoteVideo: ElementRef): Promise<void> {
+    await this._initConnection(remoteVideo);
 
-public async makeCall(remoteVideo: ElementRef): Promise<void> {
-  await this._initConnection(remoteVideo);
+    const offer = await this.connection.createOffer();
 
-  const offer = await this.connection.createOffer();
+    await this.connection.setLocalDescription(offer);
 
-  await this.connection.setLocalDescription(offer);
+    // this.signalingService.sendMessage({ type: 'offer', offer });
+  }
 
-  // this.signalingService.sendMessage({ type: 'offer', offer });
-}
+  public async handleAnswer(answer: RTCSessionDescription): Promise<void> {
+    await this.connection.setRemoteDescription(
+      new RTCSessionDescription(answer)
+    );
+  }
 
-public async handleAnswer(answer: RTCSessionDescription): Promise<void> {
-  await this.connection.setRemoteDescription(
-    new RTCSessionDescription(answer)
-  );
-}
+  public async handleCandidate(candidate: RTCIceCandidate): Promise<void> {
+    if (candidate) {
+      await this.connection.addIceCandidate(new RTCIceCandidate(candidate));
+    }
+  }
 
-public async handleCandidate(candidate: RTCIceCandidate): Promise<void> {
-  if (candidate) {
-    await this.connection.addIceCandidate(new RTCIceCandidate(candidate));
+  private _registerConnectionListeners(): void {
+    this.connection.onicegatheringstatechange = (ev: Event) => {
+      console.log(
+        `ICE gathering state changed: ${this.connection.iceGatheringState}`
+      );
+    };
+
+    this.connection.onconnectionstatechange = () => {
+      console.log(
+        `Connection state change: ${this.connection.connectionState}`
+      );
+    };
+
+    this.connection.onsignalingstatechange = () => {
+      console.log(`Signaling state change: ${this.connection.signalingState}`);
+    };
+
+    this.connection.oniceconnectionstatechange = () => {
+      console.log(
+        `ICE connection state change: ${this.connection.iceConnectionState}`
+      );
+    };
+    this.connection.onicecandidate = (event) => {
+      if (event.candidate) {
+        const payload = {
+          type: 'candidate',
+          candidate: event.candidate.toJSON(),
+        };
+        // this.signalingService.sendMessage(payload);
+      }
+    };
+  }
+
+  private async _getStreams(remoteVideo: ElementRef): Promise<void> {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    const remoteStream = new MediaStream();
+
+    remoteVideo.nativeElement.srcObject = remoteStream;
+
+    this.connection.ontrack = (event) => {
+      event.streams[0].getTracks().forEach((track) => {
+        remoteStream.addTrack(track);
+      });
+    };
+
+    stream.getTracks().forEach((track) => {
+      this.connection.addTrack(track, stream);
+    });
   }
 }
-
-private _registerConnectionListeners(): void {
-  this.connection.onicegatheringstatechange = (ev: Event) => {
-    console.log(
-      `ICE gathering state changed: ${this.connection.iceGatheringState}`
-    );
-  };
-
-  this.connection.onconnectionstatechange = () => {
-    console.log(
-      `Connection state change: ${this.connection.connectionState}`
-    );
-  };
-
-  this.connection.onsignalingstatechange = () => {
-    console.log(`Signaling state change: ${this.connection.signalingState}`);
-  };
-
-  this.connection.oniceconnectionstatechange = () => {
-    console.log(
-      `ICE connection state change: ${this.connection.iceConnectionState}`
-    );
-  };
-  this.connection.onicecandidate = (event) => {
-    if (event.candidate) {
-      const payload = {
-        type: 'candidate',
-        candidate: event.candidate.toJSON(),
-      };
-      // this.signalingService.sendMessage(payload);
-    }
-  };
-}
-
-private async _getStreams(remoteVideo: ElementRef): Promise<void> {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: true,
-  });
-  const remoteStream = new MediaStream();
-
-  remoteVideo.nativeElement.srcObject = remoteStream;
-
-  this.connection.ontrack = (event) => {
-    event.streams[0].getTracks().forEach((track) => {
-      remoteStream.addTrack(track);
-    });
-  };
-
-  stream.getTracks().forEach((track) => {
-    this.connection.addTrack(track, stream);
-  });
-}
-}
-

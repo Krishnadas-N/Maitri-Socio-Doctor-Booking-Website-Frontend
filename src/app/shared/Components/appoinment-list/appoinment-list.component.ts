@@ -1,13 +1,26 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { WebSocketService } from '../../Services/web-socketService/webSocket.service'; 
+import { WebSocketService } from '../../Services/web-socketService/webSocket.service';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../core/User/Services/user.service';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+} from '@angular/animations';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { Appointment } from '../../Models/appoinment.model';
@@ -16,48 +29,63 @@ import { RatingReviewDialogComponent } from '../../../core/User/Components/ratin
 @Component({
   selector: 'app-appoinment-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ConfirmDialogModule,FormsModule,DialogModule, ToastModule,RouterLink],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ConfirmDialogModule,
+    FormsModule,
+    DialogModule,
+    ToastModule,
+    RouterLink,
+  ],
   templateUrl: './appoinment-list.component.html',
   styleUrls: ['./appoinment-list.component.css'],
   providers: [ConfirmationService, MessageService],
   animations: [
     trigger('fadeInOut', [
-      state('void', style({
-        opacity: 0
-      })),
-      state('*', style({
-        opacity: 1
-      })),
+      state(
+        'void',
+        style({
+          opacity: 0,
+        })
+      ),
+      state(
+        '*',
+        style({
+          opacity: 1,
+        })
+      ),
       transition('void => *', animate('500ms')),
       transition('* => void', animate('500ms')),
     ]),
-  ]
+  ],
 })
-
 export class AppoinmentListComponent implements OnInit, OnDestroy {
-  @Input({required:true}) appoinmentDetails!: any;
+  @Input({ required: true }) appoinmentDetails!: any;
   cancellationReason: string = '';
   consultationLink: string | null = null;
   currentUserId: string | null = null;
   private consultationLinkSubscription!: Subscription;
   displayConfirmationDialog: boolean = false;
-  @Input({required:true}) userType!: 'doctor' | 'user';
+  @Input({ required: true }) userType!: 'doctor' | 'user';
   @Output() viewprofile = new EventEmitter<string>();
-  @Output() editUserStatus: EventEmitter<{ id: string, reason:string, status: string }> =
-    new EventEmitter<{ id: string, reason:string, status: string }>();
+  @Output() editUserStatus: EventEmitter<{
+    id: string;
+    reason: string;
+    status: string;
+  }> = new EventEmitter<{ id: string; reason: string; status: string }>();
   position: string = 'center';
   constructor(
     private userService: UserService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private webSocketService: WebSocketService,
-    private router:Router,
+    private router: Router,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-
-    console.log(this.appoinmentDetails)
+    console.log(this.appoinmentDetails);
     if (this.userType === 'user') {
       this.getCurrentUser();
       this.consultationLinkSubscription = this.webSocketService
@@ -73,19 +101,19 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
 
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe({
-      next:(res) => {
+      next: (res) => {
         console.log('current user', res);
         this.currentUserId = res.data._id;
       },
-     error: (err) => console.error('Error in getting current user details', err)
-  });
+      error: (err) =>
+        console.error('Error in getting current user details', err),
+    });
   }
 
   viewUserProfile() {
     this.viewprofile.emit(this.appoinmentDetails?._id);
   }
 
-  
   calculateTimeRemaining(date: string, slot: string): string {
     console.log(date, slot);
     const now = new Date();
@@ -138,10 +166,10 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
     if (absDifferenceMs <= oneHourInMs) {
       return true;
     }
-  
+
     return false;
   }
-  
+
   openConfirmationDialog() {
     this.displayConfirmationDialog = true;
   }
@@ -165,34 +193,33 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
     });
     this.editUserStatus.emit({
       id: this.appoinmentDetails._id,
-      reason:this.cancellationReason,
+      reason: this.cancellationReason,
       status: 'Cancelled',
     });
   }
   ngOnDestroy() {
-    if(this.consultationLinkSubscription){
-    this.consultationLinkSubscription.unsubscribe();
+    if (this.consultationLinkSubscription) {
+      this.consultationLinkSubscription.unsubscribe();
     }
   }
 
-  navigateToChat(){
-    if(this.appoinmentDetails && this.appoinmentDetails.consultationLink){
+  navigateToChat() {
+    if (this.appoinmentDetails && this.appoinmentDetails.consultationLink) {
       const queryParams = { appoinmentId: this.appoinmentDetails._id };
-      this.router.navigate([this.appoinmentDetails.consultationLink], { queryParams: queryParams });
+      this.router.navigate([this.appoinmentDetails.consultationLink], {
+        queryParams: queryParams,
+      });
     }
   }
-  openRatingDialog(){
-   
-    const dialogRef = this.dialog.open(RatingReviewDialogComponent,{
+  openRatingDialog() {
+    const dialogRef = this.dialog.open(RatingReviewDialogComponent, {
       width: '50%',
-      data: {appoinmentId: this.appoinmentDetails._id}
+      data: { appoinmentId: this.appoinmentDetails._id },
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed with result:', result);
-      this.appoinmentDetails.reviews.push(result)
-    });
-  
 
-}
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Dialog closed with result:', result);
+      this.appoinmentDetails.reviews.push(result);
+    });
+  }
 }

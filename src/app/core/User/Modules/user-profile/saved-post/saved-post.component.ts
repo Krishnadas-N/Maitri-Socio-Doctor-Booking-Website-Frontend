@@ -9,24 +9,24 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./saved-post.component.css'],
 })
 export class SavedPostComponent implements OnInit {
-  savedPosts:Post[]=[]
+  savedPosts: Post[] = [];
   constructor(
-    private feedService:FeedService,
-    private toastr:ToastrService
-  ) { }
+    private feedService: FeedService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
-    this.loadSavedPosts()
+    this.loadSavedPosts();
   }
-  loadSavedPosts(){
+  loadSavedPosts() {
     this.feedService.getSavedPosts().subscribe({
-      next:(res)=>{
+      next: (res) => {
         console.log(res);
-        this.savedPosts = res.data
+        this.savedPosts = res.data;
       },
-      error:(err)=>{
-        this.toastr.error(err)
-      }
-    })
+      error: (err) => {
+        this.toastr.error(err);
+      },
+    });
   }
 }

@@ -25,7 +25,7 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
     <p class="text-black mb-2 ">
       {{ getSpecializationName(doctorDetails.specialization) }}
     </p>
-    
+
     <div class="flex gap-4">
 
       <p class="text-black text-center sm:text-left">
@@ -93,7 +93,7 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
 
     <div class="flex flex-col gap-3 mt-3 p-2">
       <ng-container *ngFor="let type of doctorDetails.typesOfConsultation">
-        <button 
+        <button
           class="w-ful text-blue-500 border border-blue-500 py-2 px-4 rounded-lg hover:bg-blue-500 hover:text-white hover:border-transparent transition duration-300"
           (click)="selectConsultation(type)"  [ngClass]="{'bg-blue-500 text-white': appoinMentDetail.typeofConsultaion === type,'bg-white': appoinMentDetail.typeofConsultaion !== type}"
         >
@@ -104,17 +104,17 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
         </button>
       </ng-container>
     </div>
-    
+
   </div>
 </div>
 
     <div class="col-md-5 col-sm-12 mt-3 border-r border-gray-200">
   <p class="py-2 border-b border-gray-200 font-semibold">Pick a Time  </p>
   <div class="info-date-card grid grid-cols-2 gap-4 p-3">
-  
-      
+
+
       <div *ngFor="let date of dates" class="mb-3">
-        <div 
+        <div
         class="p-3 mb-3 rounded-lg text-center border border-blue-500 hover:cursor-pointer"
         [ngClass]="{
           'text-blue-500': this.appoinMentDetail.bookingDate !== date,
@@ -127,8 +127,8 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
           <div class="select-month">{{ date | date: 'EEEE' }}</div>
         </div>
       </div>
-   
- 
+
+
   </div>
 </div>
 
@@ -140,7 +140,7 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
     <!-- Morning Slots -->
     <ng-container *ngIf="getMorningSlots().length > 0; else morningNotAvailable">
       <div *ngFor="let slot of getMorningSlots();let i=index">
-        <button 
+        <button
         type="button"
         [disabled]="isSlotBooked(slot)"
         [ngClass]="{'bg-blue-500 text-white': appoinMentDetail.slotTime === slot, 'bg-white text-black': appoinMentDetail.slotTime !== slot}"
@@ -157,7 +157,7 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
         Not Available
       </div>
     </ng-template>
-    
+
   </div>
   <div class="select-time-div mt-6">
     <h4 class="text-xl font-semibold mb-2">After Noon Time <span class="text-secondary text-sm">(1PM - 5PM)</span></h4>
@@ -165,7 +165,7 @@ class="relative w-full my-2 md:my-8 flex flex-col items-start space-y-4 sm:flex-
       <!-- Afternoon Slots -->
       <ng-container *ngIf="getAfternoonSlots().length > 0; else afternoonNotAvailable">
         <div *ngFor="let slot of getAfternoonSlots();let i=index">
-          <button 
+          <button
           type="button"
           [disabled]="isSlotBooked(slot)"
           class="ant-btn ant-btn-default ant-btn-sm mb-3 border border-blue-500 px-3 py-2 rounded-lg"

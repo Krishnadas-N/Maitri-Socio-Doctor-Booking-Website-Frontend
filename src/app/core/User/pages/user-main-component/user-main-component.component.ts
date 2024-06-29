@@ -18,71 +18,79 @@ import { NotificationPopupComponent } from '../../../../shared/Components/notifi
 @Component({
   selector: 'app-user-main-component',
   standalone: true,
-  imports: [HeaderComponentComponent,NotificationPopupComponent,FooterComponentComponent,RouterOutlet ,UserSidebarComponent,CommonModule],
+  imports: [
+    HeaderComponentComponent,
+    NotificationPopupComponent,
+    FooterComponentComponent,
+    RouterOutlet,
+    UserSidebarComponent,
+    CommonModule,
+  ],
   templateUrl: './user-main-component.component.html',
-  styleUrl: './user-main-component.component.css'
+  styleUrl: './user-main-component.component.css',
 })
-export class UserMainComponentComponent implements OnInit{
-  currentUser:User|null=null;
+export class UserMainComponentComponent implements OnInit {
+  currentUser: User | null = null;
   notifications: INotification[] = [];
   showNotification: boolean = false;
   notificationTitle: string = '';
   notificationMessage: string = '';
 
- constructor(
-  private authService:AuthService ,
-  private notificationService:NotificationService,
-  private tokenService:TokenService,
-  private store:Store<AppState>
-){};
- isAuthenticated(){
-  return this.authService.isAuthenticated()
- }
- ngOnInit(): void {
-     if(this.isAuthenticated()){
-      this.store.dispatch(loadUser())
-      this.loadCurrentUser()
+  constructor(
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private tokenService: TokenService,
+    private store: Store<AppState>
+  ) {}
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
+  ngOnInit(): void {
+    if (this.isAuthenticated()) {
+      this.store.dispatch(loadUser());
+      this.loadCurrentUser();
       const token = this.tokenService.getToken();
       this.notificationService.setToken(token as string);
-     }
- }
-
- addUserOnline(){
-  if(this.currentUser){
-    console.log("this.currentUser._id",this.currentUser);
-    this.notificationService.addUsers(this.currentUser._id as string)
-    this.getNotifications()
+    }
   }
- }
- loadCurrentUser(){
-  this.store.select(GetCurrentUser).subscribe((res)=>{
-    this.currentUser =  res
-    this.addUserOnline()
-  })
- }
-  getNotifications(){
-    this.notificationService.listenForNotifications().subscribe(data => {
+
+  addUserOnline() {
+    if (this.currentUser) {
+      console.log('this.currentUser._id', this.currentUser);
+      this.notificationService.addUsers(this.currentUser._id as string);
+      this.getNotifications();
+    }
+  }
+  loadCurrentUser() {
+    this.store.select(GetCurrentUser).subscribe((res) => {
+      this.currentUser = res;
+      this.addUserOnline();
+    });
+  }
+  getNotifications() {
+    this.notificationService.listenForNotifications().subscribe((data) => {
       console.log('Received notification:', data);
       this.notifications.push(data.notification);
-      this.showNotificationPopup(data.notification.title, data.notification.message);
-
+      this.showNotificationPopup(
+        data.notification.title,
+        data.notification.message
+      );
     });
   }
 
-showNotificationPopup(title: string, message: string): void {
-  console.log("title,message",title,message);
-  this.notificationTitle = title;
-  this.notificationMessage = message;
-  this.showNotification = true;
+  showNotificationPopup(title: string, message: string): void {
+    console.log('title,message', title, message);
+    this.notificationTitle = title;
+    this.notificationMessage = message;
+    this.showNotification = true;
 
-  setTimeout(() => {
-    this.closeNotificationPopup();
-  }, 7000);
-}
-closeNotificationPopup(): void {
-  this.showNotification = false;
-  this.notificationTitle = '';
-  this.notificationMessage = '';
-}
-
+    setTimeout(() => {
+      this.closeNotificationPopup();
+    }, 7000);
+  }
+  closeNotificationPopup(): void {
+    this.showNotification = false;
+    this.notificationTitle = '';
+    this.notificationMessage = '';
+  }
 }

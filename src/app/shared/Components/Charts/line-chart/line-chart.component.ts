@@ -5,17 +5,14 @@ import { ChartModule } from 'primeng/chart';
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.css'],
-  imports:[ChartModule],
-  standalone:true
+  imports: [ChartModule],
+  standalone: true,
 })
 export class LineChartComponent implements OnInit {
   @Input() data: any;
   @Input() options: any;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
-
+  ngOnInit() {}
 }

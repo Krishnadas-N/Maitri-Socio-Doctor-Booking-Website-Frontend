@@ -5,10 +5,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserService} from '../../../core/User/Services/user.service';
+import { UserService } from '../../../core/User/Services/user.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { AuthService } from '../../Services/auth-service/auth.service'; 
+import { AuthService } from '../../Services/auth-service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -86,7 +86,7 @@ export class ChangePasswordComponent implements OnInit {
         this.changePassword.value.password,
         this.changePassword.value.confirmPassword
       ).subscribe({
-        next:(res) => {
+        next: (res) => {
           this.toastr.success('Password Reset SuccessFully');
           this.isLoading = false;
           if (this.AuthService.isAuthenticated()) {
@@ -95,11 +95,11 @@ export class ChangePasswordComponent implements OnInit {
             this.rotuer.navigate(['/login']);
           }
         },
-        error:(err) => {
+        error: (err) => {
           this.isLoading = false;
           this.toastr.error(err);
-        }
-    });
+        },
+      });
     } else {
       this.changePassword.markAllAsTouched();
     }

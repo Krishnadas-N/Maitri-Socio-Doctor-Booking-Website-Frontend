@@ -1,22 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../core/User/Services/user.service';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-upload-medical-record',
-  standalone:true,
-  imports:[CommonModule,ReactiveFormsModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './upload-medical-record.component.html',
-  styleUrls: ['./upload-medical-record.component.css']
+  styleUrls: ['./upload-medical-record.component.css'],
 })
 export class UploadMedicalRecordComponent implements OnInit {
   recordForm!: FormGroup;
   submitted = false;
-  isLoading=false;
+  isLoading = false;
   uploadedFile!: File;
   previewURL: string | ArrayBuffer | null = null;
 
@@ -24,13 +29,13 @@ export class UploadMedicalRecordComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<UploadMedicalRecordComponent>,
     private userService: UserService,
-    private toastr:ToastrService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.recordForm = this.formBuilder.group({
       title: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
     });
   }
 
@@ -42,7 +47,10 @@ export class UploadMedicalRecordComponent implements OnInit {
     console.log(this.recordForm.value);
     this.submitted = true;
 
-    if (this.recordForm.invalid || this.fileFormatValidator(this.uploadedFile)) {
+    if (
+      this.recordForm.invalid ||
+      this.fileFormatValidator(this.uploadedFile)
+    ) {
       return;
     }
 
@@ -51,16 +59,16 @@ export class UploadMedicalRecordComponent implements OnInit {
     const description = this.recordForm.get('description')?.value;
     // Handle form submission to the backend
     console.log('Form Submitted', this.recordForm.value);
-    this.isLoading=true;
+    this.isLoading = true;
     this.userService.uploadMedicalRecords(file, title, description).subscribe(
-      response => {
-        this.isLoading=false
-        this.closeDialog()
+      (response) => {
+        this.isLoading = false;
+        this.closeDialog();
       },
-      error => {
-        this.isLoading=false
-      this.toastr.error(error);
-      this.closeDialog()
+      (error) => {
+        this.isLoading = false;
+        this.toastr.error(error);
+        this.closeDialog();
       }
     );
   }
@@ -93,5 +101,4 @@ export class UploadMedicalRecordComponent implements OnInit {
     }
     return true;
   }
-
 }

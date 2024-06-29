@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './progressive-bar.component.html',
-  styleUrl: './progressive-bar.component.css'
+  styleUrl: './progressive-bar.component.css',
 })
 export class ProgressiveBarComponent {
   @Input() currentStep: number = 1;

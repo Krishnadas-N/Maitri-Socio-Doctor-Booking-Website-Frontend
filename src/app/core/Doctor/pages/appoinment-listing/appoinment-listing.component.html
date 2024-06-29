@@ -6,12 +6,12 @@
       <div>
           <h1 class="text-xl font-bold text-gray-800 dark:text-gray-800">Appointments</h1>
       </div>
-      
+
       <div class="flex items-center space-x-4">
         <div class="pt-2 relative mx-auto text-gray-600">
           <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-            type="search" name="search" placeholder="Search">
-          <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+            type="search" [(ngModel)]="searchAppointment" (keyup.enter)="getDoctorAppoinments()" name="search" placeholder="Search">
+          <button (click)="getDoctorAppoinments()" class="absolute right-0 top-0 mt-5 mr-4">
             <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
               viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -24,7 +24,7 @@
       </div>
   </div>
 
-  
+
     <div class=" flex justify-between">
         <!-- <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
           <li class="me-2" *ngFor="let key of getObjectKeys(countsObject)">
@@ -49,8 +49,15 @@
     </div>
 
   </header>
-
-  <div class="flex flex-auto flex-col gap-4 overflow-auto ">
+  <div *ngIf="isLoading" class="skeleton-container">
+    <div *ngFor="let skeleton of skeletons" class="skeleton">
+      <div class="skeleton-profile"></div>
+      <div class="skeleton-info"></div>
+      <div class="skeleton-info"></div>
+    </div>
+    <div class="skeleton-pagination"></div>
+  </div>
+  <div *ngIf="!isLoading && doctorAppoinments.appointments && doctorAppoinments.appointments.length>0" class="flex flex-auto flex-col gap-4 overflow-auto ">
     <div *ngFor="let data of doctorAppoinments.appointments">
     <app-appoinment-list [appoinmentDetails]="data" (viewprofile)="viewDetail($event)" [userType]="userType" ></app-appoinment-list>
     </div>
@@ -64,10 +71,11 @@
             (goToPage)="onPageChange($event)"
             ></app-user-Pagination>
   </div>
- 
- 
+
+
 
 </div>
+
 
 
 

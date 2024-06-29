@@ -4,7 +4,7 @@ import {
   isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import {provideNgxStripe } from 'ngx-stripe';
+import { provideNgxStripe } from 'ngx-stripe';
 import { routes } from './app.routes';
 import {
   provideClientHydration,
@@ -52,7 +52,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    provideRouter([...userRoutes,...doctorRoutes,...adminRoutes,...routes]),
+    provideRouter([...userRoutes, ...doctorRoutes, ...adminRoutes, ...routes]),
     provideHttpClient(
       withFetch(),
       withInterceptors([
@@ -95,19 +95,14 @@ export const appConfig: ApplicationConfig = {
       provide: GALLERY_CONFIG,
       useValue: {
         autoHeight: true,
-        imageSize: 'cover'
-      } as GalleryConfig
+        imageSize: 'cover',
+      } as GalleryConfig,
     },
-    provideEffects([
-      UserEffects,
-      doctorEffects,
-      OtpEffects,
-      postEffects,
-    ]), provideCharts(withDefaultRegisterables()),
+    provideEffects([UserEffects, doctorEffects, OtpEffects, postEffects]),
+    provideCharts(withDefaultRegisterables()),
     provideNgxStripe(environment.Stripe_Publishable_key),
 
     { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
   ],
-
 };

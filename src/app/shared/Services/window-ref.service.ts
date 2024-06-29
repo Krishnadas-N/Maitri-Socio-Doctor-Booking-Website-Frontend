@@ -7,11 +7,10 @@ function _window(): any {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WindowRefService {
-
-  constructor(@Inject(PLATFORM_ID) private platformId: object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   get nativeWindow(): any {
     if (isPlatformBrowser(this.platformId)) {

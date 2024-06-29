@@ -1,4 +1,13 @@
-import { afterNextRender, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  afterNextRender,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebSocketService } from '../../Services/web-socketService/webSocket.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -21,7 +30,13 @@ import { RatingReviewDialogComponent } from '../../../core/User/Components/ratin
 @Component({
   selector: 'app-chat-room',
   standalone: true,
-  imports: [CommonModule, FormsModule,TimeDiffPipe,TimeFormatPipe,RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TimeDiffPipe,
+    TimeFormatPipe,
+    RouterLink,
+  ],
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.css'],
 })
@@ -37,8 +52,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   conversationalData: any;
   messages: MessageDTO[] = [];
   messageSubscription!: Subscription;
-  isOptionsModalOpen:boolean=false
-  appointmentId:string|null=null;
+  isOptionsModalOpen: boolean = false;
+  appointmentId: string | null = null;
   messageInput: string = '';
   newMessage: string = '';
   constructor(
@@ -52,15 +67,14 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     private tokenService: TokenService,
     private renderer: Renderer2,
     public dialog: MatDialog
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.scrollToBottom();
   }
   ngOnInit() {
     this.userType = this.route.snapshot.data['expectedRole'];
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.appointmentId = params['apppoinmentId'] || null;
       console.log('Appointment ID:', this.appointmentId);
     });
@@ -76,14 +90,13 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           this.isDisplayDummy = false;
           this.fetchCurrentUser();
 
-
           const token = this.tokenService.getToken();
           if (token) {
             this.webSocketService.setToken(token);
             this.webSocketService.emitGetMessages(this.conversationId);
             this.subscribeToMessages();
             this.webSocketService.getnewMessages().subscribe((message: any) => {
-              console.log(message)
+              console.log(message);
               this.messages.push(message);
               this.scrollToBottom();
             });
@@ -92,20 +105,19 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    if(this.userType==='User'){
-      this.subCloseConverstation()
-      this.subOpeningRatingModal()
-
+    if (this.userType === 'User') {
+      this.subCloseConverstation();
+      this.subOpeningRatingModal();
     }
   }
 
-  subCloseConverstation(){
+  subCloseConverstation() {
     this.webSocketService.getCloseConversation().subscribe((data: any) => {
       console.log('Received open_rating_modal event with data:', data);
       this.conversationalData.isClosed = data.status;
     });
   }
-  subOpeningRatingModal(){
+  subOpeningRatingModal() {
     this.webSocketService.getRatingModalOpen().subscribe((data: any) => {
       console.log('Received open_rating_modal event with data:', data);
       this.openRatingDialog(data);
@@ -136,11 +148,18 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    console.log(  'send message', this.senderId,this.recipientId,this.conversationId,
+    console.log(
+      'send message',
+      this.senderId,
+      this.recipientId,
+      this.conversationId,
       message,
       this.userType
     );
-    this.webSocketService.sendMessage('send message', this.senderId,this.recipientId,
+    this.webSocketService.sendMessage(
+      'send message',
+      this.senderId,
+      this.recipientId,
       this.conversationId,
       message,
       this.userType
@@ -151,10 +170,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   fetchConversationDetails(conversationId: string) {
     this.messageService.getConversationDetails(conversationId).subscribe({
       next: (res) => {
-        console.log("converstaion Date",res);
+        console.log('converstaion Date', res);
         this.conversationalData = res.data;
         const recipientData = this.conversationalData.members.find(
-          (member: any) => member.member._id.toString()!== this.senderId
+          (member: any) => member.member._id.toString() !== this.senderId
         );
         this.recipientId = recipientData.member._id;
         console.log(
@@ -179,7 +198,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   fetchCurrentUser(): void {
     if (this.userType === 'Doctor') {
       this.doctorService.getDoctor().subscribe({
-        next:(res: any) => {
+        next: (res: any) => {
           this.currentUserData = res.data;
           if (this.currentUserData && this.currentUserData._id) {
             this.senderId = this.currentUserData._id;
@@ -188,14 +207,14 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log('currentUserData', this.currentUserData);
           }
         },
-        error:(err: any) => {
+        error: (err: any) => {
           this.toastr.error(err);
           this.router.navigate(['/doctor/chats/inbox']);
-        }
-    });
+        },
+      });
     } else if (this.userType === 'User') {
       this.userService.getCurrentUser().subscribe({
-        next:(res) => {
+        next: (res) => {
           this.currentUserData = res.data;
           if (this.currentUserData && this.currentUserData._id) {
             this.senderId = this.currentUserData._id;
@@ -204,10 +223,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log('currentUserData', this.currentUserData);
           }
         },
-        error:(err) => {
+        error: (err) => {
           this.toastr.error(err);
-        }
-    });
+        },
+      });
     }
   }
 
@@ -220,12 +239,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getUserDetails(userId: string): any {
-    if(this.conversationalData){
-
-    return this.conversationalData.members.find(
-      (x: any) => x.member._id.toString() === userId
-    ).member;
-  }
+    if (this.conversationalData) {
+      return this.conversationalData.members.find(
+        (x: any) => x.member._id.toString() === userId
+      ).member;
+    }
   }
 
   ngOnDestroy() {
@@ -236,55 +254,61 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
 
   toggleConsultation() {
     if (this.userType === 'Doctor' && this.appointmentId) {
-        this.doctorService.changeStatus('Completed', this.appointmentId)
-            .subscribe({
+      this.doctorService
+        .changeStatus('Completed', this.appointmentId)
+        .subscribe({
+          next: (res) => {
+            this.messageService
+              .toggleConsultation(this.conversationId)
+              .subscribe({
                 next: (res) => {
-                    this.messageService.toggleConsultation(this.conversationId)
-                        .subscribe({
-                            next: (res) => {
-                                this.conversationalData.isClosed = !this.conversationalData.isClosed;
-                                this.webSocketService.emitCloseConversation(this.appointmentId!,this.recipientId,this.conversationalData.isClosed)
-                                if (this.conversationalData.isClosed && this.appointmentId) {
-
-                                    this.webSocketService.emitOpenRatingModal(this.appointmentId,this.recipientId);
-                                    this.openUploadPrescription();
-                                }
-                            },
-                            error: (err) => {
-                                this.toastr.error('Error toggling consultation: ' + err);
-                            }
-                        });
+                  this.conversationalData.isClosed =
+                    !this.conversationalData.isClosed;
+                  this.webSocketService.emitCloseConversation(
+                    this.appointmentId!,
+                    this.recipientId,
+                    this.conversationalData.isClosed
+                  );
+                  if (this.conversationalData.isClosed && this.appointmentId) {
+                    this.webSocketService.emitOpenRatingModal(
+                      this.appointmentId,
+                      this.recipientId
+                    );
+                    this.openUploadPrescription();
+                  }
                 },
                 error: (err) => {
-                    this.toastr.error('Error changing appointment status: ' + err);
-                }
-            });
+                  this.toastr.error('Error toggling consultation: ' + err);
+                },
+              });
+          },
+          error: (err) => {
+            this.toastr.error('Error changing appointment status: ' + err);
+          },
+        });
     }
-   }
+  }
 
-
-  navigateDoctorPage(){
+  navigateDoctorPage() {
     const doctor = this.conversationalData.members.find(
-      (member: any) => member.memberType ==='Doctor'
-    )
+      (member: any) => member.memberType === 'Doctor'
+    );
     console.log(doctor);
-    this.router.navigate(['/get-doctor',doctor.member._id])
+    this.router.navigate(['/get-doctor', doctor.member._id]);
   }
 
-  openUploadPrescription(){
-    this.dialog.open(UploadPrescriptionComponent,{
-      data: {appoinmentId:this.appointmentId }
+  openUploadPrescription() {
+    this.dialog.open(UploadPrescriptionComponent, {
+      data: { appoinmentId: this.appointmentId },
     });
   }
 
-  openRatingDialog(appoinmentId:string){
-
-      console.log(appoinmentId);
+  openRatingDialog(appoinmentId: string) {
     console.log(appoinmentId);
-    this.dialog.open(RatingReviewDialogComponent,{
+    console.log(appoinmentId);
+    this.dialog.open(RatingReviewDialogComponent, {
       width: '50%',
-      data: {appoinmentId:appoinmentId}
+      data: { appoinmentId: appoinmentId },
     });
-
   }
 }
