@@ -8,7 +8,7 @@
 .env
 
 # Node
-/node_modules
+# /node_modules
 npm-debug.log
 yarn-error.log
 
@@ -44,3 +44,4 @@ Thumbs.db
 
 # Angular environment files
 src/environments/
+node_modules/
