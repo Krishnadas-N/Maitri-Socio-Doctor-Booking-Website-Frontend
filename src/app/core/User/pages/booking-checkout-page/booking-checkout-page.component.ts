@@ -142,7 +142,7 @@ this.getWalletBalance()
 
           console.log("verify payment",res);
           const notificationId = res.data.notificationId;
-          this.notificationService.sendNotification(notificationId);
+          // this.notificationService.sendNotification(notificationId);
           location.href = `/booking-confirmation/${res.data.appoinmentId}`;
           // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         },
