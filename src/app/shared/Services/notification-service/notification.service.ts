@@ -21,7 +21,7 @@ export class NotificationService {
   private connect(): void {
     if (this.token) {
       this.webSocket = new Socket({
-        url: `${this.URL}/api/notifications`,
+        url: `${this.URL}/notifications`,
         options: {
           extraHeaders: {
             Authorization: `Bearer ${this.token}`,
