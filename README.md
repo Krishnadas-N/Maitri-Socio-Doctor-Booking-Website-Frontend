@@ -56,6 +56,7 @@ Welcome to the frontend repository of the Maitri Socio Mental Health Booking pro
 ### Configuration
 
 The frontend requires environment variables to connect to the backend services. Create a file named `environment.ts` in the `src/environments` folder and add the following configuration:
+The backend of this project is built using Node.js, Express, and TypeScript. You can find the frontend repository [here](https://github.com/Krishnadas-N/Maitri-Socio-Doctor-Booking-Website-Backend-.git).
 
 ```typescript
 export const environment = {
@@ -84,5 +85,4 @@ export const environment = {
     STRIPE_SECRET_KEY : '',
     Logo_Url:'https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg'
   };
-The backend of this project is built using Node.js, Express, and TypeScript. You can find the frontend repository [here]([https://github.com/yourusername/maitri-frontend](https://github.com/Krishnadas-N/Maitri-Socio-Doctor-Booking-Website-Backend-.git).
 
