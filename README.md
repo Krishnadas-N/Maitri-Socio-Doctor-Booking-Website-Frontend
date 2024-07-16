@@ -1,30 +1,86 @@
-# Maitri-Socio-Doctor-Booking-Website-Frontend
-Welcome to the frontend repository of our Mental Health Consultation Platform! This Angular-based web application offers users a seamless experience to connect with licensed mental health professionals for consultation and support. Our platform prioritizes accessibility, security, and ease of use, ensuring that users can access the help the easily 
+# Maitri Socio Mental Health Booking - Frontend
 
+Welcome to the frontend repository of the Maitri Socio Mental Health Booking project. This project is built using Angular and aims to provide a user-friendly interface for booking mental health consultations.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.9.
+## Features
 
-## Development server
+- User Authentication and Authorization
+- Video Consultations with Doctors
+- Booking System with Available Slots
+- Secure Payment Integration with Razorpay
+- Admin Dashboard with Analytics
+- Real-time Chat and Notifications
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Technologies Used
 
-## Code scaffolding
+- Angular
+- Tailwind CSS
+- Angular NgRx for State Management
+- RXJS
+- Chart.js
+- Survey.js
+- ZegoCloud for Video Conferencing
+- Socket.IO for Real-time Communication
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Getting Started
 
-## Build
+### Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Node.js
+- Angular CLI
 
-## Running unit tests
+### Installation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/yourusername/maitri-frontend.git
+    ```
 
-## Running end-to-end tests
+2. Navigate to the project directory:
+    ```sh
+    cd maitri-frontend
+    ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+3. Install dependencies:
+    ```sh
+    npm install
+    ```
 
-## Further help
+4. Run the application:
+    ```sh
+    ng serve
+    ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+5. Open your browser and navigate to `http://localhost:4200`.
 
+### Configuration
+
+The frontend requires environment variables to connect to the backend services. Create a file named `environment.ts` in the `src/environments` folder and add the following configuration:
+
+```typescript
+export const environment = {
+    production: false,
+    firebaseConfig : {
+      apiKey: "",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: "",
+      measurementId: ""
+    },
+    Google_Client_Id:'',
+    PUBLIC_ZEGO_APP_ID:,
+    PUBLIC_ZEGO_SERVER_ID:'',
+    SOCKET_URL:'http://localhost:3000',
+    UserServiceUrl:'http://localhost:3000/api/users',
+    DoctorServiceUrl:'http://localhost:3000/api/doctors',
+    AdminServiceUrl:'http://localhost:3000/api/admin',
+    FeedService:'http://localhost:3000/api/posts',
+    OtpService:'http://localhost:3000/api/otp',
+    ChatService:'http://localhost:3000/api/chat',
+    SpeciailizationService:'http://localhost:3000/api/spec',
+    Stripe_Publishable_key:'',
+    STRIPE_SECRET_KEY : '',
+    Logo_Url:'https://res.cloudinary.com/dpjkuvq1r/image/upload/v1713504711/Maitri-Project/pjk1dkhxnelixo9vtoiv.jpg'
+  };
