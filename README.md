@@ -33,7 +33,7 @@ Welcome to the frontend repository of the Maitri Socio Mental Health Booking pro
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/maitri-frontend.git
+    [git clone https://github.com/yourusername/maitri-frontend.git](https://github.com/Krishnadas-N/Maitri-Socio-Doctor-Booking-Website-Frontend.git)
     ```
 
 2. Navigate to the project directory:
