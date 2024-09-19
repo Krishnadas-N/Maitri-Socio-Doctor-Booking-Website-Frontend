@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdminService } from '../../Services/admin-service/auth.service';
 import { Subscription } from 'rxjs';
-import { CardSkeltonComponent } from '../../../../shared/Components/card-skelton/card-skelton.component';
 import { CommonModule } from '@angular/common';
 import { SkeltonModuleModule } from '../../../../shared/Modules/skelton-module/skelton-module.module';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -12,7 +11,7 @@ import { SpecializationDoctor } from '../../Models/specialization.models';
   templateUrl: './specialized-doctors.component.html',
   styleUrls: ['./specialized-doctors.component.css'],
   standalone:true,
-  imports:[CardSkeltonComponent,RouterLink,CommonModule,SkeltonModuleModule]
+  imports:[RouterLink,CommonModule,SkeltonModuleModule]
 })
 export class SpecializedDoctorsComponent implements OnInit,OnDestroy {
   specializationId!:string;

@@ -12,7 +12,6 @@
   "private": true,
   "dependencies": {
     "@abacritt/angularx-social-login": "^2.2.0",
-    "@angular-builders/custom-webpack": "^17.0.2",
     "@angular/animations": "^18.0.1",
     "@angular/cdk": "^17.3.10",
     "@angular/common": "^18.0.1",
@@ -70,6 +69,7 @@
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^18.0.0",
     "@angular-devkit/build-angular": "^18.0.2",
     "@angular/cli": "^18.0.2",
     "@angular/compiler": "^18.0.1",
@@ -82,6 +82,7 @@
     "@types/toastr": "^2.1.43",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.10.5",
+    "dotenv": "^16.4.5",
     "dotenv-webpack": "^8.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -91,6 +92,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1",
-    "typescript": "~5.4.5"
+    "typescript": "~5.4.5",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
   }
 }

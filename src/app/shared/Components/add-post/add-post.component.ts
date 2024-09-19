@@ -9,14 +9,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/GlobalStore/app.state';
-import { addPost } from '../../../store/sharedStore/Feed-Store/post.action';
-import { selectPostsLoading } from '../../../store/sharedStore/Feed-Store/post.selector';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { DomSanitizer } from '@angular/platform-browser';
 import { MediaModalComponent } from '../media-modal/media-modal.component';
 import { ChipsModule } from 'primeng/chips';
+import { FeedService } from '../../Services/feed.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-post',
   standalone: true,
@@ -60,8 +57,8 @@ export class AddPostComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<AppState>,
-    private sanitizer: DomSanitizer
+    private feedService: FeedService,
+    private toastr: ToastrService
   ) {
     this.addPostForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -72,13 +69,7 @@ export class AddPostComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(selectPostsLoading).subscribe((isLoad) => {
-      this.isLoading = isLoad;
-      if (this.isModalOpen == true && this.isLoading === false) {
-        this.isOpen = false;
-        this.isModalOpen = false;
-      }
-    });
+
   }
 
   get tags() {
@@ -106,9 +97,20 @@ export class AddPostComponent implements OnInit {
 
   onSubmit() {
     if (this.addPostForm.valid) {
-      console.log(this.addPostForm.value);
+      this.isLoading = true;
       this.isModalOpen = true;
-      this.store.dispatch(addPost({ post: this.addPostForm.value }));
+      this.feedService.addPost(this.addPostForm.value ).subscribe({
+        next:()=>{
+          this.toastr.success("Post added Successfully");
+          this.isLoading = false;
+          this.isModalOpen = false;
+        },
+        error:(err)=>{
+          this.isLoading = false;
+          this.isModalOpen = false;
+          this.toastr.error(err);
+        }
+      });
       this.addPostForm.reset();
     } else {
       this.addPostForm.markAllAsTouched();

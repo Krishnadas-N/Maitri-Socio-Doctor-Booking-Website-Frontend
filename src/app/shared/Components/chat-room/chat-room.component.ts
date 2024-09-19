@@ -1,11 +1,9 @@
 import {
-  afterNextRender,
-  AfterViewInit,
+  AfterViewChecked,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -24,7 +22,7 @@ import { MessageDTO } from '../../Models/message.models';
 import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
 import { TimeFormatPipe } from '../../pipes/timeFormat.pipe';
 import { UploadPrescriptionComponent } from '../../../core/Doctor/Components/upload-prescription/upload-prescription.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RatingReviewDialogComponent } from '../../../core/User/Components/rating-review-dialog/rating-review-dialog.component';
 
 @Component({
@@ -40,8 +38,8 @@ import { RatingReviewDialogComponent } from '../../../core/User/Components/ratin
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.css'],
 })
-export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('chatContainer') chatContainer: any;
+export class ChatRoomComponent implements OnInit, OnDestroy,AfterViewChecked {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   conversationId!: string;
   message: string = '';
   userType!: 'User' | 'Doctor';
@@ -65,37 +63,28 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     private doctorService: DoctorService,
     private toastr: ToastrService,
     private tokenService: TokenService,
-    private renderer: Renderer2,
     public dialog: MatDialog
   ) {}
 
-  ngAfterViewInit(): void {
-    this.scrollToBottom();
-  }
   ngOnInit() {
     this.userType = this.route.snapshot.data['expectedRole'];
     this.route.queryParams.subscribe((params) => {
       this.appointmentId = params['apppoinmentId'] || null;
-      console.log('Appointment ID:', this.appointmentId);
     });
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.conversationId = params['id'];
-        console.log('id is ', this.conversationId);
-
         if (this.conversationId === 'inbox') {
           this.isDisplayDummy = true;
-          console.log('Display default screen for inbox');
         } else {
           this.isDisplayDummy = false;
           this.fetchCurrentUser();
-
           const token = this.tokenService.getToken();
           if (token) {
             this.webSocketService.setToken(token);
             this.webSocketService.emitGetMessages(this.conversationId);
             this.subscribeToMessages();
-            this.webSocketService.getnewMessages().subscribe((message: any) => {
+            this.webSocketService.getNewMessages().subscribe((message: any) => {
               console.log(message);
               this.messages.push(message);
               this.scrollToBottom();
@@ -110,6 +99,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subOpeningRatingModal();
     }
   }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+ 
 
   subCloseConverstation() {
     this.webSocketService.getCloseConversation().subscribe((data: any) => {
@@ -239,7 +233,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getUserDetails(userId: string): any {
+    console.log(userId+'................................................................................')
     if (this.conversationalData) {
+      console.log(this.conversationalData,this.conversationalData.members.find(
+        (x: any) => x.member._id.toString() === userId
+      ).member)
       return this.conversationalData.members.find(
         (x: any) => x.member._id.toString() === userId
       ).member;

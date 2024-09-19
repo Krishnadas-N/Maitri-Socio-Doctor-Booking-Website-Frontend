@@ -22,7 +22,7 @@ export class MessageService {
     return this.http.get<SuccessResponse>(`${this.apiUrl}/get-conversation/${convId}`);
   }
 
-  getChatsOfUSer(): Observable<SuccessResponse> {
+  getChatsOfUser(): Observable<SuccessResponse> {
     return this.http.get<SuccessResponse>(`${this.apiUrl}/chats`);
   }
 

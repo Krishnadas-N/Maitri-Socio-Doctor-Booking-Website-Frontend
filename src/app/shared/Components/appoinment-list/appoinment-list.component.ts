@@ -77,7 +77,6 @@ export class AppoinmentListComponent implements OnInit, OnDestroy {
   position: string = 'center';
   constructor(
     private userService: UserService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private webSocketService: WebSocketService,
     private router: Router,

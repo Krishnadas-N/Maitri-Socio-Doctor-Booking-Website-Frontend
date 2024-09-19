@@ -22,46 +22,43 @@ export class WebSocketService {
   private connect(): void {
     if (this.token) {
       this.webSocket = new Socket({
-        url: `${this.URL}/chats`,
+        url: this.URL,
         options: {
-          transports: ['polling', 'websocket', 'webtransport'], // Optional: specify transports
+          transports: ['polling', 'websocket', 'webtransport'],
           extraHeaders: {
-            Authorization: `Bearer ${this.token}`, // Adjust based on storage method
+            Authorization: `Bearer ${this.token}`,
           },
         },
       });
 
       this.webSocket.on('connect_error', (error: any) => {
         console.error('Error connecting to Socket.IO server:', error);
-        throw new Error('Connection failed'); // Throw an error for handling
+        throw new Error('Connection failed');
+      });
+
+      this.webSocket.on('connect', () => {
+        console.log('Connected to Socket.IO server 🎉');
       });
     } else {
       console.error('Missing JWT token for Socket.IO connection');
     }
   }
 
-  on(eventName: string, callback: Function): void {
+  public on(eventName: string, callback: Function): void {
     if (this.webSocket) {
       this.webSocket.on(eventName, callback);
     }
   }
 
-  sendMessage(
+  public sendMessage(
     eventName: string,
     senderId: string,
     recipientId: string,
     conversationId: string,
     message: string,
     userType: string
-  ) {
-    const messageData = {
-      senderId,
-      recipientId,
-      conversationId,
-      message,
-      userType,
-    };
-    console.log('messageData', eventName, messageData);
+  ): void {
+    const messageData = { senderId, recipientId, conversationId, message, userType };
     if (this.webSocket) {
       this.webSocket.emit(eventName, messageData);
     } else {
@@ -69,15 +66,15 @@ export class WebSocketService {
     }
   }
 
-  emitGetMessages(convid: string): Observable<any> {
-    return this.webSocket.emit('getMessages', convid);
+  public emitGetMessages(conversationId: string): void {
+    this.webSocket.emit('getMessages', conversationId);
   }
 
-  getChats(eventName: string): Observable<any> {
+  public getChats(eventName: string): Observable<any> {
     return this.webSocket.fromEvent(eventName);
   }
 
-  getnewMessages() {
+  public getNewMessages(): Observable<any> {
     return new Observable((observer) => {
       this.webSocket.on('new message', (message: any) => {
         observer.next(message);
@@ -85,25 +82,22 @@ export class WebSocketService {
     });
   }
 
-  getMessages() {
-    let observable = new Observable<any[]>((observer) => {
+  public getMessages(): Observable<any[]> {
+    return new Observable<any[]>((observer) => {
       this.webSocket.on('get-messages', (data: any) => {
-        console.log('get-messages', data);
         observer.next(data);
       });
       return () => {
         this.webSocket.disconnect();
       };
     });
-    return observable;
   }
 
-  addUser(userId: string): void {
-    console.log('Current user added to scoker', userId);
-    this.webSocket.emit('add users', userId);
+  public addUser(userId: string): void {
+    this.webSocket.emit('add user', userId);
   }
 
-  getError(): Observable<any> {
+  public getError(): Observable<any> {
     return new Observable((observer) => {
       this.webSocket.on('error', (error: any) => {
         observer.next(error);
@@ -111,37 +105,39 @@ export class WebSocketService {
     });
   }
 
-  sendConsultationLink(userId: string, consultationLink: string) {
+  public sendConsultationLink(userId: string, consultationLink: string): void {
     this.webSocket.emit('consultation-link', { userId, consultationLink });
   }
 
-  receiveConsultationLink() {
+  public receiveConsultationLink(): Observable<any> {
     return this.webSocket.fromEvent<any>('consultation-link');
   }
 
-  emitOpenRatingModal(appointmentId: string, userId: string) {
+  public emitOpenRatingModal(appointmentId: string, userId: string): void {
     this.webSocket.emit('open_rating_modal', { appointmentId, userId });
   }
 
-  getRatingModalOpen(): Observable<any> {
+  public getRatingModalOpen(): Observable<any> {
     return this.webSocket.fromEvent('open_rating_modal');
   }
 
-  emitCloseConversation(
-    appointmentId: string,
-    userId: string,
-    status: boolean
-  ) {
-    this.webSocket.emit('toggle consultation', {
-      appointmentId,
-      userId,
-      status,
-    });
+  public emitCloseConversation(appointmentId: string, userId: string, status: boolean): void {
+    this.webSocket.emit('toggle consultation', { appointmentId, userId, status });
   }
-  getCloseConversation(): Observable<any> {
+
+  public getCloseConversation(): Observable<any> {
     return this.webSocket.fromEvent('toggle consultation');
   }
-  disconnectSocket() {
+
+  public sendNotification(notificationId: string): void {
+    this.webSocket.emit('notify', notificationId);
+  }
+
+  public listenForNotifications(): Observable<any> {
+    return this.webSocket.fromEvent<any>('notification');
+  }
+
+  public disconnectSocket(): void {
     if (this.webSocket) {
       this.webSocket.disconnect();
     }

@@ -5,10 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WindowRefService } from '../../../../shared/Services/window-ref.service';
-import { NotificationService } from '../../../../shared/Services/notification-service/notification.service';
 import { StripeService, StripeCardComponent, NgxStripeModule } from 'ngx-stripe';
 import { Appointment } from '../../../../shared/Models/appoinment.model';
 import { MatInputModule } from '@angular/material/input';
+import { WebSocketService } from '../../../../shared/Services/web-socketService/webSocket.service';
 @Component({
   selector: 'app-booking-checkout-page',
   standalone:true,
@@ -32,7 +32,7 @@ export class BookingCheckoutPageComponent implements OnInit {
     private toastr:ToastrService,
     private winRef: WindowRefService,
     private router:Router,
-    private notificationService:NotificationService,
+    private socketService:WebSocketService,
   ) {
     // this.stripePromise = loadStripe(environment.Stripe_Publishable_key);
     this.route.params.subscribe(
@@ -142,7 +142,7 @@ this.getWalletBalance()
 
           console.log("verify payment",res);
           const notificationId = res.data.notificationId;
-          // this.notificationService.sendNotification(notificationId);
+          this.socketService.sendNotification(notificationId);
           location.href = `/booking-confirmation/${res.data.appoinmentId}`;
           // this.router.navigate(['/booking-confirmation',res.data.appoinmentId]);
         },

@@ -5,7 +5,6 @@ import { RouterOutlet } from '@angular/router';
 import { UserSidebarComponent } from '../../Components/user-sidebar/user-sidebar.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../shared/Services/auth-service/auth.service';
-import { NotificationService } from '../../../../shared/Services/notification-service/notification.service';
 import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
@@ -14,6 +13,7 @@ import { User } from '../../../../store/User/user.model';
 import { GetCurrentUser } from '../../../../store/User/user.selector';
 import { INotification } from '../../../../shared/Models/notification.models';
 import { NotificationPopupComponent } from '../../../../shared/Components/notification-popup/notification-popup.component';
+import { WebSocketService } from '../../../../shared/Services/web-socketService/webSocket.service';
 
 @Component({
   selector: 'app-user-main-component',
@@ -38,7 +38,7 @@ export class UserMainComponentComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService,
+    private socketService: WebSocketService,
     private tokenService: TokenService,
     private store: Store<AppState>
   ) {}
@@ -50,14 +50,14 @@ export class UserMainComponentComponent implements OnInit {
       this.store.dispatch(loadUser());
       this.loadCurrentUser();
       const token = this.tokenService.getToken();
-      this.notificationService.setToken(token as string);
+      this.socketService.setToken(token as string);
     }
   }
 
   addUserOnline() {
     if (this.currentUser) {
       console.log('this.currentUser._id', this.currentUser);
-      this.notificationService.addUsers(this.currentUser._id as string);
+      this.socketService.addUser(this.currentUser._id as string);
       this.getNotifications();
     }
   }
@@ -68,7 +68,7 @@ export class UserMainComponentComponent implements OnInit {
     });
   }
   getNotifications() {
-    this.notificationService.listenForNotifications().subscribe((data) => {
+    this.socketService.listenForNotifications().subscribe((data) => {
       console.log('Received notification:', data);
       this.notifications.push(data.notification);
       this.showNotificationPopup(

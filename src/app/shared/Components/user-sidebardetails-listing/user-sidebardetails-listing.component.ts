@@ -7,7 +7,6 @@ import { MessageService } from '../../Services/web-socketService/message.service
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { WebSocketService } from '../../Services/web-socketService/webSocket.service';
 import { TokenService } from '../../Services/token-auth-service/Token.service';
-import { NotificationService } from '../../Services/notification-service/notification.service';
 
 @Component({
   selector: 'app-user-sidebardetails-listing',
@@ -26,9 +25,8 @@ export class UserSidebardetailsListingComponent implements OnInit {
   private dialogRef: MatDialogRef<UserSidebardetailsListingComponent>,
   private doctorService:DoctorService,
   private toastr:ToastrService,
-  private webSocket:WebSocketService,
+  private socketService:WebSocketService,
   private tokenService:TokenService,
-  private notification:NotificationService,
 ) { }
 
   ngOnInit() {
@@ -43,7 +41,7 @@ export class UserSidebardetailsListingComponent implements OnInit {
       next:(res:any)=>{
         this.data.appoinments.status=res.data.appointment.status;
         console.log("notificationSending   ....",res.data.notificationId)
-        this.notification.sendNotification(res.data.notificationId)
+        this.socketService.sendNotification(res.data.notificationId)
       },
       error:(err)=>{
         this.toastr.error(err)
@@ -57,8 +55,8 @@ export class UserSidebardetailsListingComponent implements OnInit {
           this.data.appoinments.status=res.data.appointment.status;
           this.data.cancellationRequests = res.data.appointment.cancellationRequests
           console.log("notificationSending   ....",res.data.notificationId)
-          this.notification.sendNotification(res.data.adminNotificationId);
-          this.notification.sendNotification(res.data.userNotificationId);
+          this.socketService.sendNotification(res.data.adminNotificationId);
+          this.socketService.sendNotification(res.data.userNotificationId);
 
         },
         error:(err)=>{
@@ -101,8 +99,7 @@ export class UserSidebardetailsListingComponent implements OnInit {
              console.log("Response form the sidebar of Docotr",res);
              const token = this.tokenService.getToken();
              if(token){
-             this.webSocket.setToken(token)
-             this.webSocket.sendConsultationLink(userId,res.data.consultationLink)
+             this.socketService.sendConsultationLink(userId,res.data.consultationLink)
              }
              this.closeDialog()
              const queryParams: NavigationExtras = {
@@ -124,8 +121,7 @@ export class UserSidebardetailsListingComponent implements OnInit {
             console.log("Response form the sidebar of Docotr",res);
             const token = this.tokenService.getToken();
             if(token && res.data.consultationLink){
-            this.webSocket.setToken(token)
-            this.webSocket.sendConsultationLink(userId,res.data.consultationLink)
+            this.socketService.sendConsultationLink(userId,res.data.consultationLink)
             }
             this.closeDialog()
             const queryParams: NavigationExtras = {

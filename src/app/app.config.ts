@@ -25,11 +25,9 @@ import { authInterceptor } from './shared/Interceptors/auth.interceptor';
 import { UserEffects } from './store/User/user.effects';
 import { doctorEffects } from './store/Doctor/doctor.effects';
 import { OtpEffects } from './store/sharedStore/otpStore/otp.effects';
-import { postEffects } from './store/sharedStore/Feed-Store/post.effects';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
-import { responseTimerInterceptor } from './shared/Interceptors/response-timer.interceptor';
 import { errorHandlerInterceptor } from './shared/Interceptors/error-handler.interceptor';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -57,7 +55,6 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([
         authInterceptor,
-        responseTimerInterceptor,
         refreshTokenInterceptor,
         errorHandlerInterceptor,
       ])
@@ -98,7 +95,7 @@ export const appConfig: ApplicationConfig = {
         imageSize: 'cover',
       } as GalleryConfig,
     },
-    provideEffects([UserEffects, doctorEffects, OtpEffects, postEffects]),
+    provideEffects([UserEffects, doctorEffects, OtpEffects]),
     provideCharts(withDefaultRegisterables()),
     provideNgxStripe(environment.Stripe_Publishable_key),
 

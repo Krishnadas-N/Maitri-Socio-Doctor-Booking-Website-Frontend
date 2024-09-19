@@ -10,12 +10,11 @@ import { ToastrService } from 'ngx-toastr';
 import { loadDoctor } from '../../../../../store/Doctor/doctor.action';
 import { GetCurrentdoctor } from '../../../../../store/Doctor/doctor.selectors';
 import { Doctor } from '../../../../../store/Doctor/doctor.model';
-import { CardSkeltonLoaderComponent } from '../../../../../shared/Components/card-skelton-loader/card-skelton-loader.component';
 
 @Component({
   selector: 'app-DoctorFeedHome',
   standalone:true,
-  imports:[PostComponent,AddPostComponent,CommonModule,CardSkeltonLoaderComponent],
+  imports:[PostComponent,AddPostComponent,CommonModule],
   templateUrl: './doctor-feed-home.component.html',
   styleUrls: ['./doctor-feed-home.component.css']
 })
