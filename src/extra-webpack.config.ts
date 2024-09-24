@@ -1,11 +1,6 @@
-const webpack = require('webpack');
-const dotenv = require('dotenv');
-dotenv.config();
 
+import { EnvironmentPlugin } from 'webpack';
+const Dotenv = require('dotenv-webpack');
 module.exports = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env)
-    })
-  ]
+  plugins: [new Dotenv()],
 };

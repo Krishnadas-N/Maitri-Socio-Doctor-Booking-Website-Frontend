@@ -13,7 +13,7 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
+             "path": "src/custom-webpack.config.ts"
             },
             "outputPath": "dist/maitri-frontend",
             "index": "src/index.html",
@@ -72,12 +72,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
-          "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            }
-          },
+        "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "Maitri-Frontend:build:production"
