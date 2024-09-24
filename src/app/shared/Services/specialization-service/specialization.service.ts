@@ -7,7 +7,7 @@ import { environment } from '../../../../environments/environment.development';
   providedIn: 'root',
 })
 export class SpecializationService {
-  private apiUrl = environment.SpeciailizationService;
+  private apiUrl = environment.SpeciailizationService as string;
   constructor(private http: HttpClient) {}
   creeateDoctorCategory(doctorCategory: {
     name: string;

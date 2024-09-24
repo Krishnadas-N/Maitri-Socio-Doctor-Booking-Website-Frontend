@@ -9,7 +9,7 @@ import { SuccessResponse } from '../Models/api-request-response.model';
   providedIn: 'root',
 })
 export class FeedService {
-  private apiUrl = environment.FeedService;
+  private apiUrl = environment.FeedService as string;
   constructor(private http: HttpClient) {}
   getAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.apiUrl);

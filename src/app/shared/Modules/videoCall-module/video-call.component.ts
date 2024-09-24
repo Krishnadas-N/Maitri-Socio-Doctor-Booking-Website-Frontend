@@ -110,8 +110,8 @@ export class VideoCallComponent implements OnInit {
   }
 
   callZegoCloudFunction() {
-    const appID = environment.PUBLIC_ZEGO_APP_ID;
-    const serverSecret = environment.PUBLIC_ZEGO_SERVER_ID;
+    const appID = Number(environment.PUBLIC_ZEGO_APP_ID);
+    const serverSecret = environment.PUBLIC_ZEGO_SERVER_ID as string;
     console.log(
       'appID, serverSecret, this.roomID, this.currentUser._id as string, `${this.currentUser.firstName} ${this.currentUser.lastName}`',
       appID,

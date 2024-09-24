@@ -22,7 +22,7 @@ export class WebSocketService {
   private connect(): void {
     if (this.token) {
       this.webSocket = new Socket({
-        url: this.URL,
+        url: this.URL as string,
         options: {
           transports: ['polling', 'websocket', 'webtransport'],
           extraHeaders: {
