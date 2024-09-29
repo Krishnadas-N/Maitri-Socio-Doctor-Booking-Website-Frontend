@@ -22,6 +22,10 @@ import { TokenService } from '../../../../shared/Services/token-auth-service/Tok
 export class AdminLoginComponent implements OnInit {
   AdminloginForm!: FormGroup;
   isLoading:boolean=false;
+  dummyAdminLogin={
+    email:'krishnadas@email.com',
+    password:'Krishnadas@123'
+  }
   constructor(
     private formBuilder: FormBuilder,
     private router:Router,
@@ -32,8 +36,8 @@ export class AdminLoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.AdminloginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: [this.dummyAdminLogin.email, [Validators.required, Validators.email]],
+      password: [this.dummyAdminLogin.password, [Validators.required, Validators.minLength(6)]],
     });
   }
 

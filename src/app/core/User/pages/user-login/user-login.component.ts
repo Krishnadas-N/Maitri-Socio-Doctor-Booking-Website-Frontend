@@ -41,7 +41,10 @@ export class UserLoginComponent implements OnInit {
   passwordError: boolean = false;
   emailError: boolean = false;
   isLoading: boolean = false;
-
+  dummyUserCredentials={
+    email:'testuser@email.com',
+    password:'Testuser@123'
+  }
   constructor(
     private fb: FormBuilder,
     private angularFireAuth: AngularFireAuth,
@@ -57,9 +60,9 @@ export class UserLoginComponent implements OnInit {
       this.isLoading = isLoading;
     });
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: [this.dummyUserCredentials.email, [Validators.required, Validators.email]],
       password: [
-        '',
+        this.dummyUserCredentials.password,
         [
           Validators.required,
           Validators.minLength(8),

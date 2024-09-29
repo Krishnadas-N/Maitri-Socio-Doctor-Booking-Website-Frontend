@@ -193,8 +193,8 @@
       >
     </a>
   </div>
-  <div
-    class="w-14 xl:w-full mx-auto mt-auto flex flex-row justify-between rounded-full hover:bg-sky-50 dark:hover:bg-dim-800 p-2 cursor-pointer transition duration-350 ease-in-out mb-2"
+  <div (click)="logout()" 
+    class="w-14 xl:w-full cursor-pointer mx-auto mt-auto flex flex-row justify-between rounded-full hover:bg-sky-50 dark:hover:bg-dim-800 p-2 cursor-pointer transition duration-350 ease-in-out mb-2"
   >
     <div class="flex flex-row">
       <img
@@ -206,11 +206,11 @@
         <h1 class="text-gray-800 dark:text-black font-bold text-sm">
           <!-- Joe Biden -->
         </h1>
-        <p (click)="logout()" class="text-gray-400 text-sm">Logout</p>
+        <p  class="text-gray-400 text-sm">Logout</p>
       </div>
     </div>
     <div class="hidden xl:block">
-      <div class="flex items-center h-full text-gray-800 dark:text-black">
+      <div  class="flex items-center h-full text-gray-800 dark:text-black">
         <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 mr-2">
           <g>
             <path

@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/GlobalStore/app.state';
 import { loginDoctorRequest } from '../../../../store/Doctor/doctor.action';
 import { selectdoctorLoading } from '../../../../store/Doctor/doctor.selectors';
-import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service'; 
+import { TokenService } from '../../../../shared/Services/token-auth-service/Token.service';
 @Component({
   selector: 'app-doctor-login',
   standalone: true,
@@ -18,6 +18,10 @@ export class DoctorLoginComponent implements OnInit{
   loginForm!: FormGroup;
   submitted = false;
   isLoading:boolean= true
+  dummyDcotorLogin={
+    email:'rakeshKumar@email.com',
+    password:'Rakeshkumar@123'
+  }
   constructor(private fb: FormBuilder,private store:Store<AppState>,private TokenService:TokenService,private route:Router) {}
 
   ngOnInit() {
@@ -25,8 +29,8 @@ export class DoctorLoginComponent implements OnInit{
       this.route.navigate(['/doctor'])
     }
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/)]]
+      email: [this.dummyDcotorLogin.email, [Validators.required, Validators.email]],
+      password: [this.dummyDcotorLogin.password, [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/)]]
     });
 
     this.store.select(selectdoctorLoading).subscribe((isLoading)=>{
